@@ -1,0 +1,20 @@
+{
+  "name": "server-files",
+  "version": "1.0.0",
+  "description": "server that serves files",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "express-fileupload": "^1.2.1",
+    "mongodb": "^3.6.6",
+    "nodemon": "^2.0.7",
+    "uuid": "^8.3.2",
+    "winston": "^3.3.3"
+  }
+}

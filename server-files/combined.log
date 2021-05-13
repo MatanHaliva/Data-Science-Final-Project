@@ -1,0 +1,18 @@
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[],"service":"user-service"}
+{"level":"info","context":[],"service":"user-service"}
+{"level":"info","context":[],"service":"user-service"}
+{"level":"info","context":[],"service":"user-service"}
+{"level":"info","context":[{"_id":"609c5eeb3c5a284c90b1ee24","a":1}],"service":"user-service"}
+{"level":"info","context":[{"_id":"609c5eeb3c5a284c90b1ee24","a":1}],"service":"user-service"}
+{"level":"info","context":[{"_id":"609c5eeb3c5a284c90b1ee24","a":1}],"service":"user-service"}
+{"level":"info","context":[{"_id":"609c63a30076f84dad560f9d","contextId":"5bdbc64a-2164-455f-add9-83f27274a32d","filePath":"/uploads/results.json"}],"service":"user-service"}
+{"level":"info","context":[{"_id":"609c5eeb3c5a284c90b1ee24","a":1}],"service":"user-service"}
+{"level":"info","context":[{"_id":"609c5eeb3c5a284c90b1ee24","a":1}],"service":"user-service"}
+{"level":"info","context":[{"_id":"609c63a30076f84dad560f9d","contextId":"5bdbc64a-2164-455f-add9-83f27274a32d","filePath":"/uploads/results.json"}],"service":"user-service"}
+{"level":"info","context":[{"_id":"609c63a30076f84dad560f9d","contextId":"5bdbc64a-2164-455f-add9-83f27274a32d","filePath":"/uploads/results.json"}],"service":"user-service"}
+{"level":"info","context":[{"_id":"609c63a30076f84dad560f9d","contextId":"5bdbc64a-2164-455f-add9-83f27274a32d","filePath":"/uploads/results.json"}],"service":"user-service"}
