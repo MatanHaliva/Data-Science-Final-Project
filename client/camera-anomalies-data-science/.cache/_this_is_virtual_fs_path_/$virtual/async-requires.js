@@ -9,6 +9,7 @@ exports.components = {
   "component---src-pages-components-container-file-upload-js": () => import("./../../../src/pages/components/ContainerFileUpload.js" /* webpackChunkName: "component---src-pages-components-container-file-upload-js" */),
   "component---src-pages-components-file-upload-js": () => import("./../../../src/pages/components/FileUpload.js" /* webpackChunkName: "component---src-pages-components-file-upload-js" */),
   "component---src-pages-components-log-js": () => import("./../../../src/pages/components/Log.js" /* webpackChunkName: "component---src-pages-components-log-js" */),
+  "component---src-pages-components-log-toast-js": () => import("./../../../src/pages/components/LogToast.js" /* webpackChunkName: "component---src-pages-components-log-toast-js" */),
   "component---src-pages-components-modal-js": () => import("./../../../src/pages/components/Modal.js" /* webpackChunkName: "component---src-pages-components-modal-js" */),
   "component---src-pages-components-progress-js": () => import("./../../../src/pages/components/Progress.js" /* webpackChunkName: "component---src-pages-components-progress-js" */),
   "component---src-pages-components-video-js": () => import("./../../../src/pages/components/Video.js" /* webpackChunkName: "component---src-pages-components-video-js" */),

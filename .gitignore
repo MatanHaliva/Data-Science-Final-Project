@@ -1,2 +1,5 @@
 server-files/files
 node_modules
+detection/elad-detection/vehicle_counting_tensorflow/*.mp4
+*.avi
+*.mp4

@@ -78,7 +78,7 @@ const FileUpload = ({ contextId, count, increment, setContextId, setFilePath}) =
                     <Fragment>
                         <Modal modalText={"Are you want to proceed for processing?"} modalTitle={"Upload Passed Successfully"} 
                         onSave={(e) => {
-                            navigate("/processVideo")
+                            navigate("/analyseVideo")
                         }}
                         onClose={(e) => {
                             setUploadedFile({ ...uploadedFile, isPassed: false})
@@ -87,7 +87,16 @@ const FileUpload = ({ contextId, count, increment, setContextId, setFilePath}) =
                     
                 : 
                 <div>{errorUploadingFile && errorUploadingFile.msg}</div>}
+
+
+                <h2>
+                    <Link to="/analyseVideo"></Link>
+                </h2>
+
+
             </form>
+
+       
 
         </Fragment>
     )

@@ -1,26 +1,30 @@
 import React, {Fragment, useState, useEffect  } from "react"
+import Video from "../components/Video"
+import Log from "../components/Log"
 import axios from 'axios'
+import * as style from "./index.module.css"
 
-const AnalyseVideo = ({filePath}) => {
+const AnalyseVideo = ({filePath, setVideoCurrentTime, videoCurrentTime}) => {
     const videoUrl = `http://localhost:5000${filePath}`
-    const detections = [{id: 1, value: 1, detectionTime: 0}, {id: 2, value: 2, relativeTime: 1}, {id: 3, value: 3, relativeTime: 2}, {id: 4, value: 4, relativeTime: 3}]
+    const [detections, setDetections] = useState([])
+    const [videoTime, setVideoTime] = useState({})
+
+    const getDetections = () => {
+        setDetections([{id: 1, description: "car moved", detectionTime: 0.2, detectionType: "car movment", accuracy: 0.9}, {id: 2, description: "car color blue", detectionTime: 3, detectionType: "car color", accuracy: 0.6}, {id: 3, description: "car color blue", detectionTime: 4, detectionType: "car color", accuracy: 0.6}])
+    }
 
     useEffect(() => {
-        // Update the document title using the browser API
-        document.title = `You clicked ${1} times`;
-      });
+        getDetections()
+    }, []);
 
     return (
         <Fragment>
-            <div className="container">
-                <video width="1000" height="500" controls>
-                    <source src={videoUrl} type="video/mp4" />
-                </video>
-                <div>logs: </div>
-                <div>
-                    {
-                    detections.map(detection => (<div key={detection.id}>{detection.value}</div>))
-                    }
+            <div className="d-flex flex-row">
+                <div className={`${style.flex_grow_4} p-2`}>
+                    <Video videoUrl={videoUrl} setVideoCurrentTime={setVideoCurrentTime}/>
+                </div>
+                <div className={`${style.flex_grow_2} p-2`}>
+                    <Log videoTime={videoCurrentTime} rows={detections}/>
                 </div>
             </div>
       
