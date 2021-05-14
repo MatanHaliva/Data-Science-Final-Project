@@ -1,16 +1,8 @@
-import * as React from "react"
-import FileUpload from '../components/FileUpload'
-import "./styles.css"
+import { connect } from "react-redux"
+import UploadVideo  from "./uploadVideo"
 
-const UploadVideo = () => {
-    return (
-    <div className="container">
-        <h4 className="display-4 text-center mb-4">
-            <i className="fab fa-react">Upload For Processing</i>
-        </h4>
-
-        <FileUpload />
-    </div>)
+const mapStateToProps = (state) => {
+    return {count: state.app.count }
 }
 
-export default UploadVideo
+export default connect(mapStateToProps, null)(UploadVideo)

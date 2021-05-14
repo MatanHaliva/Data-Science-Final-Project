@@ -2,6 +2,11 @@ const express = require('express')
 const fileUpload = require('express-fileupload')
 const { v4: uuidv4 } = require('uuid');
 const winston = require('winston');
+const { sleep } = require('./helper')
+const bodyParser = require('body-parser')
+
+
+const sockets = {}
 
 const logger = winston.createLogger({
   level: 'info',
@@ -29,9 +34,11 @@ if (process.env.NODE_ENV !== 'production') {
 
 const app = express()
 
+app.use('/files', express.static('files'))
+
 app.use(fileUpload())
 
-app.listen(5000, () => console.log('server started'))
+app.use(bodyParser.json())
 
 //Upload Endpoint
 
@@ -48,38 +55,81 @@ app.post('/upload', async (req, res) => {
 
     const file = req.files.file
 
-    file.mv(`${__dirname}/files/${file.name}`, err => {
+    file.mv(`${__dirname}/files/${file.name}`, async err => {
         if(err) {
-            console.error(err)
+            console.error("error: " + err)
             return res.status(500).send(err)
         }
        
-        const path = `/uploads/${file.name}`
+        const path = `/files/${file.name}`
         const contextId = uuidv4()
         console.log('uploaded successfuly to', path)
 
-        saveContextAndFile(contextId, path)
+        await saveContextAndFile(contextId, path)
 
         res.json({ fileName: file.name, filePath: path , contextId})
     })
 })
 
+
 app.post('/process', async (req, res) => {
-    const context = await getFileByContextId(req.query.contextId)
+    console.log("processing with contextId: ", req.body.contextId)
+
+    res.setHeader('Access-Control-Allow-Origin', '*')
+
+    const context = await getFileByContextId(req.body.contextId)
     logger.log({level: "info", context})
 
-    res.json({msg: "ok", context: context, content: "start processing the video"})
+
+
+    res.json({ msg: "ok", context: context[0], content: "start processing the video" })
 })
 
-app.options('/upload', (req, res) => {
+
+app.post('/finishProcess', async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
+
+    const context = await getFileByContextId(req.body.contextId)
+    const socket = sockets[context[0].contextId]
+
+    socket.send({context, status: "finished", processType: req.body.processName})
+
+    res.json({ msg: "ok", context: context[0], content: "notify to user" })
 })
 
+// added cors
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Headers", "Content-Type");
+    res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+    next();
+});
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-}
-  
+const server = require('http').createServer(app)
+const io = require('socket.io')(server, { origins: ["http://localhost:8000"], handlePreflightRequest: (req, res) => {
+    res.writeHead(200, {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*",
+      "Access-Control-Allow-Headers": "my-custom-header",
+      "Access-Control-Allow-Credentials": true
+    });
+    res.end();
+  }})
+
+
+io.on('connection', (socket) => {
+     console.log("socket started") 
+     socket.on("message", data => {
+        console.log(data);
+        if (data.contextId) {
+            console.log("put contextId: " + data.contextId)
+            sockets[data.contextId] = socket
+        }
+      });
+})
+server.listen(5000, () => console.log('server started'))
+
 
 function saveContextAndFile(contextId, filePath) {
     const MongoClient = require('mongodb').MongoClient;
@@ -117,7 +167,6 @@ const insertContextsDocuments = (db, callback) => ({contextId, filePath}) => {
     })
   }
 
-
 const getFileByContextId = async (contextId) => {
     const MongoClient = require('mongodb').MongoClient;
 
@@ -147,11 +196,15 @@ const getFileByContextId = async (contextId) => {
 
 const findDocuments = (db, callback) => ({contextId}) => {
     // Get the documents collection
-    const collection = db.collection('contexts');
+    const collection = db.collection('contexts')
     // Find some documents
-    collection.find({"contextId": contextId}).toArray(function(err, docs) {
-      console.log('Found the following records');
-      console.log(docs);
-      callback(docs);
+    console.log(contextId)
+    var query = { contextId: contextId }
+
+
+    collection.find(query).toArray(function(err, docs) {
+      console.log('Found the following records')
+      console.log(docs)
+      callback(docs)
     })
-  }
+}

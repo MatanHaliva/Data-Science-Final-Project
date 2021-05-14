@@ -24,6 +24,8 @@
     "popper.js": "^1.16.1",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
-    "sass": "^1.32.13"
+    "react-redux": "^7.2.4",
+    "sass": "^1.32.13",
+    "socket.io-client": "^4.1.1"
   }
 }

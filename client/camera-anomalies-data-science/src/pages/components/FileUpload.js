@@ -1,9 +1,15 @@
 import React, {Fragment, useState} from "react"
 import Progress from './Progress'
 import axios from 'axios'
+import Modal from "./Modal"
+import { Link } from "gatsby"
+import { navigate } from "gatsby"
 
+function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
-const FileUpload = () => {
+const FileUpload = ({ contextId, count, increment, setContextId, setFilePath}) => {
     const [file, setFile] = useState('')
     const [filename, setFilename] = useState('Choose File')
     const [uploadedFile, setUploadedFile] = useState({isPassed: false})
@@ -34,11 +40,17 @@ const FileUpload = () => {
                 }
             })
             
-            const { fileName, filePath } = res.data
+            const { fileName, filePath, contextId } = res.data
 
-            setUploadedFile({ fileName, filePath, isPassed: true })
+            await sleep(1200)
+            setUploadPercentage(0)
+            
+            setUploadedFile({ fileName, filePath, contextId, isPassed: true })
+            setContextId(contextId)
+            setFilePath(filePath)
+
         } catch (err) {
-            if (err.response.status === 500) {
+            if (err && err.response && err.response.status === 500) {
                 console.log('There was an internal error processing the file')
                 setErrorUploadingFile({msg: 'There was an internal error processing the file' })
             } else {
@@ -62,8 +74,21 @@ const FileUpload = () => {
 
                 <input type="submit" value="Upload" className="btn btn-primary btn-block mt-4" />
 
-                {uploadedFile.isPassed ? <div>Successfully Uploaded</div> : <div>{errorUploadingFile && errorUploadingFile.msg}</div>}
+                {uploadedFile.isPassed ? 
+                    <Fragment>
+                        <Modal modalText={"Are you want to proceed for processing?"} modalTitle={"Upload Passed Successfully"} 
+                        onSave={(e) => {
+                            navigate("/processVideo")
+                        }}
+                        onClose={(e) => {
+                            setUploadedFile({ ...uploadedFile, isPassed: false})
+                        }}/>
+                    </Fragment>
+                    
+                : 
+                <div>{errorUploadingFile && errorUploadingFile.msg}</div>}
             </form>
+
         </Fragment>
     )
 }
