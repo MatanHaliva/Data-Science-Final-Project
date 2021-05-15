@@ -2,3 +2,8 @@ server-files/files
 node_modules
 *.avi
 *.mp4
+*.jpg
+*.jpeg
+*.png
+*.h5 
+*.hdf5

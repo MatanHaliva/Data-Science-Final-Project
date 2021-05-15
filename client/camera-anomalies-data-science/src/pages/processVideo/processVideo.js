@@ -1,4 +1,4 @@
-import React, {Fragment, useState} from "react"
+import React, {Fragment, useEffect, useState} from "react"
 import axios from "axios"
 import { io } from "socket.io-client";
 import Progress from "../components/Progress"
@@ -8,6 +8,7 @@ import { navigate } from "gatsby"
 
 import { sleep } from "../../../../../server-files/helper";
 import Layout from "../components/Layout";
+import Card from "../components/Card";
 
 const endpointStartProcessing = "process"
 const endpointCheckStatus = "checkStatus"
@@ -19,7 +20,12 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
     const [isStartProcessing, setIsStartProcessing] = useState(false)
     const [processingProgress, setProcessingProgress] = useState(0)
     const [intervalCheckStatus, setIntevalCheckStatus] = useState()
+    const [cardData, setCarData] = useState([])
 
+
+    useEffect(() => {
+        setCarData([{header: `Processing video page with details`, content: `contextId ${contextId}`}, { header: `File Path`, content: `${filePath}`}])
+    }, [contextId, filePath])
 
     const initWebSocketConn = async ({contextId}) => {
         const socket = io("ws://localhost:5000", {transports: ['websocket', 'polling', 'flashsocket']});
@@ -37,7 +43,7 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
     }
 
     const startProcessing = async () => {
-        setProcessingProgress(100)
+        setProcessingProgress(5)
 
         try {
             console.log("start processing")
@@ -81,28 +87,34 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
 
     return (
         <Layout>
-            <div>Processing video page with details: contextId: {contextId}, filePath: {filePath}</div>
-            <button type="submit" value="Start Processing" className="btn btn-primary btn-block mt-4" onClick={() => startProcessing()} > Start Processing </button>
+            <div class="">
+            <div class="position-absolute top-50 start-50 translate-middle">
+                <div className="container">
+                    <Card rows={cardData} cardHeader={"Upload Video Information"} cardDescription={"Description about the uploaded Video need to process the video and then analyse it."} />
+                    <button type="submit" value="Start Processing" className="btn btn-primary btn-block mt-4" onClick={() => startProcessing()} > Start Processing </button>
+                    {isStartProcessing ? 
+                    (<div>
+                        Processing the uploaded video estimated time:
+                        <Progress percents={processingProgress}/>
+                    </div>) : <div/>}
 
-            {isStartProcessing ? 
-            (<div>
-                processing the uploaded video estimated time:
-                <Progress percents={processingProgress}/>
-            </div>) : <div/>}
-
-            {processingProgress === 100 ?
-                  <Fragment>
-                        <Modal modalText={"Are you want to proceed for processing?"} modalTitle={"Upload Passed Successfully"} 
-                        onSave={(e) => {
-                            navigate("/analyseVideo")
-                        }}
-                        onClose={(e) => {
-                            setProcessingProgress(0)
-                            setIsStartProcessing(false)
-                        }}/>
-                    </Fragment> :
-                    <div/>
-            }
+                    {processingProgress === 100 ?
+                        <Fragment>
+                            <Modal modalText={"Are you want to proceed for processing?"} modalTitle={"Upload Passed Successfully"} 
+                            onSave={(e) => {
+                                navigate("/analyseVideo")
+                            }}
+                            onClose={(e) => {
+                                setProcessingProgress(0)
+                                setIsStartProcessing(false)
+                            }}/>
+                        </Fragment> 
+                        :
+                        <div/>
+                    }
+                </div>
+            </div>
+            </div>
         </Layout>
     )
 

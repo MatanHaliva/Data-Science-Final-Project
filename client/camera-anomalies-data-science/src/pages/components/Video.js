@@ -13,7 +13,7 @@ const Video = ({videoUrl, setVideoCurrentTime}) => {
 
     return (
         <Fragment>
-            <video width="100%" height="100%" controls>
+            <video width="1000px" height="500px" controls>
                 <source src={videoUrl} type="video/mp4" />
             </video>
         </Fragment>
