@@ -142,3 +142,8 @@ Ahmet Özlü
 
 ## License
 This system is available under the MIT license. See the LICENSE file for more info.
+
+
+Download into models folder the resnet models:
+from here:
+https://drive.google.com/file/d/0Byy2AcGyEVxfeXExMzNNOHpEODg/view?usp=sharing
