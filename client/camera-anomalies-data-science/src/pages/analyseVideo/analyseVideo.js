@@ -3,6 +3,7 @@ import Video from "../components/Video"
 import Log from "../components/Log"
 import axios from 'axios'
 import * as style from "./index.module.css"
+import Layout from "../components/Layout"
 
 const AnalyseVideo = ({filePath, setVideoCurrentTime, videoCurrentTime}) => {
     const videoUrl = `http://localhost:5000${filePath}`
@@ -18,7 +19,7 @@ const AnalyseVideo = ({filePath, setVideoCurrentTime, videoCurrentTime}) => {
     }, []);
 
     return (
-        <Fragment>
+        <Layout>
             <div className="d-flex flex-row">
                 <div className={`${style.flex_grow_4} p-2`}>
                     <Video videoUrl={videoUrl} setVideoCurrentTime={setVideoCurrentTime}/>
@@ -28,7 +29,7 @@ const AnalyseVideo = ({filePath, setVideoCurrentTime, videoCurrentTime}) => {
                 </div>
             </div>
       
-        </Fragment>
+        </Layout>
     )
 }
 

@@ -1,5 +1,6 @@
 import React, {Fragment, useState, useEffect  } from "react"
 import LogToast from "../components/LogToast"
+import * as style from "./css/LogToast.module.css"
 
 const Log = ({rows, videoTime}) => {
     const [detections, setDetections] = useState([])
@@ -12,13 +13,19 @@ const Log = ({rows, videoTime}) => {
     }, [videoTime])
 
     const getLogs = logs => {
-        return logs.filter(log => log.detectionTime <= videoTime).filter(log => videoTime - log.detectionTime < 10)
+        return logs.map(log => {
+            if(log.detectionTime <= videoTime && videoTime - log.detectionTime < 10) {
+                return {...log, show: `show`}
+            } else {
+                return {...log, show: `hide`}
+            }
+        })
     }
 
     const createToasts = () => {
         return detections.map(detection => {
             return (
-                <LogToast {...detection} key={detection.id}/>
+                <LogToast toastShowFade={`toast ${detection.show} fade`} {...detection} key={detection.id}/>
             )
         })
     }
@@ -26,11 +33,11 @@ const Log = ({rows, videoTime}) => {
     return (
         <Fragment>
             <h2>Logs: </h2>
-            <div>
+            <Fragment>
                 {
                     createToasts()
                 }
-            </div>
+            </Fragment>
         </Fragment>
     )
 }

@@ -3,6 +3,7 @@ export const SET_CONTEXT_ID = 'SET_CONTEXT_ID'
 export const SET_FILE_PATH = 'SET_FILE_PATH'
 export const FINISH_PROCESSING = 'FINISH_PROCESSING'
 export const SET_VIDEO_CURRENT_TIME = 'SET_VIDEO_CURRENT_TIME'
+export const SET_CURRENT_ROUTE = 'SET_CURRENT_ROUTE'
 
 export const increment = () => ({
   type: INCREMENT
@@ -23,4 +24,8 @@ export const setFinishProcessing = (isFinished) => ({
 
 export const setVideoCurrentTime = (currentTime) => ({
     type: SET_VIDEO_CURRENT_TIME, payload: currentTime 
+})
+
+export const setCurrentRoute = (routeNum) => ({
+    type: SET_CURRENT_ROUTE, payload: routeNum 
 })

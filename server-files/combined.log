@@ -154,3 +154,43 @@
 {"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
 {"level":"info","message":"inserting into contexts","service":"user-service"}
 {"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[{"_id":"609edc09bb08da876b59042d","contextId":"3be223f1-e34f-45f9-9f0d-eaa460add710","filePath":"/files/input_video.mp4"}],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[],"service":"user-service"}
+{"level":"info","context":[],"service":"user-service"}
+{"level":"info","context":[],"service":"user-service"}
+{"level":"info","context":[],"service":"user-service"}
+{"level":"info","context":[],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[{"_id":"609ede30bb08da876b59042f","contextId":"a7efe574-d04c-429e-bf3c-c0eb8fbcca83","filePath":"/files/input_video.mp4"}],"service":"user-service"}
+{"level":"info","context":[],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[{"_id":"609ee129bb08da876b590430","contextId":"1ecfa544-551d-4935-ab56-b854fe99a434","filePath":"/files/input_video.mp4"}],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[{"_id":"609ee5ebbb08da876b590431","contextId":"c2d0df2b-9d91-4ceb-8edd-e37acdd7c6b0","filePath":"/files/input_video.mp4"}],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[{"_id":"609ee63ebb08da876b590432","contextId":"5dd0ab0e-141a-49c0-bc31-e4c3e4903b3f","filePath":"/files/input_video.mp4"}],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[{"_id":"609ee685bb08da876b590433","contextId":"2ec61880-9621-44aa-ab21-e562fc377e96","filePath":"/files/input_video.mp4"}],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[{"_id":"609ee71fbb08da876b590434","contextId":"77783f37-ac55-494c-b9e3-6de6ae84e78e","filePath":"/files/input_video.mp4"}],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[{"_id":"609ef0e6bb08da876b590435","contextId":"5d4e69d0-7b1f-4c51-a9f2-575cd9014836","filePath":"/files/input_video.mp4"}],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[{"_id":"609ef144bb08da876b590436","contextId":"9dc0e48f-3ef1-4642-b688-1bbad2395de0","filePath":"/files/input_video.mp4"}],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[{"_id":"609f12a2bb08da876b590437","contextId":"3dd9b536-f5ba-4297-9366-c204030d72cd","filePath":"/files/input_video.mp4"}],"service":"user-service"}

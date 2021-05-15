@@ -1,7 +1,6 @@
 import { connect } from "react-redux"
 import AnalyseVideo  from "./analyseVideo"
 import { setVideoCurrentTime } from "../../redux/actions"
-import * as style from "./index.module.css"
 
 
 const mapStateToProps = (state) => {
