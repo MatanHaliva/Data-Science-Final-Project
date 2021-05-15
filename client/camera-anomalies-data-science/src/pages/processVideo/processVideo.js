@@ -15,7 +15,7 @@ const endpointCheckStatus = "checkStatus"
 const startProcessingVideoUrl = "http://localhost:5000" 
 
 
-const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessing}) => {
+const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessing, setCurrentRoute}) => {
     const [socketProccessing, setSocketProccessing] = useState({})
     const [isStartProcessing, setIsStartProcessing] = useState(false)
     const [processingProgress, setProcessingProgress] = useState(0)
@@ -43,7 +43,7 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
     }
 
     const startProcessing = async () => {
-        setProcessingProgress(5)
+        setProcessingProgress(100)
 
         try {
             console.log("start processing")
@@ -103,6 +103,7 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
                             <Modal modalText={"Are you want to proceed for processing?"} modalTitle={"Upload Passed Successfully"} 
                             onSave={(e) => {
                                 navigate("/analyseVideo")
+                                setCurrentRoute(3)
                             }}
                             onClose={(e) => {
                                 setProcessingProgress(0)

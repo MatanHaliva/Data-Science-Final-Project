@@ -9,7 +9,7 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
-const FileUpload = ({ contextId, count, increment, setContextId, setFilePath}) => {
+const FileUpload = ({ contextId, count, increment, setContextId, setFilePath, setCurrentRoute}) => {
     const [file, setFile] = useState('')
     const [filename, setFilename] = useState('Choose File')
     const [uploadedFile, setUploadedFile] = useState({isPassed: false})
@@ -79,6 +79,7 @@ const FileUpload = ({ contextId, count, increment, setContextId, setFilePath}) =
                         <Modal modalText={"Are you want to proceed for processing?"} modalTitle={"Upload Passed Successfully"} 
                         onSave={(e) => {
                             navigate("/processVideo")
+                            setCurrentRoute(2)
                         }}
                         onClose={(e) => {
                             setUploadedFile({ ...uploadedFile, isPassed: false})

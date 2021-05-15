@@ -1,6 +1,6 @@
 import { connect } from "react-redux"
 import ProcessVideo  from "./processVideo"
-import { setFinishProcessing } from "../../redux/actions"
+import { setFinishProcessing, setCurrentRoute } from "../../redux/actions"
 
 const mapStateToProps = (state) => {
     return {
@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => {
     return { 
         setFinishProcessing: (isFinished) => dispatch(setFinishProcessing(isFinished)),
+        setCurrentRoute: (currentRoute) => dispatch(setCurrentRoute(currentRoute))
     }
 }
 

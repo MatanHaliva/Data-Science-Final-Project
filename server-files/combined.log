@@ -203,3 +203,13 @@
 {"level":"info","message":"inserting into contexts","service":"user-service"}
 {"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
 {"level":"info","context":[{"_id":"60a00302a2d831bcbe128c7d","contextId":"02dcb5ae-0fad-4fd0-b7e4-cf435ca20a2a","filePath":"/files/input_video.mp4"}],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[{"_id":"60a00590a2d831bcbe128c7e","contextId":"722e3395-dd76-4520-a4ff-418caf17cc94","filePath":"/files/input_video.mp4"}],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[{"_id":"60a0062ca2d831bcbe128c7f","contextId":"7ade8656-1cd5-4608-8d5b-da0fd7c06512","filePath":"/files/input_video.mp4"}],"service":"user-service"}
+{"level":"info","context":[{"_id":"60a0062ca2d831bcbe128c7f","contextId":"7ade8656-1cd5-4608-8d5b-da0fd7c06512","filePath":"/files/input_video.mp4"}],"service":"user-service"}
+{"level":"info","message":"inserting into contexts","service":"user-service"}
+{"level":"info","message":"Inserted 1 documents into the collection","service":"user-service"}
+{"level":"info","context":[{"_id":"60a00669a2d831bcbe128c80","contextId":"fa976001-23b2-4099-9d13-44a4ba7bffbd","filePath":"/files/input_video.mp4"}],"service":"user-service"}
