@@ -942,15 +942,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "SET_CONTEXT_ID": () => (/* binding */ SET_CONTEXT_ID),
 /* harmony export */   "SET_FILE_PATH": () => (/* binding */ SET_FILE_PATH),
 /* harmony export */   "FINISH_PROCESSING": () => (/* binding */ FINISH_PROCESSING),
+/* harmony export */   "SET_VIDEO_CURRENT_TIME": () => (/* binding */ SET_VIDEO_CURRENT_TIME),
+/* harmony export */   "SET_CURRENT_ROUTE": () => (/* binding */ SET_CURRENT_ROUTE),
 /* harmony export */   "increment": () => (/* binding */ increment),
 /* harmony export */   "setContextId": () => (/* binding */ setContextId),
 /* harmony export */   "setFilePath": () => (/* binding */ setFilePath),
-/* harmony export */   "setFinishProcessing": () => (/* binding */ setFinishProcessing)
+/* harmony export */   "setFinishProcessing": () => (/* binding */ setFinishProcessing),
+/* harmony export */   "setVideoCurrentTime": () => (/* binding */ setVideoCurrentTime),
+/* harmony export */   "setCurrentRoute": () => (/* binding */ setCurrentRoute)
 /* harmony export */ });
 const INCREMENT = 'INCREMENT';
 const SET_CONTEXT_ID = 'SET_CONTEXT_ID';
 const SET_FILE_PATH = 'SET_FILE_PATH';
 const FINISH_PROCESSING = 'FINISH_PROCESSING';
+const SET_VIDEO_CURRENT_TIME = 'SET_VIDEO_CURRENT_TIME';
+const SET_CURRENT_ROUTE = 'SET_CURRENT_ROUTE';
 const increment = () => ({
   type: INCREMENT
 });
@@ -965,6 +971,14 @@ const setFilePath = filePath => ({
 const setFinishProcessing = isFinished => ({
   type: FINISH_PROCESSING,
   payload: isFinished
+});
+const setVideoCurrentTime = currentTime => ({
+  type: SET_VIDEO_CURRENT_TIME,
+  payload: currentTime
+});
+const setCurrentRoute = routeNum => ({
+  type: SET_CURRENT_ROUTE,
+  payload: routeNum
 });
 
 /***/ }),
@@ -1028,7 +1042,9 @@ __webpack_require__.r(__webpack_exports__);
 const initialState = {
   count: 0,
   contextId: "",
-  filePath: ""
+  filePath: "",
+  videoCurrentTime: 0,
+  currentRoute: 0
 };
 
 const app = (state = initialState, action) => {
@@ -1046,6 +1062,16 @@ const app = (state = initialState, action) => {
     case _actions__WEBPACK_IMPORTED_MODULE_0__.SET_FILE_PATH:
       return { ...state,
         filePath: action.payload
+      };
+
+    case _actions__WEBPACK_IMPORTED_MODULE_0__.SET_VIDEO_CURRENT_TIME:
+      return { ...state,
+        videoCurrentTime: action.payload
+      };
+
+    case _actions__WEBPACK_IMPORTED_MODULE_0__.SET_CURRENT_ROUTE:
+      return { ...state,
+        currentRoute: action.payload
       };
 
     default:
