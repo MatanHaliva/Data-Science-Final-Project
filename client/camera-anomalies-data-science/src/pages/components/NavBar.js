@@ -1,9 +1,14 @@
 import React, {Fragment, useState} from "react"
 import { Link } from "gatsby"
 import { navigate } from "gatsby"
+import { FaUserAlt, FaSignOutAlt } from 'react-icons/fa';
 
-const NavBar = ({setCurrentRoute, currentRoute}) => {
-    
+const NavBar = ({setCurrentRoute, currentRoute, loggedName}) => {
+
+    const logout = () => {
+        navigate("/logout")
+    }
+
     return (
         <nav class="navbar navbar-dark bg-dark navbar-expand-lg">
         <div class="container-fluid">
@@ -12,10 +17,10 @@ const NavBar = ({setCurrentRoute, currentRoute}) => {
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarScroll">
-            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style={{height: "100px;"}}>
+            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style={{height: "100px"}}>
               <li class="nav-item">
                 <a className={`nav-link ${currentRoute === 0 ? "active" : ""}`} aria-current="page" href="#" onClick={() => {
-                    navigate("/")
+                    navigate("/dashboard")
                     setCurrentRoute(0)
                 }}>Home</a>
               </li>
@@ -53,8 +58,15 @@ const NavBar = ({setCurrentRoute, currentRoute}) => {
               </li>
             </ul>
             <form class="d-flex">
+               <span style={{color: "white"}}>{loggedName}</span>
+                <FaUserAlt style={{color: 'white', width: '45px', height: '45px'}}></FaUserAlt>
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
               <button class="btn btn-outline-success" type="submit">Search</button>
+              <a href="#" onClick={() => {
+                   logout()
+               }}>
+                <FaSignOutAlt style={{color: 'white', width: '45px', height: '45px'}}></FaSignOutAlt>
+               </a>
             </form>
           </div>
         </div>

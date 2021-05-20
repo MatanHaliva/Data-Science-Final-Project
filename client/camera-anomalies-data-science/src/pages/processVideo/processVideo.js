@@ -5,7 +5,7 @@ import Progress from "../components/Progress"
 import Modal from "../components/Modal"
 import { Link } from "gatsby"
 import { navigate } from "gatsby"
-
+import { useSelector } from 'react-redux'
 import { sleep } from "../../../../../server-files/helper";
 import Layout from "../components/Layout";
 import Card from "../components/Card";
@@ -21,10 +21,11 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
     const [processingProgress, setProcessingProgress] = useState(0)
     const [intervalCheckStatus, setIntevalCheckStatus] = useState()
     const [cardData, setCarData] = useState([])
+    const userToken = useSelector(state => state.login.loggedToken)
 
 
     useEffect(() => {
-        setCarData([{header: `Processing video page with details`, content: `contextId ${contextId}`}, { header: `File Path`, content: `${filePath}`}])
+        setCarData([{header: `Processing video page with details`, content: `${contextId ? contextId : "N/A"}`}, { header: `File Path`, content: `${filePath ? filePath : "N/A"}`}])
     }, [contextId, filePath])
 
     const initWebSocketConn = async ({contextId}) => {
@@ -49,7 +50,8 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
             console.log("start processing")
             const res = await axios.post(`${startProcessingVideoUrl}/${endpointStartProcessing}`, { contextId, filePath },  {
                 headers: {
-                   "Content-Type": "application/json"
+                   "Content-Type": "application/json",
+                   "Authorization": userToken
                 }
             })
             const socket = await initWebSocketConn({contextId})
@@ -100,7 +102,7 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
 
                     {processingProgress === 100 ?
                         <Fragment>
-                            <Modal modalText={"Are you want to proceed for processing?"} modalTitle={"Upload Passed Successfully"} 
+                            <Modal modalText={"Are you want to proceed for analysing?"} modalTitle={"Finished Processing Successfully"} 
                             onSave={(e) => {
                                 navigate("/analyseVideo")
                                 setCurrentRoute(3)

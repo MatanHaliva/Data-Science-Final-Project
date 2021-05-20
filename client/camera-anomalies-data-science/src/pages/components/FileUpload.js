@@ -10,7 +10,7 @@ function sleep(ms) {
 }
 
 const FileUpload = ({ contextId, count, increment, setContextId, setFilePath, setCurrentRoute}) => {
-    const [file, setFile] = useState('')
+    const [file, setFile] = useState()
     const [filename, setFilename] = useState('Choose File')
     const [uploadedFile, setUploadedFile] = useState({isPassed: false})
     const [errorUploadingFile, setErrorUploadingFile] = useState({})
@@ -72,7 +72,7 @@ const FileUpload = ({ contextId, count, increment, setContextId, setFilePath, se
 
                 {loading ? <div>Loading ...</div> : <div></div>}
 
-                <input type="submit" value="Upload" className="btn btn-primary btn-block mt-4" />
+                <input disabled={!file} type="submit" value="Upload" className="btn btn-primary btn-block mt-4" />
 
                 {uploadedFile.isPassed ? 
                     <Fragment>

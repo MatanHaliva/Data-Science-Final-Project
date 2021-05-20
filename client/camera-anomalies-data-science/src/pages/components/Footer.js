@@ -4,9 +4,9 @@ import NavBar from "./NavBar"
 
 const Footer = () => {
     return (
-        <footer className="footer mt-auto py-3 bg-light">
+        <footer className="footer mt-auto py-3">
             <div className="container">
-                <p>Copyright 204</p>
+                <p style={{color: "white;"}}>Copyright 204 Team</p>
             </div>
         </footer>
     )

@@ -944,12 +944,21 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "FINISH_PROCESSING": () => (/* binding */ FINISH_PROCESSING),
 /* harmony export */   "SET_VIDEO_CURRENT_TIME": () => (/* binding */ SET_VIDEO_CURRENT_TIME),
 /* harmony export */   "SET_CURRENT_ROUTE": () => (/* binding */ SET_CURRENT_ROUTE),
+<<<<<<< Updated upstream
+=======
+/* harmony export */   "SET_LOGIN": () => (/* binding */ SET_LOGIN),
+>>>>>>> Stashed changes
 /* harmony export */   "increment": () => (/* binding */ increment),
 /* harmony export */   "setContextId": () => (/* binding */ setContextId),
 /* harmony export */   "setFilePath": () => (/* binding */ setFilePath),
 /* harmony export */   "setFinishProcessing": () => (/* binding */ setFinishProcessing),
 /* harmony export */   "setVideoCurrentTime": () => (/* binding */ setVideoCurrentTime),
+<<<<<<< Updated upstream
 /* harmony export */   "setCurrentRoute": () => (/* binding */ setCurrentRoute)
+=======
+/* harmony export */   "setCurrentRoute": () => (/* binding */ setCurrentRoute),
+/* harmony export */   "setLogin": () => (/* binding */ setLogin)
+>>>>>>> Stashed changes
 /* harmony export */ });
 const INCREMENT = 'INCREMENT';
 const SET_CONTEXT_ID = 'SET_CONTEXT_ID';
@@ -957,6 +966,10 @@ const SET_FILE_PATH = 'SET_FILE_PATH';
 const FINISH_PROCESSING = 'FINISH_PROCESSING';
 const SET_VIDEO_CURRENT_TIME = 'SET_VIDEO_CURRENT_TIME';
 const SET_CURRENT_ROUTE = 'SET_CURRENT_ROUTE';
+<<<<<<< Updated upstream
+=======
+const SET_LOGIN = 'SET_LOGIN';
+>>>>>>> Stashed changes
 const increment = () => ({
   type: INCREMENT
 });
@@ -980,6 +993,13 @@ const setCurrentRoute = routeNum => ({
   type: SET_CURRENT_ROUTE,
   payload: routeNum
 });
+<<<<<<< Updated upstream
+=======
+const setLogin = payload => ({
+  type: SET_LOGIN,
+  payload: payload
+});
+>>>>>>> Stashed changes
 
 /***/ }),
 
@@ -994,12 +1014,15 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
+/* harmony import */ var redux__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! redux */ "./node_modules/redux/es/redux.js");
 /* harmony import */ var _reducers__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./reducers */ "./src/redux/reducers.js");
+/* harmony import */ var _login_reducer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./login.reducer */ "./src/redux/login.reducer.js");
 
 
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,redux__WEBPACK_IMPORTED_MODULE_1__.combineReducers)({
-  app: _reducers__WEBPACK_IMPORTED_MODULE_0__.default
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,redux__WEBPACK_IMPORTED_MODULE_2__.combineReducers)({
+  app: _reducers__WEBPACK_IMPORTED_MODULE_0__.default,
+  login: _login_reducer__WEBPACK_IMPORTED_MODULE_1__.default
 }));
 
 /***/ }),
@@ -1023,6 +1046,48 @@ __webpack_require__.r(__webpack_exports__);
 const createStore = () => (0,redux__WEBPACK_IMPORTED_MODULE_1__.createStore)(_combineReducers__WEBPACK_IMPORTED_MODULE_0__.default);
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createStore);
+
+/***/ }),
+
+/***/ "./src/redux/login.reducer.js":
+/*!************************************!*\
+  !*** ./src/redux/login.reducer.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var _actions__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./actions */ "./src/redux/actions.js");
+
+const initialState = {
+  isLogged: false,
+  loggedToken: '',
+  loggedName: '',
+  loggedEmail: ''
+};
+
+const login = (state = initialState, action) => {
+  switch (action.type) {
+    case _actions__WEBPACK_IMPORTED_MODULE_0__.SET_LOGIN:
+      const loginInfo = {
+        isLogged: action.payload.isLogged,
+        loggedToken: action.payload.token,
+        loggedName: `${action.payload.firstname} ${action.payload.lastname}`,
+        loggedEmail: action.payload.email
+      };
+      localStorage.setItem("loginInfo", JSON.stringify(action.payload));
+      return { ...state,
+        ...loginInfo
+      };
+  }
+
+  return state;
+};
+
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (login);
 
 /***/ }),
 

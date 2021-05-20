@@ -5,6 +5,8 @@ import NavBar from "./NavBar"
 const mapStateToProps = (state) => {
     return { 
         currentRoute: state.app.currentRoute, 
+        loggedName: state.login.loggedName,
+        isLogged: state.login.isLogged
     }
 }
   

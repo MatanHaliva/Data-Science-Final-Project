@@ -128,6 +128,8 @@ const links = [
 
 // markup
 const IndexPage = () => {
+  let procced = []
+
   return (
    <Layout>
      <div><h1>Welcome to ISC - Intellegent Security Cam applications</h1></div>

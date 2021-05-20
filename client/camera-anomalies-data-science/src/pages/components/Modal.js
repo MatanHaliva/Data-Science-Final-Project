@@ -16,7 +16,7 @@ const Modal = ({modalTitle, modalText, onClose, onSave}) => {
                     <p>{modalText}</p>
                 </div>
                 <div className="modal-footer">
-                    <button type="button" className="btn btn-primary" onClick={(e) => onSave(e)}>Save changes</button>
+                    <button type="button" className="btn btn-primary" onClick={(e) => onSave(e)}>Ok</button>
                     <button type="button" className="btn btn-secondary" data-dismiss="modal" onClick={(e) => onClose(e)}>Close</button>
                 </div>
                 </div>

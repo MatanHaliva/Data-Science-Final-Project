@@ -1,19 +1,23 @@
 import React, {Fragment, useState, useEffect  } from "react"
 
 
-const Video = ({videoUrl, setVideoCurrentTime}) => {
-    const [a, setA] = useState(5)
+const Video = ({videoUrl, setVideoCurrentTime, videoHeight, videoWidth}) => {
+    const defaultHeight = '100%'
+    const defaultWidth = '100%'
 
     useEffect(() => {
-        const elem = document.querySelector("video");
-        elem.addEventListener("timeupdate", () => {
-            setVideoCurrentTime(elem.currentTime)
-        })
-    }, [a])
+        if (typeof setVideoCurrentTime === 'function') {
+            const elem = document.querySelector("video");
+
+            elem.addEventListener("timeupdate", () => {
+                setVideoCurrentTime(elem.currentTime)
+            })
+        }
+    }, [])
 
     return (
         <Fragment>
-            <video width="1000px" height="500px" controls>
+            <video height={videoHeight ? videoHeight : defaultHeight} width={videoWidth ? videoWidth : defaultWidth} controls>
                 <source src={videoUrl} type="video/mp4" />
             </video>
         </Fragment>

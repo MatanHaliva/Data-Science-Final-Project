@@ -3,8 +3,11 @@ const fileUpload = require('express-fileupload')
 const { v4: uuidv4 } = require('uuid');
 const winston = require('winston');
 const { sleep } = require('./helper')
-const bodyParser = require('body-parser')
+const bodyParser = require('body-parser');
+const { getUser, loginRoute, registerRoute } = require('./user.routes');
+const { saveProcesses, getProcessesByUserId, saveProcessesList } = require('./process.module');
 
+const decodeJwt = require("./jwt")
 
 const sockets = {}
 
@@ -71,18 +74,32 @@ app.post('/upload', async (req, res) => {
     })
 })
 
+app.get('/upload', async (req, res) => {
+    const contextIds = req.query.contextIds
+    res.setHeader('Access-Control-Allow-Origin', '*')
+
+    const uploads = await Promise.all(contextIds.map(contextId => getFileByContextId(contextId)))
+
+    res.json({msg: "ok", uploads: uploads.flat()})
+})
+
 
 app.post('/process', async (req, res) => {
     console.log("processing with contextId: ", req.body.contextId)
+    console.log("auth", req.header("Authorization"))
+    const decodeData = await decodeJwt.decodeJwt(req.header("Authorization"))
+
+    console.log(decodeData)
+    const users = await getUser({ email: decodeData.email })
+    const userId = users[0]._id
 
     res.setHeader('Access-Control-Allow-Origin', '*')
 
-    const context = await getFileByContextId(req.body.contextId)
-    logger.log({level: "info", context})
+    const process = await saveProcesses(req.body.contextId, userId, 0)
+    logger.log({level: "info", process})
 
 
-
-    res.json({ msg: "ok", context: context[0], content: "start processing the video" })
+    res.json({ msg: "ok", process, content: "start processing the video" })
 })
 
 
@@ -100,8 +117,7 @@ app.post('/finishProcess', async (req, res) => {
 // added cors
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "X-Requested-With");
-    res.header("Access-Control-Allow-Headers", "Content-Type");
+    res.header("Access-Control-Allow-Headers", "*");
     res.header("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
     next();
 });
@@ -167,7 +183,7 @@ const insertContextsDocuments = (db, callback) => ({contextId, filePath}) => {
     })
   }
 
-const getFileByContextId = async (contextId) => {
+const getFileByContextId = async (contextId, userId) => {
     const MongoClient = require('mongodb').MongoClient;
 
     // Connection URL
@@ -188,19 +204,18 @@ const getFileByContextId = async (contextId) => {
                 client.close()
                 resolve(result)
             }
-            )({ contextId })
+            )({ contextId, userId })
         })
     })
    
 }
 
-const findDocuments = (db, callback) => ({contextId}) => {
+const findDocuments = (db, callback) => ({contextId, userId}) => {
     // Get the documents collection
     const collection = db.collection('contexts')
     // Find some documents
     console.log(contextId)
-    var query = { contextId: contextId }
-
+    var query = contextId && contextId.length > 0 ? { contextId: contextId, userId: userId } : { userId: userId }
 
     collection.find(query).toArray(function(err, docs) {
       console.log('Found the following records')
@@ -208,3 +223,44 @@ const findDocuments = (db, callback) => ({contextId}) => {
       callback(docs)
     })
 }
+
+
+app.post("/login", loginRoute)
+app.post("/register", registerRoute)
+
+
+
+
+
+app.get('/process', async (req, res) => {
+    console.log("processing with contextId: ", req.body.contextId)
+    console.log("auth", req.header("Authorization"))
+    const decodeData = await decodeJwt.decodeJwt(req.header("Authorization"))
+
+    console.log(decodeData)
+    const users = await getUser({ email: decodeData.email })
+    const userId = users[0]._id
+
+    res.setHeader('Access-Control-Allow-Origin', '*')
+
+    const processes = await getProcessesByUserId(req.body.contextId, userId)
+
+    res.json({ msg: "ok", processes, content: "start processing the video" })
+})
+
+
+setInterval(async () => {
+    const proccessStatusLessThan100 = await getProcessesByUserId()  
+    const processes = proccessStatusLessThan100.filter(process => process.status < 100)
+    if(processes.length > 0) {
+        const randomNumberFromProcesses = Math.floor(Math.random() * (processes.length - 1))
+        processes[randomNumberFromProcesses] = {
+            ...processes[randomNumberFromProcesses],
+             status: processes[randomNumberFromProcesses].status + 1
+        }
+        await saveProcessesList(processes)
+    } else {
+        saveProcessesList(proccessStatusLessThan100.map(process => ({...process, status: 0})))
+    }
+
+}, 500)
