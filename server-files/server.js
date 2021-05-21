@@ -68,7 +68,19 @@ app.post('/upload', async (req, res) => {
         const contextId = uuidv4()
         console.log('uploaded successfuly to', path)
 
-        await saveContextAndFile(contextId, path)
+        let userId
+
+        try {
+            const decodeData = await decodeJwt.decodeJwt(req.header("Authorization"))
+            const users = await getUser({ email: decodeData.email })
+            userId = users[0]._id
+    
+        } catch (err) {
+            res.status(400).json({msg: "failed not authorization"})
+        }
+    
+
+        await saveContextAndFile(contextId, path, userId)
 
         res.json({ fileName: file.name, filePath: path , contextId})
     })
@@ -78,7 +90,25 @@ app.get('/upload', async (req, res) => {
     const contextIds = req.query.contextIds
     res.setHeader('Access-Control-Allow-Origin', '*')
 
-    const uploads = await Promise.all(contextIds.map(contextId => getFileByContextId(contextId)))
+    let uploads = []
+    // if (contextIds && contextIds.length > 0) {
+    //     uploads = await Promise.all(contextIds.map(contextId => getFileByContextId(contextId)))
+    // } else {
+    //     uploads = await getFileByContextId(contextIds)
+    // }
+
+    let userId
+        
+    try {
+        const decodeData = await decodeJwt.decodeJwt(req.header("Authorization"))
+        const users = await getUser({ email: decodeData.email })
+        userId = users[0]._id
+
+    } catch (err) {
+        res.status(400).json({msg: "failed not authorization"})
+    }
+
+    uploads = await getFileByContextId(contextIds, userId)
 
     res.json({msg: "ok", uploads: uploads.flat()})
 })
@@ -87,11 +117,17 @@ app.get('/upload', async (req, res) => {
 app.post('/process', async (req, res) => {
     console.log("processing with contextId: ", req.body.contextId)
     console.log("auth", req.header("Authorization"))
-    const decodeData = await decodeJwt.decodeJwt(req.header("Authorization"))
 
-    console.log(decodeData)
-    const users = await getUser({ email: decodeData.email })
-    const userId = users[0]._id
+    let userId
+
+    try {
+        const decodeData = await decodeJwt.decodeJwt(req.header("Authorization"))
+        const users = await getUser({ email: decodeData.email })
+        userId = users[0]._id
+
+    } catch (err) {
+        res.status(400).json({msg: "failed not authorization"})
+    }
 
     res.setHeader('Access-Control-Allow-Origin', '*')
 
@@ -147,7 +183,7 @@ io.on('connection', (socket) => {
 server.listen(5000, () => console.log('server started'))
 
 
-function saveContextAndFile(contextId, filePath) {
+function saveContextAndFile(contextId, filePath, userId) {
     const MongoClient = require('mongodb').MongoClient;
 
     // Connection URL
@@ -162,11 +198,11 @@ function saveContextAndFile(contextId, filePath) {
 
         const db = client.db(dbName);
 
-        insertContextsDocuments(db, (result) => client.close())({contextId, filePath})
+        insertContextsDocuments(db, (result) => client.close())({contextId, filePath, userId})
     })
 }
 
-const insertContextsDocuments = (db, callback) => ({contextId, filePath}) => {
+const insertContextsDocuments = (db, callback) => ({contextId, filePath, userId}) => {
     // Get the documents collection
     const collection = db.collection('contexts');
     logger.log({
@@ -174,7 +210,7 @@ const insertContextsDocuments = (db, callback) => ({contextId, filePath}) => {
         message: 'inserting into contexts'
     })
     // Insert some documents
-    collection.insertMany([{contextId, filePath}], function(err, result) {
+    collection.insertMany([{contextId, filePath, userId}], function(err, result) {
         logger.log({
             level: 'info',
             message: 'Inserted 1 documents into the collection'
@@ -216,7 +252,7 @@ const findDocuments = (db, callback) => ({contextId, userId}) => {
     // Find some documents
     console.log(contextId)
     var query = contextId && contextId.length > 0 ? { contextId: contextId, userId: userId } : { userId: userId }
-
+    console.log("queryyyyy", query)
     collection.find(query).toArray(function(err, docs) {
       console.log('Found the following records')
       console.log(docs)
@@ -253,7 +289,7 @@ setInterval(async () => {
     const proccessStatusLessThan100 = await getProcessesByUserId()  
     const processes = proccessStatusLessThan100.filter(process => process.status < 100)
     if(processes.length > 0) {
-        const randomNumberFromProcesses = Math.floor(Math.random() * (processes.length - 1))
+        const randomNumberFromProcesses = Math.floor(Math.random() * (processes.length))
         processes[randomNumberFromProcesses] = {
             ...processes[randomNumberFromProcesses],
              status: processes[randomNumberFromProcesses].status + 1

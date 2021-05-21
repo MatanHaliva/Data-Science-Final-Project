@@ -4,6 +4,7 @@ import "popper.js/dist/popper.min";
 import "bootstrap/dist/js/bootstrap.min.js";
 import "./src/styles/global.css"
 import "./src/styles/loading.card.css"
+import "./src/styles/dashbaord.css"
 
 
 import wrapWithProvider from "./wrap-with-provider"

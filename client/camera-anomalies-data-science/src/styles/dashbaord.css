@@ -1,0 +1,9 @@
+.container-dashboard {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.modal-relative {
+    position: fixed;
+    bottom: 0;
+}

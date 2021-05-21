@@ -116,3 +116,9 @@ color: white;
 .links a{
 margin-left: 4px;
 }
+
+
+.card-picked {
+    border-color: #3b3b82;
+    border-width: 5px;
+}

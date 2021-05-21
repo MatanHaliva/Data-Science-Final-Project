@@ -944,21 +944,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "FINISH_PROCESSING": () => (/* binding */ FINISH_PROCESSING),
 /* harmony export */   "SET_VIDEO_CURRENT_TIME": () => (/* binding */ SET_VIDEO_CURRENT_TIME),
 /* harmony export */   "SET_CURRENT_ROUTE": () => (/* binding */ SET_CURRENT_ROUTE),
-<<<<<<< Updated upstream
-=======
 /* harmony export */   "SET_LOGIN": () => (/* binding */ SET_LOGIN),
->>>>>>> Stashed changes
 /* harmony export */   "increment": () => (/* binding */ increment),
 /* harmony export */   "setContextId": () => (/* binding */ setContextId),
 /* harmony export */   "setFilePath": () => (/* binding */ setFilePath),
 /* harmony export */   "setFinishProcessing": () => (/* binding */ setFinishProcessing),
 /* harmony export */   "setVideoCurrentTime": () => (/* binding */ setVideoCurrentTime),
-<<<<<<< Updated upstream
-/* harmony export */   "setCurrentRoute": () => (/* binding */ setCurrentRoute)
-=======
 /* harmony export */   "setCurrentRoute": () => (/* binding */ setCurrentRoute),
 /* harmony export */   "setLogin": () => (/* binding */ setLogin)
->>>>>>> Stashed changes
 /* harmony export */ });
 const INCREMENT = 'INCREMENT';
 const SET_CONTEXT_ID = 'SET_CONTEXT_ID';
@@ -966,10 +959,7 @@ const SET_FILE_PATH = 'SET_FILE_PATH';
 const FINISH_PROCESSING = 'FINISH_PROCESSING';
 const SET_VIDEO_CURRENT_TIME = 'SET_VIDEO_CURRENT_TIME';
 const SET_CURRENT_ROUTE = 'SET_CURRENT_ROUTE';
-<<<<<<< Updated upstream
-=======
 const SET_LOGIN = 'SET_LOGIN';
->>>>>>> Stashed changes
 const increment = () => ({
   type: INCREMENT
 });
@@ -993,13 +983,10 @@ const setCurrentRoute = routeNum => ({
   type: SET_CURRENT_ROUTE,
   payload: routeNum
 });
-<<<<<<< Updated upstream
-=======
 const setLogin = payload => ({
   type: SET_LOGIN,
   payload: payload
 });
->>>>>>> Stashed changes
 
 /***/ }),
 

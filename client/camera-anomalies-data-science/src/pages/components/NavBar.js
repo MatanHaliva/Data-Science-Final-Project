@@ -20,7 +20,7 @@ const NavBar = ({setCurrentRoute, currentRoute, loggedName}) => {
             <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style={{height: "100px"}}>
               <li class="nav-item">
                 <a className={`nav-link ${currentRoute === 0 ? "active" : ""}`} aria-current="page" href="#" onClick={() => {
-                    navigate("/dashboard")
+                    navigate("/")
                     setCurrentRoute(0)
                 }}>Home</a>
               </li>
@@ -31,10 +31,22 @@ const NavBar = ({setCurrentRoute, currentRoute, loggedName}) => {
                 }}>Upload Video</a>
               </li>
               <li class="nav-item">
+                <a id="uploadVideo" className={`nav-link ${currentRoute === 4 ? "active" : ""}`} href="#" onClick={() => {
+                    navigate("/myVideos")
+                    setCurrentRoute(4)
+                }}>My Uploaded Videos</a>
+              </li>
+              <li class="nav-item">
                 <a id="processVideo" className={`nav-link ${currentRoute === 2 ? "active" : ""}`} href="#" onClick={() => {
                     navigate("/processVideo")
                     setCurrentRoute(2)
                 }}>Process Video</a>
+              </li>
+              <li class="nav-item">
+                <a className={`nav-link ${currentRoute === 5 ? "active" : ""}`} aria-current="page" href="#" onClick={() => {
+                    navigate("/dashboard")
+                    setCurrentRoute(5)
+                }}>My Processing Videos</a>
               </li>
               <li class="nav-item">
                 <a id="analyseVideo" className={`nav-link ${currentRoute === 3 ? "active" : ""}`} href="#" onClick={() => {

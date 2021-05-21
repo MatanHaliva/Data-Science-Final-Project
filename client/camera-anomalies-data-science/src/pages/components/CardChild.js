@@ -1,10 +1,12 @@
 import React from "react"
 import { Fragment } from "react";
 import { FaVideo } from 'react-icons/fa';
-import {CardLoading} from "../components/CardLoading"
 
-const CardChild = ({loading, children, cardHeader, cardDescription, width, height}) => {
+const CardChild = ({loading, children, cardHeader, cardDescription, width, height, picked}) => {
+    const className = picked ? "card card-picked" : "card"  
+
     const loadingPage = () => {
+        console.log("picked loading page..")
         return (
             <Fragment>
                 <div style={{width: width, height: height}} >
@@ -32,8 +34,10 @@ const CardChild = ({loading, children, cardHeader, cardDescription, width, heigh
     }
 
     const notLoadingPage = () => {
+        console.log("picked not loading page..")
+
         return (
-            <div class="card" style={{width: width, height: height}}>
+            <div className={className} style={{width: width, height: height}}>
                 <div class="card-body">
                     <h1 class="card-title">{cardHeader} <FaVideo/></h1> 
                     <p class="card-text">{cardDescription}</p>

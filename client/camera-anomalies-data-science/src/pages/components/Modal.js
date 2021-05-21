@@ -3,7 +3,7 @@ import React, {Fragment, useState} from "react"
 const Modal = ({modalTitle, modalText, onClose, onSave}) => {
     
     return (
-        <div style={{display: 'block'}} className="modal" role="dialog">
+        <div style={{display: 'block'}} className="modal-relative" role="dialog">
             <div className="modal-dialog" role="document">
                 <div className="modal-content">
                 <div className="modal-header">

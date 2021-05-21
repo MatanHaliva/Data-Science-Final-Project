@@ -7,11 +7,10 @@ import Layout from "../components/Layout";
 const UploadVideo = ({count}) => {
     return (
         <Layout>
-            <div className="container position-absolute top-50 start-50 translate-middle">
-                <h4 className="display-4 text-center mb-4">
-                    <i className="fab fa-react">Upload For Processing</i>
-                </h4>
-
+            <h4 className="display-4 text-center mb-4">
+                <i className="fab fa-react">Upload For Processing</i>
+            </h4>
+            <div className="position-absolute top-50 start-50 translate-middle">
                 <ConnectedFileUpload />
             </div>
         </Layout>

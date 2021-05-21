@@ -4,6 +4,7 @@ import axios from 'axios'
 import Modal from "./Modal"
 import { Link } from "gatsby"
 import { navigate } from "gatsby"
+import { useSelector } from "react-redux"
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -16,6 +17,9 @@ const FileUpload = ({ contextId, count, increment, setContextId, setFilePath, se
     const [errorUploadingFile, setErrorUploadingFile] = useState({})
     const [loading, setLoading] = useState(false)
     const [uploadPercentage, setUploadPercentage] = useState(0)
+    let userToken = useSelector(state => {
+        return state.login.loggedToken
+    })
 
     const onChange = e => {
         setFile(e.target.files[0])
@@ -32,7 +36,8 @@ const FileUpload = ({ contextId, count, increment, setContextId, setFilePath, se
             console.log("start uploading")
             const res = await axios.post('http://127.0.0.1:5000/upload', formData, {
                 headers: {
-                    "Content-Type": "multipart/form-data"
+                    "Content-Type": "multipart/form-data",
+                    "Authorization": userToken
                 },
                 onDownloadProgress: (progressEvent) => {
                     const { loaded, total } = progressEvent;

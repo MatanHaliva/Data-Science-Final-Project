@@ -87,37 +87,59 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
         setIntevalCheckStatus(intervalId)
     }
 
+    useEffect(async () => {
+        if(!contextId) {
+            await sleep(3500)
+            setCurrentRoute(4)
+            navigate("/myVideos")
+        }
+    }, [contextId])
+
     return (
         <Layout>
+        {
+            contextId ? 
             <div class="">
-            <div class="position-absolute top-50 start-50 translate-middle">
-                <div className="container">
-                    <Card rows={cardData} cardHeader={"Upload Video Information"} cardDescription={"Description about the uploaded Video need to process the video and then analyse it."} />
-                    <button type="submit" value="Start Processing" className="btn btn-primary btn-block mt-4" onClick={() => startProcessing()} > Start Processing </button>
-                    {isStartProcessing ? 
-                    (<div>
-                        Processing the uploaded video estimated time:
-                        <Progress percents={processingProgress}/>
-                    </div>) : <div/>}
+                <div class="position-absolute top-50 start-50 translate-middle">
+                    <div className="container">
+                        <Card rows={cardData} cardHeader={"Upload Video Information"} cardDescription={"Description about the uploaded Video need to process the video and then analyse it."} />
+                        <button type="submit" value="Start Processing" className="btn btn-primary btn-block mt-4" onClick={() => startProcessing()} > Start Processing </button>
+                        {isStartProcessing ? 
+                        (<div>
+                            Processing the uploaded video estimated time:
+                            <Progress percents={processingProgress}/>
+                        </div>) : <div/>}
 
-                    {processingProgress === 100 ?
-                        <Fragment>
-                            <Modal modalText={"Are you want to proceed for analysing?"} modalTitle={"Finished Processing Successfully"} 
-                            onSave={(e) => {
-                                navigate("/analyseVideo")
-                                setCurrentRoute(3)
-                            }}
-                            onClose={(e) => {
-                                setProcessingProgress(0)
-                                setIsStartProcessing(false)
-                            }}/>
-                        </Fragment> 
-                        :
-                        <div/>
-                    }
+                        {processingProgress === 100 ?
+                            <Fragment>
+                                <Modal modalText={"Are you want to proceed for analysing?"} modalTitle={"Finished Processing Successfully"} 
+                                onSave={(e) => {
+                                    navigate("/analyseVideo")
+                                    setCurrentRoute(3)
+                                }}
+                                onClose={(e) => {
+                                    setProcessingProgress(0)
+                                    setIsStartProcessing(false)
+                                }}/>
+                            </Fragment> 
+                            :
+                            <div/>
+                        }
+                    </div>
                 </div>
             </div>
-            </div>
+        :
+        <Fragment>
+              <div className="position-absolute top-50 start-50 translate-middle">
+                    <h4 className="display-7 text-center mb-4">
+                        <i className="fab fa-react">You have not picked any uploaded video to process</i>
+                    </h4>
+                    <h4 className="display-7 text-center mb-4">
+                        <i className="fab fa-react">Redirected you to pick a video...</i>
+                    </h4>
+                </div>
+        </Fragment>
+        }
         </Layout>
     )
 
