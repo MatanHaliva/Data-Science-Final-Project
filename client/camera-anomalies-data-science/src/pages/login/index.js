@@ -27,7 +27,7 @@ const Login = () => {
             const res = await axios.post(loginUrl, {email: event.target.email.value, password: event.target.password.value})
             await dispatch(setLogin({ isLogged: true, token: res.data.token, firstname: res.data.firstname, lastname: res.data.lastname }))
             setLoading(false)
-            navigate("/dashboard")
+            navigate("/")
             dispatch(setCurrentRoute(0))
         } catch (err) {
             console.log(err)

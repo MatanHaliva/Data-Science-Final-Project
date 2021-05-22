@@ -61,30 +61,30 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
 
         }
 
-        const intervalId = setInterval(async () => {
-            try {
-                const res = await axios.post(`${startProcessingVideoUrl}/${endpointCheckStatus}`, { contextId, filePath },  {
-                    headers: {
-                       "Content-Type": "application/json"
-                    }
-                })
-                const { processingPercents } = res.data
+        // const intervalId = setInterval(async () => {
+        //     try {
+        //         const res = await axios.post(`${startProcessingVideoUrl}/${endpointCheckStatus}`, { contextId, filePath },  {
+        //             headers: {
+        //                "Content-Type": "application/json"
+        //             }
+        //         })
+        //         const { processingPercents } = res.data
     
-                setProcessingProgress(processingPercents)
+        //         setProcessingProgress(processingPercents)
     
-                if (processingPercents === 1) {
-                    clearInterval(intervalCheckStatus)
-                    await sleep(500)
+        //         if (processingPercents === 1) {
+        //             clearInterval(intervalCheckStatus)
+        //             await sleep(500)
 
                     
-                }
-            } catch (err) {
-                clearInterval(intervalCheckStatus)
-            }
+        //         }
+        //     } catch (err) {
+        //         clearInterval(intervalCheckStatus)
+        //     }
        
-        }, 500)
+        // }, 500)
 
-        setIntevalCheckStatus(intervalId)
+        // setIntevalCheckStatus(intervalId)
     }
 
     useEffect(async () => {
