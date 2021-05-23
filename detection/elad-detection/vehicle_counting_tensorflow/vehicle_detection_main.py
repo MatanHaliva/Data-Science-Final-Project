@@ -47,6 +47,21 @@ from utils import label_map_util
 from utils import visualization_utils as vis_util
 
 
+#mongodb
+from pymongo import MongoClient
+
+
+def create_mongo_connection(collection_name):
+    mongodb_url = 'mongodb+srv://admin:admin@cluster0.zoiem.mongodb.net/ds-db?retryWritesc=true'
+    db_name = 'ds-db'
+    client = MongoClient(mongodb_url)
+
+    mydb = client[db_name]
+    mycol = mydb[collection_name]
+
+    return mycol
+
+detection_collection = create_mongo_connection('detections')
 
 # initialize .csv
 with open('traffic_measurement.csv', 'w') as f:
@@ -58,6 +73,18 @@ with open('traffic_measurement.csv', 'w') as f:
 # input video
 source_video = 'test1.mp4'
 cap = cv2.VideoCapture(source_video)
+
+# print the length
+fps = cap.get(cv2.CAP_PROP_FPS)      # OpenCV2 version 2 used "CV_CAP_PROP_FPS"
+frame_count = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
+duration = frame_count/fps
+
+print('fps = ' + str(fps))
+print('number of frames = ' + str(frame_count))
+print('duration (S) = ' + str(duration))
+minutes = int(duration/60)
+seconds = duration%60
+print('duration (M:S) = ' + str(minutes) + ':' + str(seconds))
 
 
 # Variables
@@ -113,7 +140,9 @@ def load_model_init():
     
     return model, cars_meta, class_names
 
-def model_detect_car(image_names, model, cars_meta, class_names, frame_number):
+def model_detect_car(car_to_detect, model, cars_meta, class_names, frame_number):
+    image_names = map(lambda x : x['countercars'], car_to_detect)
+
     img_width, img_height = 224, 224
     
 
@@ -125,13 +154,8 @@ def model_detect_car(image_names, model, cars_meta, class_names, frame_number):
     #samples = random.sample(test_images, num_samples)
     results = []
     
-    print("image_names are: ")
-    print(list(image_names))
-    
-    #new_list = list(image_names)
-    #print(len(new_list))
-    
-    for image_name in image_names:
+    for car in car_to_detect:
+        image_name = car["countercars"]
         print(image_name)
         filename = os.path.join(test_path, str(image_name) + '.jpg')
         print('Start processing image: {}'.format(filename))
@@ -144,7 +168,7 @@ def model_detect_car(image_names, model, cars_meta, class_names, frame_number):
             prob = np.max(preds)
             class_id = np.argmax(preds)
             text = ('Predict: {}, prob: {}'.format(class_names[class_id][0][0], prob))
-            results.append({'label': class_names[class_id][0][0], 'prob': '{:.4}'.format(prob), 'picture name': image_name, 'frame_number': frame_number})
+            results.append({'label': class_names[class_id][0][0], 'prob': '{:.4}'.format(prob), 'picture name': image_name, 'frame_number': frame_number, 'detection_car': car["type"]})
             cv.imwrite('images/{}_out.png'.format(image_name), bgr_img)
             print("successfully")
         except Exception as e:
@@ -153,10 +177,13 @@ def model_detect_car(image_names, model, cars_meta, class_names, frame_number):
 
     
     print(results)
+    #detection_collection.insert_many(results)
     print("blaaaa")
+
     with open('results.json', 'a') as file:
         json.dump(results, file, indent=4)
 
+    print("put in results files")
     #K.clear_session()
 
 
@@ -179,6 +206,7 @@ def crop_objects(width, height, image_np, output_dict, i):
     # with objects below 50% will be filled with zeros (black image)
     # This is something I need in my program
     # 2. Only crop the object with the highest score (Object Zero)
+
     if output_dict['detection_scores'][0] < 0.95:
         return image
     
@@ -190,7 +218,7 @@ def crop_objects(width, height, image_np, output_dict, i):
         
     image["status"] = True
     image["crop_img"] = crop_img
-    
+
     return image
 
 
@@ -264,7 +292,6 @@ def object_detection_function(command):
                 
                 for box, score in zip(boxes, scores): 
                     for box_inside, score_inside in zip(box, score): 
-                        #print(counter_cars)
                         counter_cars = counter_cars + 1
                         output_dict["detection_scores"] = []
                         output_dict["detection_scores"].append(score_inside)
@@ -276,27 +303,15 @@ def object_detection_function(command):
                         output_dict["detection_boxes"][0].append(box_inside[2])
                         output_dict["detection_boxes"][0].append(box_inside[3])
                         result_crop = crop_objects(width, height, frame, output_dict, counter_cars)
-                        
-                        
-                        #print(crop_car)
-                        
-                        
+
                         if result_crop["status"] != False:
                             result_crop["countercars"] = counter_cars
-                            car_to_detect.append(result_crop)
+                            result_crop["box"] = box_inside
+                            car_to_detect.append(result_crop) 
 
-                if len(car_to_detect) > 150:
-                    all_counter_cars = map(lambda x : x['countercars'], car_to_detect)
-                    new_list = list(all_counter_cars)
-                    
-                    model, cars_meta, class_names = load_model_init()
-                    model_detect_car(new_list, model, cars_meta, class_names, count_frames)
-                    car_to_detect = []
-                    
-                
-
-                # Visualization of the results of a detection.
-                (counter, csv_line) = \
+ 
+                #Visualization of the results of a detection.
+                (counter, csv_line,  box_to_display_str_map, box_to_color_map) = \
                     vis_util.visualize_boxes_and_labels_on_image_array(
                     cap.get(1),
                     input_frame,
@@ -308,89 +323,25 @@ def object_detection_function(command):
                     line_thickness=4,
                     )
 
-                total_passed_vehicle = total_passed_vehicle + counter
 
-#                 # insert information text to video frame
-#                 font = cv2.FONT_HERSHEY_SIMPLEX
-#                 cv2.putText(
-#                     input_frame,
-#                     'Detected Vehicles: ' + str(total_passed_vehicle),
-#                     (10, 35),
-#                     font,
-#                     0.8,
-#                     (0, 0xFF, 0xFF),
-#                     2,
-#                     cv2.FONT_HERSHEY_SIMPLEX,
-#                     )
+                for type_box in box_to_display_str_map: 
+                    val_type_car = box_to_display_str_map[type_box]
+                    for car in car_to_detect:
+                        if (np.array_equal(car["box"], type_box, equal_nan=False)):
+                            car["type"] = val_type_car
 
-#                 # when the vehicle passed over line and counted, make the color of ROI line green
-#                 if counter == 1:
-#                     cv2.line(input_frame, (0, 200), (640, 200), (0, 0xFF, 0), 5)
-#                 else:
-#                     cv2.line(input_frame, (0, 200), (640, 200), (0, 0, 0xFF), 5)
 
-#                 # insert information text to video frame
-#                 cv2.rectangle(input_frame, (10, 275), (230, 337), (180, 132, 109), -1)
-#                 cv2.putText(
-#                     input_frame,
-#                     'ROI Line',
-#                     (545, 190),
-#                     font,
-#                     0.6,
-#                     (0, 0, 0xFF),
-#                     2,
-#                     cv2.LINE_AA,
-#                     )
-#                 cv2.putText(
-#                     input_frame,
-#                     'LAST PASSED VEHICLE INFO',
-#                     (11, 290),
-#                     font,
-#                     0.5,
-#                     (0xFF, 0xFF, 0xFF),
-#                     1,
-#                     cv2.FONT_HERSHEY_SIMPLEX,
-#                     )
-#                 cv2.putText(
-#                     input_frame,
-#                     '-Movement Direction: ' + direction,
-#                     (14, 302),
-#                     font,
-#                     0.4,
-#                     (0xFF, 0xFF, 0xFF),
-#                     1,
-#                     cv2.FONT_HERSHEY_COMPLEX_SMALL,
-#                     )
-#                 cv2.putText(
-#                     input_frame,
-#                     '-Speed(km/h): ' + str(speed).split(".")[0],
-#                     (14, 312),
-#                     font,
-#                     0.4,
-#                     (0xFF, 0xFF, 0xFF),
-#                     1,
-#                     cv2.FONT_HERSHEY_COMPLEX_SMALL,
-#                     )
-#                 cv2.putText(
-#                     input_frame,
-#                     '-Color: ' + color,
-#                     (14, 322),
-#                     font,
-#                     0.4,
-#                     (0xFF, 0xFF, 0xFF),
-#                     1,
-#                     cv2.FONT_HERSHEY_COMPLEX_SMALL,
-#                     )
-#                 cv2.putText(
-#                     input_frame,
-#                     '-Vehicle Size/Type: ' + size,
-#                     (14, 332),
-#                     font,
-#                     0.4,
-#                     (0xFF, 0xFF, 0xFF),
-#                     1,
-#                     cv2.FONT_HERSHEY_COMPLEX_SMALL,
-#                     )
+
+                if len(car_to_detect) > 100:
+                    new_list = list(car_to_detect)
+                    
+                    print("try to process.....")
+
+                    model, cars_meta, class_names = load_model_init()
+                    model_detect_car(new_list, model, cars_meta, class_names, count_frames)
+                    car_to_detect = []
+
+
 
                 if(command=="imshow"):
                     cv2.imshow('vehicle detection', input_frame)
