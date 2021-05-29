@@ -10,7 +10,7 @@ import { sleep } from "../../../../../server-files/helper"
 
 
 const Dashboard = ({processedVideos}) => {
-    const endpoint = 'http://localhost:5000'
+    const endpoint = 'http://localhost:33345'
     const [timer, setTimer] = useState()
     const [processesVideo, setProcessesVideo] = useState([])
     const [rawProcessesVideo, setRawProcessesVideo] = useState([])

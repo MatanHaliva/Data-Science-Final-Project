@@ -3,7 +3,7 @@ import CardChild  from "./CardChild"
 import Video from "./Video"
 
 const Up = ({uploadedVideos, pickVideo}) => {
-    const endpoint = 'http://localhost:5000'
+    const endpoint = 'http://localhost:33345'
 
     const getVideos = (uploadedVideos) => {
         return uploadedVideos.map(uploadedVideo => {

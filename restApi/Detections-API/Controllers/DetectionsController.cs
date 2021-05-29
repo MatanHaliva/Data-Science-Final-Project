@@ -47,5 +47,11 @@ namespace Detections_API.Controllers
             return Ok(detection);
         }
 
+        [HttpPost("CreateAll")]
+        public ActionResult<List<DetectionsBase>> CreateAll([FromBody] List<DetectionsBase> detections)
+        {
+            _detectionService.CreateAll(detections);
+            return Ok(detections);
+        }
     }
 }

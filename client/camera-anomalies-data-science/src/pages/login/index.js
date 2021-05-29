@@ -20,7 +20,7 @@ const Login = () => {
         console.log(event.target.email.value)      
         console.log(event.target.password.value) 
 
-        const loginUrl = "http://localhost:5000/login"
+        const loginUrl = "http://localhost:33345/login"
 
         try {
             setLoading(true)
@@ -31,7 +31,7 @@ const Login = () => {
             dispatch(setCurrentRoute(0))
         } catch (err) {
             console.log(err)
-            setError(err.response.data.status)
+            setError(err?.response?.data?.status)
             setLoading(false)
         }
     }

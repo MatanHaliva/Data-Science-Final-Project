@@ -12,7 +12,7 @@ import Card from "../components/Card";
 
 const endpointStartProcessing = "process"
 const endpointCheckStatus = "checkStatus"
-const startProcessingVideoUrl = "http://localhost:5000" 
+const startProcessingVideoUrl = "http://localhost:33345" 
 
 
 const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessing, setCurrentRoute}) => {
@@ -28,20 +28,6 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
         setCarData([{header: `Processing video page with details`, content: `${contextId ? contextId : "N/A"}`}, { header: `File Path`, content: `${filePath ? filePath : "N/A"}`}])
     }, [contextId, filePath])
 
-    const initWebSocketConn = async ({contextId}) => {
-        const socket = io("ws://localhost:5000", {transports: ['websocket', 'polling', 'flashsocket']});
-        socket.on("connect", () => {
-            setSocketProccessing(socket)
-            setFinishProcessing(false)
-            socket.send({contextId})
-        });
-
-        socket.on("message", (data) => {
-            if (data.msg === "FINISH_PROCESSING") {
-                setFinishProcessing(true)
-            }
-        });
-    }
 
     const startProcessing = async () => {
         setProcessingProgress(100)
@@ -54,7 +40,6 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
                    "Authorization": userToken
                 }
             })
-            const socket = await initWebSocketConn({contextId})
             setIsStartProcessing(true)
             
         } catch (err) { 

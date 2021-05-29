@@ -6,7 +6,7 @@ import * as style from "./index.module.css"
 import Layout from "../components/Layout"
 
 const AnalyseVideo = ({filePath, setVideoCurrentTime, videoCurrentTime}) => {
-    const videoUrl = `http://localhost:5000${filePath}`
+    const videoUrl = `http://localhost:33345${filePath}`
     const [detections, setDetections] = useState([])
     const [videoTime, setVideoTime] = useState({})
 

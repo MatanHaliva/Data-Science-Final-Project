@@ -486,30 +486,29 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\chenb\\.nuget\\packages\\": {}
+    "/Users/eladisraeli/.nuget/packages/": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\chenb\\source\\repos\\Detections-API\\Detections-API\\Detections-API.csproj",
+      "projectUniqueName": "/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/restApi/Detections-API/Detections-API.csproj",
       "projectName": "Detections-API",
-      "projectPath": "C:\\Users\\chenb\\source\\repos\\Detections-API\\Detections-API\\Detections-API.csproj",
-      "packagesPath": "C:\\Users\\chenb\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\chenb\\source\\repos\\Detections-API\\Detections-API\\obj\\",
+      "projectPath": "/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/restApi/Detections-API/Detections-API.csproj",
+      "packagesPath": "/Users/eladisraeli/.nuget/packages/",
+      "outputPath": "/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/restApi/Detections-API/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\chenb\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "/Users/eladisraeli/.config/NuGet/NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {}
         }
       },
@@ -521,6 +520,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "MongoDB.Driver": {
             "target": "Package",
@@ -549,7 +549,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.203/RuntimeIdentifierGraph.json"
       }
     }
   }

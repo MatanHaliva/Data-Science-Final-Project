@@ -6,6 +6,7 @@ const { sleep } = require('./helper')
 const bodyParser = require('body-parser');
 const { getUser, loginRoute, registerRoute } = require('./user.routes');
 const { saveProcesses, getProcessesByUserId, saveProcessesList } = require('./process.module');
+const axios = require('axios')
 
 const decodeJwt = require("./jwt")
 
@@ -134,6 +135,29 @@ app.post('/process', async (req, res) => {
     const process = await saveProcesses(req.body.contextId, userId, 0)
     logger.log({level: "info", process})
 
+    const filePath = await getFileByContextId(req.body.contextId, userId)
+
+
+    const carDetectionServiceUrl = 'http://localhost:5000/startProcess'
+    const faceDetectionServiceUrl = 'http://localhost:5001/startProces'
+
+    const processDto = {
+        contextId: req.body.contextId,
+        filePath: `http://localhost:33345${filePath[0].filePath}`
+    }
+
+    try {
+        const response = await Promise.all([
+            axios.post(carDetectionServiceUrl, processDto, {headers: {'Content-Type': 'application/json'}}),
+            // axios.post(faceDetectionServiceUrl, processDto)
+        ])
+    } catch(err) {
+        console.log(err)
+        res.status(400).json({status: "failed start processing", err: err})
+    }
+
+    console.log("hereeeeeeeasdasdasda")
+    
 
     res.json({ msg: "ok", process, content: "start processing the video" })
 })
@@ -180,7 +204,7 @@ io.on('connection', (socket) => {
         }
       });
 })
-server.listen(5000, () => console.log('server started'))
+server.listen(33345, () => console.log('server started'))
 
 
 function saveContextAndFile(contextId, filePath, userId) {
@@ -266,7 +290,12 @@ app.post("/register", registerRoute)
 
 
 
+const calculateAvgFromStatuses = (statuses) => {
+    const valuedStatuses = statuses.filter(status => status.status === 'fulfilled').map(status => status.value)
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
+    return valuedStatuses.reducer(reducer) / statuses.length
+}
 
 app.get('/process', async (req, res) => {
     console.log("processing with contextId: ", req.body.contextId)
@@ -280,23 +309,31 @@ app.get('/process', async (req, res) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
 
     const processes = await getProcessesByUserId(req.body.contextId, userId)
+    
+    const carDetectionServiceUrl = 'http://localhost:5000/checkStatus'
+    const faceDetectionServiceUrl = 'http://localhost:5001/checkStatus'
+    
+    const statuses = await Promise.allSettled([
+        axios.get(`${carDetectionServiceUrl}/${contextId}`),
+        // axios.get(`${faceDetectionServiceUrl}/${contextId}`)
+    ])
 
-    res.json({ msg: "ok", processes, content: "start processing the video" })
+    res.json({ msg: "ok", processes: {...processes, status: calculateAvgFromStatuses(statuses) } , content: "start processing the video" })
 })
 
 
-setInterval(async () => {
-    const proccessStatusLessThan100 = await getProcessesByUserId()  
-    const processes = proccessStatusLessThan100.filter(process => process.status < 100)
-    if(processes.length > 0) {
-        const randomNumberFromProcesses = Math.floor(Math.random() * (processes.length))
-        processes[randomNumberFromProcesses] = {
-            ...processes[randomNumberFromProcesses],
-             status: processes[randomNumberFromProcesses].status + 1
-        }
-        await saveProcessesList(processes)
-    } else {
-        saveProcessesList(proccessStatusLessThan100.map(process => ({...process, status: 0})))
-    }
+// setInterval(async () => {
+//     const proccessStatusLessThan100 = await getProcessesByUserId()  
+//     const processes = proccessStatusLessThan100.filter(process => process.status < 100)
+//     if(processes.length > 0) {
+//         const randomNumberFromProcesses = Math.floor(Math.random() * (processes.length))
+//         processes[randomNumberFromProcesses] = {
+//             ...processes[randomNumberFromProcesses],
+//              status: processes[randomNumberFromProcesses].status + 1
+//         }
+//         await saveProcessesList(processes)
+//     } else {
+//         saveProcessesList(proccessStatusLessThan100.map(process => ({...process, status: 0})))
+//     }
 
-}, 500)
+// }, 500)

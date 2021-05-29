@@ -40,6 +40,22 @@ namespace Detections_API.Services
            
            
         }
+
+        public List<DetectionsBase> CreateAll(List<DetectionsBase> detections)
+        {
+            try
+            {
+                _detections.InsertMany(detections);
+                return detections;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
+
+
+        }
         public object Get(string id)
         {
             try

@@ -12,7 +12,7 @@ namespace Detections_API.Models
     public  class DetectionsBase
     {
 
-        public string ConxtextId { get; set; }
+        public string ContextId { get; set; }
         public DetectionType DetectionType { get; set; }
         public double DetectionTime { get; set; }
         public string Description { get; set; }
