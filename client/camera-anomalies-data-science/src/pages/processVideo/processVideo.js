@@ -1,9 +1,7 @@
 import React, {Fragment, useEffect, useState} from "react"
 import axios from "axios"
-import { io } from "socket.io-client";
 import Progress from "../components/Progress"
 import Modal from "../components/Modal"
-import { Link } from "gatsby"
 import { navigate } from "gatsby"
 import { useSelector } from 'react-redux'
 import { sleep } from "../../../../../server-files/helper";
@@ -45,31 +43,6 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
         } catch (err) { 
 
         }
-
-        // const intervalId = setInterval(async () => {
-        //     try {
-        //         const res = await axios.post(`${startProcessingVideoUrl}/${endpointCheckStatus}`, { contextId, filePath },  {
-        //             headers: {
-        //                "Content-Type": "application/json"
-        //             }
-        //         })
-        //         const { processingPercents } = res.data
-    
-        //         setProcessingProgress(processingPercents)
-    
-        //         if (processingPercents === 1) {
-        //             clearInterval(intervalCheckStatus)
-        //             await sleep(500)
-
-                    
-        //         }
-        //     } catch (err) {
-        //         clearInterval(intervalCheckStatus)
-        //     }
-       
-        // }, 500)
-
-        // setIntevalCheckStatus(intervalId)
     }
 
     useEffect(async () => {

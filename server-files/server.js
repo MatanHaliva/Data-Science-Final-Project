@@ -8,7 +8,8 @@ const { getUser, loginRoute, registerRoute } = require('./user.routes');
 const { saveProcesses, getProcessesByUserId, saveProcessesList } = require('./process.module');
 const axios = require('axios')
 
-const decodeJwt = require("./jwt")
+const decodeJwt = require("./jwt");
+const { resolve } = require('path');
 
 const sockets = {}
 
@@ -292,6 +293,16 @@ app.post("/register", registerRoute)
 
 const calculateAvgFromStatuses = (statuses) => {
     const valuedStatuses = statuses.filter(status => status.status === 'fulfilled').map(status => status.value)
+    console.log(valuedStatuses)
+    const reducer = (accumulator, currentValue) => accumulator + currentValue;
+
+    return valuedStatuses.reducer(reducer) / statuses.length
+}
+
+
+const calculateAvgFromStatus = (status) => {
+    const valuedStatuses = statuses.filter(status => status.status === 'fulfilled').map(status => status.value)
+    console.log(valuedStatuses)
     const reducer = (accumulator, currentValue) => accumulator + currentValue;
 
     return valuedStatuses.reducer(reducer) / statuses.length
@@ -313,12 +324,39 @@ app.get('/process', async (req, res) => {
     const carDetectionServiceUrl = 'http://localhost:5000/checkStatus'
     const faceDetectionServiceUrl = 'http://localhost:5001/checkStatus'
     
-    const statuses = await Promise.allSettled([
-        axios.get(`${carDetectionServiceUrl}/${contextId}`),
-        // axios.get(`${faceDetectionServiceUrl}/${contextId}`)
-    ])
+    const listProcessesPromises = processes.map(process => {
+        return new Promise(async (resolve, reject) => {
+            try {
+                const response = await axios.get(`${carDetectionServiceUrl}/${process.contextId}`)
+                console.log("res:    sdad: "+ response)
+                resolve({
+                    contextId: process.contextId,
+                    message: "success",
+                    processingPercents: response.data.processingPercents ? response.data.processingPercents : 100
+                })
+            } catch(err) {
+                resolve({
+                    contextId: process.contextId,
+                    message: "failed",
+                    processingPercents: 100
+                })
+            }
+        })
+    })
 
-    res.json({ msg: "ok", processes: {...processes, status: calculateAvgFromStatuses(statuses) } , content: "start processing the video" })
+    const statuses = await Promise.allSettled(listProcessesPromises)
+    console.log("statuses promise settled", statuses)
+
+    const processWithStatuses = processes.map(process => {
+        const statusFromStatuses = statuses.filter(status => status.value.contextId === process.contextId)[0]
+        console.log("statusFromStatuses:", statusFromStatuses)
+        return {
+            ...process,
+            status: statusFromStatuses && statusFromStatuses.value && statusFromStatuses.value.processingPercents
+        }
+    })
+
+    res.json({ msg: "ok", processes: processWithStatuses, content: "start processing the video" })
 })
 
 

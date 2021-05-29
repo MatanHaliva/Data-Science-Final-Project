@@ -42,6 +42,7 @@ class Process(threading.Thread):
         self.context_id = context_id
         self.video_path = video_path
         self.processing_percents = 0
+        self.processing_path = 'Images/Processing/' + self.context_id
         print("init", context_id)
 
     def load_model_init(self):  
@@ -79,8 +80,7 @@ class Process(threading.Thread):
 
     def model_detect_car(self, car_to_detect, model, cars_meta, class_names, frame_number):
         img_width, img_height = 224, 224
-        
-        test_path = 'Images/Step_2/'
+    
     
         #samples = random.sample(test_images, num_samples)
         results = []
@@ -88,7 +88,7 @@ class Process(threading.Thread):
         for car in car_to_detect:
             image_name = car["countercars"]
             print(image_name)
-            filename = os.path.join(test_path, str(image_name) + '.jpg')
+            filename = os.path.join(self.processing_path, str(image_name) + '.jpg')
             print('Start processing image: {}'.format(filename))
             try:
                 bgr_img = cv.imread(filename)
@@ -100,7 +100,7 @@ class Process(threading.Thread):
                 class_id = np.argmax(preds)
                 text = ('Predict: {}, prob: {}'.format(class_names[class_id][0][0], prob))
                 results.append({'label': class_names[class_id][0][0], 'prob': '{:.4}'.format(prob), 'picture name': image_name, 'frame_number': car["detection_time"], 'detection_car': car["type"]})
-                cv.imwrite('images/{}_out.png'.format(image_name), bgr_img)
+                #cv.imwrite('images/{}_out.png'.format(image_name), bgr_img)
                 print("successfully")
             except Exception as e:
                 print(str(e))
@@ -146,7 +146,7 @@ class Process(threading.Thread):
         
         if crop_img.shape[1] > 0 and crop_img.shape[0] > 0:
             #Save cropped object into image
-            cv2.imwrite('Images/Step_2/' + str(i) + '.jpg', crop_img)
+            cv2.imwrite(self.processing_path + "/" + str(i) + '.jpg', crop_img)
             
         image["status"] = True
         image["crop_img"] = crop_img
