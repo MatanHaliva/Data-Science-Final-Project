@@ -28,7 +28,7 @@ class AnomalyDetection:
         self.cache_dir = "C:/Users/tamirh/Documents/ped1/cache/"
         self.queue = queue.Queue()
         self.rec_thread: Thread
-        self.sample_size = 199
+        self.sample_size = 200
 
     def __addToQueue(self):
         if self.queue.empty():
@@ -66,13 +66,15 @@ class AnomalyDetection:
             cnt = 0
             while (1):
                 if cnt == self.sample_size:
+                    print("aaaaaaaaaaaaaa")
                     self.get_single_test(test)
                     test = np.zeros(shape=(self.sample_size, 256, 256, 1))
                     cnt = 0
                 ret, frame = vs.read()
                 if frame is None:
                     print("done reading")
-                    # TODO: check if test is not empty and send it to get_single_test - the frames are lower than self.sample_size!!!
+                    if test.any():
+                        self.get_single_test(test)
                     break
                 img = cv2.resize(frame, (256, 256))
                 img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -84,7 +86,7 @@ class AnomalyDetection:
         self.rec_thread.daemon = True
         self.rec_thread.start()
         srs = []
-        # TODO: test looping on queue to make annomaly prediciton on the rest of the videos, return only when all are done.
+        video_counter = 0
         while not self.queue.empty() or self.rec_thread.is_alive():
             np_predict_array = str(self.__getFromQueue())
             sequences = np.load(self.cache_dir + np_predict_array + ".npy")
@@ -96,36 +98,35 @@ class AnomalyDetection:
                  range(0, sequences_shape)])
             sa = (sequences_reconstruction_cost - np.min(sequences_reconstruction_cost)) / np.max(
                 sequences_reconstruction_cost)
-            srs.append(1.0 - sa)
+            srs.append((1.0 - sa, video_counter))
             # plot the regularity scores
             plt.plot(1.0 - sa)
             plt.ylabel('regularity score Sr(t)')
             plt.xlabel('frame t')
             plt.show()
+            video_counter += 1
         return srs
 
     def detect_anomaly(self, video):
         # TODO: return the up and down trends from the prediction
-        # TODO: create timestamp function
         srs: list = self.get_anomaly(video)
-
         anomal = []
-        ll = [(*idx, val) for idx, val in np.ndenumerate(srs[0])]
-
-        ll = list(filter(lambda x: x[1] < 0.95, ll))
-        print(ll)
-        cnt = 0
-        start = 0
-        for x in range(1, len(ll)):
-            if (ll[x][0] - ll[x - 1][0] == 1):
-                cnt += 1
-            else:
-                anomal.append((cnt,start,ll[x-1][0]+10))
-                start = ll[x][0]
-                cnt = 1
-        anomal.append((cnt,start,ll[len(ll)-1][0]+10))
-#        print(anomal)
-#        print( list(filter(lambda x: x[0] > 6, anomal)))
+        while(srs):
+            sr_score, video_idx = srs.pop(0)
+            ll = [(*idx, val) for idx, val in np.ndenumerate(sr_score)]
+            ll = list(filter(lambda x: x[1] < 0.95, ll))
+            cnt = 0
+            start = 0
+            for x in range(1, len(ll)):
+                if (ll[x][0] - ll[x - 1][0] == 1 and ll[x][0] <  self.sample_size-1):
+                    cnt += 1
+                else:
+                    anomal.append((cnt, start+(video_idx*len(sr_score)), (ll[x - 1][0] + 10)+(video_idx*self.sample_size)))
+                    start = (ll[x][0]+1)
+                    cnt = 1
+            anomal.append((cnt, start, (ll[len(ll) - 1][0] + 10)+(video_idx*self.sample_size)))
+        #        print(anomal)
+        #        print( list(filter(lambda x: x[0] > 6, anomal)))
         anomaly = {
             "irregularity": list(filter(lambda x: x[0] > 6, anomal))
         }
@@ -138,5 +139,5 @@ start_time = time.time()
 bla = AnomalyDetection().detect_anomaly("C:/Users/tamirh/Documents/ped1/testing/frames/05/%3d.jpg")
 print("--- %s seconds ---" % (time.time() - start_time))
 print(bla["irregularity"])
-# message: AnomalyDetectionDto = AnomalyDetectionDto(1, 2 , "Anomaly" ,"Anomaly was detected", bla["irregularity"], "MEDIUM")
-# SaveDetections.save(message)
+message: AnomalyDetectionDto = AnomalyDetectionDto(1, 2 , "Anomaly" ,"Anomaly was detected", bla["irregularity"], "MEDIUM")
+SaveDetections.save(message)
