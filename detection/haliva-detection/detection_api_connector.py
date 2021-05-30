@@ -19,5 +19,8 @@ class DetectionApiConnector:
         if(detection.DetectionType == DetectionType.Face.value):
             url = ConfigService.detection_api_create_faces_url()
 
+        if(detection.DetectionType == DetectionType.Anomaly.value):
+            url = ConfigService.detection_api_create_anomaly_url()
+
         myobj = np.array([detection.tojson()]).tolist()
         response = requests.post(url, json = myobj, verify=True)
