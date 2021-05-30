@@ -5,8 +5,10 @@ from sklearn.cluster import DBSCAN
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
 
-
 class FaceClustering:
+
+    def __init__(self):
+        self.faces = []
 
     def get_best_pca_dimensions(self, data, threshold_variance: int = 90) -> int:
 
@@ -47,14 +49,18 @@ class FaceClustering:
         sil_scores = []
         eps_values = []
         min_pts_values = []
+        counter = 0
 
         for eps in np.arange(eps_start_index, eps_end_index, eps_step):
             for min_pts in np.arange(min_pts_start_index, min_pts_end_index):
 
                 labels, sil_score = self.start_dbscan(
                     data, eps=eps, min_samples=min_pts)
+                
+                counter += 1
 
                 if sil_score is not None:
+                    print("min_pts", min_pts, "eps", eps, "sil_score", sil_score, "counter", counter)
                     eps_values.append(eps)
                     min_pts_values.append(min_pts)
                     no_of_clusters.append(len(np.unique(labels)))
@@ -108,10 +114,10 @@ class FaceClustering:
     def cluster_faces_with_db_scan(self, pca_df_all_data, pca_df, best_pca_dimensions):
 
         eps_start_index: int = 1
-        eps_end_index: int = 20
+        eps_end_index: int = 10
         eps_step: float = 0.5
         min_pts_start_index: int = 2
-        min_pts_end_index: int = best_pca_dimensions * 2
+        min_pts_end_index: int = 10
 
         print("\n------------------------- get_optimal_parameters ------------------------------\n")
 
@@ -138,7 +144,10 @@ class FaceClustering:
 
     def start(self, faces):
 
-        faces: pd.DataFrame = pd.DataFrame(faces)
+        self.faces.extend(faces)
+        print(len(self.faces))
+
+        faces: pd.DataFrame = pd.DataFrame(self.faces)
         face_encodings: list = faces['face_encoding'].tolist()
 
         best_pca_dimensions: int = self.get_best_pca_dimensions(face_encodings)

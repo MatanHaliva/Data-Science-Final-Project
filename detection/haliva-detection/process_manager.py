@@ -1,19 +1,20 @@
 from flask_restx.fields import String
 from process import Process
 from process_dto import ProcessDto
+from face_clustering import FaceClustering
 
 class ProcessManager():
 
     def __init__(self):
         self._processes = {}
+        self.face_clustering = FaceClustering()
 
     def create_process(self, video_path: String, context_id: String) -> None:
-        process: Process = Process(video_path, context_id)
+        process: Process = Process(video_path, context_id, self.face_clustering)
         self._processes[context_id] = process
         process.start()
 
     def get_processing_percents_by_context_id(self, context_id: String) -> String:
-
         process: Process = self._processes[context_id]
         return process.processing_percents
 
