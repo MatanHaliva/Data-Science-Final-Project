@@ -13,10 +13,13 @@ from os.path import isfile, join, isdir
 from PIL import Image
 import matplotlib.pyplot as plt
 from anomaly_detection_dto import AnomalyDetectionDto
-from save_detections import SaveDetections
 import cv2 as cv2
 import time
 import os
+
+from config_service import ConfigService
+from detection_api_connector import DetectionApiConnector
+from detection_type_enum import DetectionType
 
 
 class AnomalyDetection:
@@ -56,8 +59,6 @@ class AnomalyDetection:
         np.save(self.cache_dir + str(next_cache_file), sequences)
         self.queue.put(next_cache_file)
 
-    #        last_file: int = max(list(map(lambda x: int(x[:-4]), os.listdir(self.cache_dir))))
-    #        return sequences, sz
 
     def get_anomaly(self, video) -> np.array:
         def start_recording_thread():
@@ -66,13 +67,11 @@ class AnomalyDetection:
             cnt = 0
             while (1):
                 if cnt == self.sample_size:
-                    print("aaaaaaaaaaaaaa")
                     self.get_single_test(test)
                     test = np.zeros(shape=(self.sample_size, 256, 256, 1))
                     cnt = 0
                 ret, frame = vs.read()
                 if frame is None:
-                    print("done reading")
                     if test.any():
                         self.get_single_test(test)
                     break
@@ -108,7 +107,7 @@ class AnomalyDetection:
         return srs
 
     def detect_anomaly(self, video):
-        # TODO: return the up and down trends from the prediction
+        # TODO: detect prediction based on ranges not static value!
         srs: list = self.get_anomaly(video)
         anomal = []
         while(srs):
@@ -133,11 +132,13 @@ class AnomalyDetection:
         return anomaly
 
 
-# vs = cv2.VideoCapture("C:/Users/tamirh/Documents/ped1/testing/frames/32/%3d.jpg")
-# (grabbed, frame) = vs.read()
+
 start_time = time.time()
 bla = AnomalyDetection().detect_anomaly("C:/Users/tamirh/Documents/ped1/testing/frames/05/%3d.jpg")
 print("--- %s seconds ---" % (time.time() - start_time))
-print(bla["irregularity"])
-message: AnomalyDetectionDto = AnomalyDetectionDto(1, 2 , "Anomaly" ,"Anomaly was detected", bla["irregularity"], "MEDIUM")
-SaveDetections.save(message)
+for detection in bla["irregularity"]:
+    print(detection)
+    message: AnomalyDetectionDto = AnomalyDetectionDto(1, (detection[2]-detection[1])/2+detection[1], DetectionType.Anomaly.value ,"Anomaly was detected", detection[0], ConfigService.anomaly_detection_ranges(0.95))
+    DetectionApiConnector.create_detection(message)
+
+
