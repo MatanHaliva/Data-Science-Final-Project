@@ -24,6 +24,7 @@ const Log = ({rows, videoTime}) => {
 
     const createToasts = () => {
         return detections.map(detection => {
+            debugger
             return (
                 <LogToast toastShowFade={`toast ${detection.show} fade`} {...detection} key={detection.id}/>
             )

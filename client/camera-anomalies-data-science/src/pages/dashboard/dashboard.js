@@ -91,6 +91,12 @@ const Dashboard = ({processedVideos}) => {
         await getUploads()
     }, [userToken])
 
+    useEffect(() => {
+        return () => {
+            clearTimeout(timer)
+        }
+    })
+
     return (
         <Layout>
             <div class="d-flex flex-column bd-highlight mb-3 flex-fill">

@@ -8,27 +8,27 @@ import { detectionTypes } from "../../shared/detectionTypes"
 
 const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTime}) => {
     const videoUrl = `http://localhost:33345${filePath}`
-    const detectionApi = `http://localhost:5005`
+    const detectionApi = `https://detections-api.azurewebsites.net/Detections`
     const [detections, setDetections] = useState([])
     const [videoTime, setVideoTime] = useState({})
 
     const convertToPresentation = (detections) => {
         return detections.map(detection => {
             return {
-                id: detection.contextId,
-                description: detection.description,
-                detectionType: detectionTypes[detection.detectionType],
-                detectionTime: detection.detectionTime,
+                id: detection.ContextId,
+                description: detection.Description,
+                detectionType: detectionTypes[detection.DetectionType],
+                detectionTime: detection.DetectionTime,
                 Accuracy: detection.Accuracy
             }
         })
     }
 
     const getDetections = async () => {
-        const detections = await axios.get(`${detectionApi}/getByContextId/${contextId}`)
+        console.log(contextId)
+        const detections = await axios.get(`${detectionApi}/GetById/${contextId}`)
 
-        setDetections(convertToPresentation(detections))
-        //setDetections([{id: 1, description: "car moved", detectionTime: 0.2, detectionType: "car movment", accuracy: 0.9}, {id: 2, description: "car color blue", detectionTime: 3, detectionType: "car color", accuracy: 0.6}, {id: 3, description: "car color blue", detectionTime: 4, detectionType: "car color", accuracy: 0.6}])
+        setDetections(convertToPresentation(detections.data))
     }
 
     useEffect(() => {

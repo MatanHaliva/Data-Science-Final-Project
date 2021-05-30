@@ -24,7 +24,6 @@ const MyVideos = () => {
     }
 
     const pickVideo = (contextId, filePath) => {
-        debugger
         dispatch(setContextId(contextId))
         dispatch(setFilePath(filePath))
     }
@@ -70,32 +69,30 @@ const MyVideos = () => {
 
     return (
         <Layout>
-              
-                             <div class="d-flex flex-column bd-highlight mb-3 flex-fill">
-                                <div className="">
-                                    <h4 className="display-4 text-center mb-4">
-                                        <i className="fab fa-react">My Uploaded Videos</i>
-                                    </h4>
-                                    {
-                                        loading ? <div className="loading-spinner position-absolute top-50 start-50 translate-middle">
-                                        <div class="spinner-border text-secondary" role="status">
-                                            <span class="visually-hidden">Loading...</span>
-                                        </div>
-                                    </div> : uploads.length === 0 ? 
-                                        <Fragment>
-                                            <div className="position-absolute top-50 start-50 translate-middle">
-                                                <h5 className="display-7 text-center mb-4">
-                                                    <i className="fab fa-react">You have no videos...</i>
-                                                </h5>
-                                            </div>
-                                        </Fragment>
-                                        :
-                                        <Up uploadedVideos={uploads} pickVideo={pickVideo}/>
-                                    }
-                                    
-                                </div>
+            <div class="d-flex flex-column bd-highlight mb-3 flex-fill">
+                <div className="">
+                    <h4 className="display-4 text-center mb-4">
+                        <i className="fab fa-react">My Uploaded Videos</i>
+                    </h4>
+                    {
+                        loading ? <div className="loading-spinner position-absolute top-50 start-50 translate-middle">
+                        <div class="spinner-border text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div> : uploads.length === 0 ? 
+                        <Fragment>
+                            <div className="position-absolute top-50 start-50 translate-middle">
+                                <h5 className="display-7 text-center mb-4">
+                                    <i className="fab fa-react">You have no videos...</i>
+                                </h5>
                             </div>
-                
+                        </Fragment>
+                        :
+                        <Up uploadedVideos={uploads} pickVideo={pickVideo}/>
+                    }
+                    
+                </div>
+            </div>
         </Layout>
     )
 }
