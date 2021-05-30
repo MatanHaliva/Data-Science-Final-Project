@@ -176,6 +176,19 @@
             "rid": "win"
           }
         }
+      },
+      "Services/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "MongoDB.Driver": "2.12.3"
+        },
+        "compile": {
+          "bin/placeholder/Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Services.dll": {}
+        }
       }
     }
   },
@@ -477,12 +490,18 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "Services/1.0.0": {
+      "type": "project",
+      "path": "../../../Detections-API/Services/Services.csproj",
+      "msbuildProject": "../../../Detections-API/Services/Services.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "MongoDB.Driver >= 2.12.3",
-      "Newtonsoft.Json >= 13.0.1"
+      "Newtonsoft.Json >= 13.0.1",
+      "Services >= 1.0.0"
     ]
   },
   "packageFolders": {
@@ -491,11 +510,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\chenb\\source\\repos\\Detections-API\\Detections-API\\Detections-API.csproj",
+      "projectUniqueName": "C:\\Users\\chenb\\Source\\Repos\\Data-Science-Final-Project4\\restApi\\Detections-API\\Detections-API.csproj",
       "projectName": "Detections-API",
-      "projectPath": "C:\\Users\\chenb\\source\\repos\\Detections-API\\Detections-API\\Detections-API.csproj",
+      "projectPath": "C:\\Users\\chenb\\Source\\Repos\\Data-Science-Final-Project4\\restApi\\Detections-API\\Detections-API.csproj",
       "packagesPath": "C:\\Users\\chenb\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\chenb\\source\\repos\\Detections-API\\Detections-API\\obj\\",
+      "outputPath": "C:\\Users\\chenb\\Source\\Repos\\Data-Science-Final-Project4\\restApi\\Detections-API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\chenb\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -510,7 +529,11 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\chenb\\Source\\Repos\\Detections-API\\Services\\Services.csproj": {
+              "projectPath": "C:\\Users\\chenb\\Source\\Repos\\Detections-API\\Services\\Services.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

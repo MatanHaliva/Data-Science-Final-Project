@@ -4,19 +4,36 @@ import Log from "../components/Log"
 import axios from 'axios'
 import * as style from "./index.module.css"
 import Layout from "../components/Layout"
+import { detectionTypes } from "../../shared/detectionTypes"
 
-const AnalyseVideo = ({filePath, setVideoCurrentTime, videoCurrentTime}) => {
-    const videoUrl = `http://localhost:5000${filePath}`
+const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTime}) => {
+    const videoUrl = `http://localhost:33345${filePath}`
+    const detectionApi = `https://detections-api.azurewebsites.net/Detections`
     const [detections, setDetections] = useState([])
     const [videoTime, setVideoTime] = useState({})
 
-    const getDetections = () => {
-        setDetections([{id: 1, description: "car moved", detectionTime: 0.2, detectionType: "car movment", accuracy: 0.9}, {id: 2, description: "car color blue", detectionTime: 3, detectionType: "car color", accuracy: 0.6}, {id: 3, description: "car color blue", detectionTime: 4, detectionType: "car color", accuracy: 0.6}])
+    const convertToPresentation = (detections) => {
+        return detections.map(detection => {
+            return {
+                id: detection.ContextId,
+                description: detection.Description,
+                detectionType: detectionTypes[detection.DetectionType],
+                detectionTime: detection.DetectionTime,
+                Accuracy: detection.Accuracy
+            }
+        })
+    }
+
+    const getDetections = async () => {
+        console.log(contextId)
+        const detections = await axios.get(`${detectionApi}/GetById/${contextId}`)
+
+        setDetections(convertToPresentation(detections.data))
     }
 
     useEffect(() => {
         getDetections()
-    }, []);
+    }, [contextId]);
 
     return (
         <Layout>

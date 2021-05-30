@@ -1,12 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Detections_API.Models;
+﻿using Detections_API.Models;
 using Detections_API.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Detections_API.Controllers
 {
@@ -16,12 +14,13 @@ namespace Detections_API.Controllers
     {
         private readonly DetectionService _detectionService;
 
-        private readonly ILogger<DetectionsController> _logger;
-
-        public DetectionsController(DetectionService  detection)
+        public DetectionsController(DetectionService detection)
         {
             _detectionService = detection;
         }
+
+
+        #region GET METHODS
         [HttpGet("GetAll")]
         public ActionResult<object> GetDetectionsById()
         {
@@ -29,7 +28,7 @@ namespace Detections_API.Controllers
         }
 
         [HttpGet("GetById/{id}")]
-        public ActionResult<object> GetDetectionsById(string  id)
+        public ActionResult<object> GetDetectionsById(string id)
         {
             return JsonConvert.SerializeObject(_detectionService.Get(id));
         }
@@ -39,13 +38,59 @@ namespace Detections_API.Controllers
         {
             return JsonConvert.SerializeObject(_detectionService.Get(type));
         }
+        #endregion
 
-        [HttpPost]
-        public ActionResult<DetectionsBase> Create([FromBody] CarModel detection)
+        #region POST METHODS
+        [HttpPost("CreateCars")]
+        public ActionResult<IEnumerable<DetectionsBase>> Create([FromBody] IEnumerable<CarModel> detections)
         {
-            _detectionService.Create(detection);
-            return Ok(detection);
+            if (ModelState.IsValid)
+            {
+                _detectionService.CreateMany(detections);
+                return Ok(detections);
+            }
+            else
+                return BadRequest();
+
         }
+
+        [HttpPost("CreateFaces")]
+        public ActionResult<IEnumerable<DetectionsBase>> Create([FromBody] IEnumerable<FaceModel> detections)
+        {
+            if (ModelState.IsValid)
+            {
+                _detectionService.CreateMany(detections);
+                return Ok(detections);
+            }
+            else
+                return BadRequest();
+
+        }
+        [HttpPost("CreateMasks")]
+        public ActionResult<IEnumerable<DetectionsBase>> Create([FromBody] IEnumerable<MaskModel> detections)
+        {
+            if (ModelState.IsValid)
+            {
+                _detectionService.CreateMany(detections);
+                return Ok(detections);
+            }
+            else
+                return BadRequest();
+
+        }
+        [HttpPost("CreateMotions")]
+        public ActionResult<IEnumerable<DetectionsBase>> Create([FromBody] IEnumerable<MotionModel> detections)
+        {
+            if (ModelState.IsValid)
+            {
+                _detectionService.CreateMany(detections);
+                return Ok(detections);
+            }
+            else
+                return BadRequest();
+
+        }
+        #endregion
 
     }
 }

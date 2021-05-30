@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Detections_API.Models
 {
     [BsonIgnoreExtraElements]
-
+   
     public class CarModel:DetectionsBase
     {
         public string Color { get; set; }
