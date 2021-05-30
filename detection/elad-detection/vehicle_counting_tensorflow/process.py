@@ -354,12 +354,12 @@ class Process(threading.Thread):
                                 csv_line.split(',')
                             writer.writerows([csv_line.split(',')])
                 cap.release()
-                cv2.destroyAllWindows()
+                #cv2.destroyAllWindows()
 
 
     def start_detection(self):
         print('start detections')
-        self.object_detection_function('test1.mp4', "imshow")
+        self.object_detection_function(self.video_path, "imshow")
         
 
     def run(self):

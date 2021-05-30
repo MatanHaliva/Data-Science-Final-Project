@@ -85,7 +85,7 @@ class Process(threading.Thread):
 
         
         print(results)
-        detection_collection.insert_many(results)
+        #detection_collection.insert_many(results)
         print("blaaaa")
 
         with open('results.json', 'a') as file:
