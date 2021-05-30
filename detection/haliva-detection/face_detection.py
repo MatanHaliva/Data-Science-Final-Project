@@ -1,13 +1,16 @@
 import dlib
 import torch
-import h5py
 import cv2 as cv2
 import numpy as np
 from numpy import load
 from numpy import asarray
 from numpy import expand_dims
 from numpy import savez_compressed
+from config_service import ConfigService
 from tensorflow.python.keras.models import load_model
+
+import tensorflow as tf
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
 
 # import warnings
 # warnings.simplefilter(action='ignore', category=FutureWarning)
@@ -31,7 +34,7 @@ class FaceDetection:
             resized_image, 1.0, (300, 300), (104.0, 117.0, 123.0))
         self.net.setInput(blob)
         faces = self.net.forward()
-
+    
         # Our next step is to loop over all the co-ordinates it returned and draw rectangles around them using Open CV.
         # We will be drawing a green rectangle with thicknes
         for i in range(faces.shape[2]):
@@ -59,10 +62,10 @@ class FaceDetection:
 
         face = rgb_small_frame[int(y1):int(y2), int(x1):int(x2)]
 
-        if(face.shape[0] < 160 or face.shape[1] < 160):
+        if(face.shape[0] <= 0 or face.shape[1] <= 0):
             return None
 
-        face = cv2.resize(face, (160, 160), interpolation=cv2.INTER_AREA)
+        face = cv2.resize(face, dsize=(160, 160), interpolation=cv2.INTER_CUBIC)
 
         face_pixels = asarray(face)
 
@@ -74,12 +77,10 @@ class FaceDetection:
         # transform face into one sample
         samples = expand_dims(face_pixels, axis=0)
         # make prediction to get embedding
-        yhat = self.model.predict(samples)
+        yhat = self.model(samples)
         return yhat[0]
 
     def detect_faces(self, small_frame, path, confidence_threshold=0.95):
-        # Resize frame of video to 1/3 size for faster face recognition processing
-        # small_frame = resize_image(small_frame)
 
         # Find all the faces and face encodings in the current image
         face_locations = self.get_face_locations(
@@ -100,6 +101,9 @@ class FaceDetection:
                 "image_path": path,
                 "accuracy": face_location[1]
             }
+
+            if(ConfigService.draw_detections_enabled()):
+                self.draw_faces(small_frame, face)
 
             # Grab a single frame of video
             faces.append(face)

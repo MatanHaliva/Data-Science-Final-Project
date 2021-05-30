@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
+using Services;
 
 namespace Detections_API
 {
@@ -28,13 +29,16 @@ namespace Detections_API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<DetectionsDatabaseSettings>(
-         Configuration.GetSection(nameof(DetectionsDatabaseSettings)));
+            services.Configure<DatabaseSettings>(
+         Configuration.GetSection(nameof(DatabaseSettings)));
 
-            services.AddSingleton<DetectionsDatabaseSettings>(sp =>
-                sp.GetRequiredService<IOptions<DetectionsDatabaseSettings>>().Value);
+            services.AddSingleton<DatabaseSettings>(sp =>
+                sp.GetRequiredService<IOptions<DatabaseSettings>>().Value);
             services.AddSingleton<DetectionService>();
+
             services.AddControllers();
+              //.AddJsonOptions(opt => opt.JsonSerializerOptions.Converters.Add(
+              //      new ServiceJsonConverter()));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

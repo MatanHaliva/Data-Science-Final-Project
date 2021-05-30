@@ -1,4 +1,4 @@
-import React, { Fragment } from "react"
+import React from "react"
 
 const CardLoading = () => {
     return (<div>hi</div>)
