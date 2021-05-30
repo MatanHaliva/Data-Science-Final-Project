@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "0bjIMzyIR1rIhajuzN6X4kqw9os07V4xUg9lnbuPdEErX2foHuaeB37tuCA7TyHYoT5vyMIKWKZdDSdxYkPE9Q==",
+  "dgSpecHash": "3S8Eun12cP43qUiMIjUe5e3ZGOKYE3qKpc2xrm6hbvt0htgu/LwXBS28GMXfrgy0+cc59RqZMRTtJfQxhwd5BQ==",
   "success": true,
-  "projectFilePath": "C:\\Users\\chenb\\source\\repos\\Detections-API\\Detections-API\\Detections-API.csproj",
+  "projectFilePath": "C:\\Users\\chenb\\Source\\Repos\\Data-Science-Final-Project4\\restApi\\Detections-API\\Detections-API.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\chenb\\.nuget\\packages\\dnsclient\\1.4.0\\dnsclient.1.4.0.nupkg.sha512",
     "C:\\Users\\chenb\\.nuget\\packages\\microsoft.netcore.platforms\\2.1.2\\microsoft.netcore.platforms.2.1.2.nupkg.sha512",

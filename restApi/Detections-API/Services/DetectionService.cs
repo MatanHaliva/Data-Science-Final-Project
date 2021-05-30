@@ -1,6 +1,7 @@
 ﻿using Detections_API.Models;
 using MongoDB.Bson.IO;
 using MongoDB.Driver;
+using Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,25 +12,21 @@ namespace Detections_API.Services
 {
     public class DetectionService
     {
-
-        private readonly IMongoCollection<DetectionsBase> _detections;
-
-        public DetectionService(DetectionsDatabaseSettings settings)
+        private readonly MongoHelper<DetectionsBase> _mongoHelper;
+        public DetectionService(DatabaseSettings settings)
         {
-            var client = new MongoClient(settings.ConnectionString);
-            var database = client.GetDatabase(settings.DatabaseName);
 
-            _detections = database.GetCollection<DetectionsBase>(settings.DetectionsCollectionName);
+            _mongoHelper = MongoService<DetectionsBase>.GetInstance(settings);
         }
 
         public List<DetectionsBase> Get() =>
-            _detections.Find(d => true).ToList();
+            _mongoHelper.Collection.Find(d => true).ToList();
 
         public DetectionsBase Create(DetectionsBase detection)
         {
             try
             {
-                _detections.InsertOne(detection);
+                _mongoHelper.Collection.InsertOne(detection);
                 return detection;
             }
             catch (Exception)
@@ -37,33 +34,45 @@ namespace Detections_API.Services
 
                 return null;
             }
-           
-           
+        }
+        public IEnumerable<DetectionsBase> CreateMany(IEnumerable<DetectionsBase> detections)
+        {
+            try
+            {
+                _mongoHelper.Collection.InsertMany(detections);
+                return detections;
+            }
+            catch (Exception)
+            {
+
+                return null;
+            }
         }
         public object Get(string id)
         {
             try
             {
-                return _detections.Find(d => d.ConxtextId == id).ToList();
+                return _mongoHelper.Collection.Find(d => d.ContextId == id).ToList();
             }
-            catch (Exception e )
+            catch (Exception e)
             {
-
-                throw e ;
-            }            
+                throw e;
+            }
         }
 
         public object Get(DetectionType type)
         {
             try
             {
-                return _detections.Find(d => d.DetectionType == type).ToList();
+                return _mongoHelper.Collection.Find(d => d.DetectionType == type).ToList();
             }
-            catch (Exception e )
+            catch (Exception e)
             {
                 throw e;
-            }          
+            }
         }
-         
+ 
     }
+  
+
 }

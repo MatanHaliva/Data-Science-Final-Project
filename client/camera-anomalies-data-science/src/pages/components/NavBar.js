@@ -17,7 +17,7 @@ const NavBar = ({setCurrentRoute, currentRoute, loggedName}) => {
             <span class="navbar-toggler-icon"></span>
           </button>
           <div class="collapse navbar-collapse" id="navbarScroll">
-            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll" style={{height: "100px"}}>
+            <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
               <li class="nav-item">
                 <a className={`nav-link ${currentRoute === 0 ? "active" : ""}`} aria-current="page" href="#" onClick={() => {
                     navigate("/")
@@ -70,10 +70,10 @@ const NavBar = ({setCurrentRoute, currentRoute, loggedName}) => {
               </li>
             </ul>
             <form class="d-flex">
-               <span style={{color: "white"}}>{loggedName}</span>
-                <FaUserAlt style={{color: 'white', width: '45px', height: '45px'}}></FaUserAlt>
+               <FaUserAlt style={{color: 'white', width: '45px', height: '45px', 'padding-right': '8px'}}></FaUserAlt>
+               <span style={{color: "white", 'padding-right': '10px', 'white-space': 'nowrap', 'padding-top': '11px'}}>{loggedName}</span>
               <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-              <button class="btn btn-outline-success" type="submit">Search</button>
+              <button style={{'margin-right': '10px'}} class="btn btn-outline-success" type="submit">Search</button>
               <a href="#" onClick={() => {
                    logout()
                }}>

@@ -1,5 +1,5 @@
 import React from "react"
-import { FaHome, FaTachometerAlt, FaVideo } from 'react-icons/fa';
+import { FaVideo } from 'react-icons/fa';
 
 const Card = ({rows, cardHeader, cardDescription}) => {
     return (

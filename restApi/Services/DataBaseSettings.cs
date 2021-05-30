@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using System.Text;
 
-namespace Detections_API.Models
+namespace Services
 {
-    public class DetectionsDatabaseSettings
+    public class DatabaseSettings
     {
         public string DetectionsCollectionName { get; set; }
         public string ConnectionString { get; set; }

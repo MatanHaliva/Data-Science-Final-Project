@@ -1,0 +1,8 @@
+C:\Users\chenb\source\repos\Detections-API\Services\bin\Debug\netcoreapp3.1\Services.deps.json
+C:\Users\chenb\source\repos\Detections-API\Services\bin\Debug\netcoreapp3.1\Services.dll
+C:\Users\chenb\source\repos\Detections-API\Services\obj\Debug\netcoreapp3.1\Services.AssemblyInfoInputs.cache
+C:\Users\chenb\source\repos\Detections-API\Services\obj\Debug\netcoreapp3.1\Services.AssemblyInfo.cs
+C:\Users\chenb\source\repos\Detections-API\Services\bin\Debug\netcoreapp3.1\Services.pdb
+C:\Users\chenb\source\repos\Detections-API\Services\obj\Debug\netcoreapp3.1\Services.dll
+C:\Users\chenb\source\repos\Detections-API\Services\obj\Debug\netcoreapp3.1\Services.pdb
+C:\Users\chenb\source\repos\Detections-API\Services\obj\Debug\netcoreapp3.1\Services.csproj.CoreCompileInputs.cache

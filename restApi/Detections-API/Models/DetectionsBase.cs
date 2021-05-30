@@ -2,6 +2,7 @@
 using MongoDB.Bson.Serialization.Attributes;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -12,7 +13,10 @@ namespace Detections_API.Models
     public  class DetectionsBase
     {
 
-        public string ConxtextId { get; set; }
+        [Required]
+        public string ContextId { get; set; }
+
+        [Required]
         public DetectionType DetectionType { get; set; }
         public double DetectionTime { get; set; }
         public string Description { get; set; }

@@ -8,7 +8,7 @@ import axios from "axios"
 const MyVideos = () => {
     const [uploads, setUploads] = useState([])
     const [loading, setLoading] = useState(false)
-    const endpoint = 'http://localhost:5000'
+    const endpoint = 'http://localhost:33345'
     const dispatch = useDispatch()
     const pathUrlUpload = `${endpoint}/upload`
     let userToken = useSelector(state => {
