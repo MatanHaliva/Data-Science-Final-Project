@@ -49,3 +49,7 @@ class ConfigService:
 
         if 0 < value <= 0.9:
             return "FATAL"
+    @staticmethod        
+    def save_to_mp4_enabled():
+        return True
+    

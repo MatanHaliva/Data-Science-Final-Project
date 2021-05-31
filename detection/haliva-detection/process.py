@@ -25,6 +25,7 @@ class Process(threading.Thread):
         self.mask_detection = MaskDetection()
         self.processing_percents = 0
         self.counter = 0
+        self.video_writer = None
         print("init", context_id)
 
     def cluster_faces_from_video(self):
@@ -98,7 +99,11 @@ class Process(threading.Thread):
                     message: DetectionDto = DetectionDto(self.context_id, detection_time , name_of_class_id,"{} was detected".format(name_of_class_id), detection["confidence"])
                     # SaveDetections.save(message)
 
-            image = cv2.resize(image, (700, 700))
+            image = cv2.resize(image, (640,480))
+
+            if ConfigService.save_to_mp4_enabled():
+                self.save_to_mp4_file(image)
+
             cv2.imshow("camera" + str(self.context_id), image)
 
             self.calc_processing_percents(vs)
@@ -107,6 +112,9 @@ class Process(threading.Thread):
 
             if key == ord('q'):
                 break
+
+        if(self.video_writer != None):
+            self.video_writer.release()
 
         cv2.destroyWindow("camera" + str(self.context_id))
 
@@ -193,3 +201,18 @@ class Process(threading.Thread):
         cropped = human[y:y1,x:x1]
         cropped = cv2.resize(cropped, dsize=(160, 160), interpolation=cv2.INTER_CUBIC)
         cv2.imwrite(completeName,cropped)
+
+    def save_to_mp4_file(self, frame):
+
+
+        if(self.video_writer == None):
+            fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+            save_path = "faces\context_id_{}".format(self.context_id)
+            if not os.path.exists(save_path):
+                os.makedirs(save_path)
+            save_path += "\output.mp4"
+            self.video_writer = cv2.VideoWriter(save_path,fourcc, 15.0, (640,480))
+            print("video_writer")
+
+        print("save_to_mp4_file")
+        self.video_writer.write(frame)
