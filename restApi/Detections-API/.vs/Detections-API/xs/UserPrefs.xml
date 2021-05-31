@@ -2,12 +2,12 @@
   <MonoDevelop.Ide.Workbench ActiveDocument="Models/CarModel.cs">
     <Files>
       <File FileName="Startup.cs" Line="43" Column="1" />
-      <File FileName="appsettings.json" Line="15" Column="16" />
-      <File FileName="Program.cs" Line="16" Column="51" />
-      <File FileName="Properties/launchSettings.json" Line="22" Column="30" />
-      <File FileName="Controllers/DetectionsController.cs" Line="44" Column="38" />
-      <File FileName="Models/DetectionsBase.cs" Line="15" Column="32" />
-      <File FileName="Models/CarModel.cs" Line="14" Column="35" />
+      <File FileName="appsettings.json" />
+      <File FileName="Program.cs" />
+      <File FileName="Properties/launchSettings.json" />
+      <File FileName="Controllers/DetectionsController.cs" />
+      <File FileName="Models/DetectionsBase.cs" Line="22" Column="31" />
+      <File FileName="Models/CarModel.cs" Line="15" Column="35" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">

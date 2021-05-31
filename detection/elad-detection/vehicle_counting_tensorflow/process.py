@@ -34,6 +34,7 @@ from PIL import Image
 # Object detection imports
 from utils import label_map_util
 from utils import visualization_utils as vis_util
+from pathlib import Path
 
 
 class Process(threading.Thread):
@@ -43,7 +44,12 @@ class Process(threading.Thread):
         self.video_path = video_path
         self.processing_percents = 0
         self.processing_path = 'Images/Processing/' + self.context_id
+        self.create_dir()
         print("init", context_id)
+
+    def create_dir(self):
+        Path(self.processing_path).mkdir(parents=True, exist_ok=True)
+
 
     def load_model_init(self):  
         model = load_model()
@@ -65,16 +71,16 @@ class Process(threading.Thread):
         for result in results:
             objects_detection_format.append({
                 "ContextId": self.context_id,
-                "BrandId": 0,
+                "DetectionType": 0,
                 "DetectionTime": result["frame_number"],
                 "Description": "car detection",
                 "Accuracy": float(result["prob"]),
-                "Color": result["detection_car"],
+                "Color": result["detection_car"][0],
                 "Manufacturer": result["label"],
                 "LicensePlate": result["label"]
             })
 
-        response = requests.post('https://localhost:5005/Detections/CreateAll', json=objects_detection_format, verify=False)
+        response = requests.post('https://detections-api.azurewebsites.net/Detections/CreateCars', json=objects_detection_format, verify=True)
 
         print(response.json())
 
