@@ -140,7 +140,7 @@ app.post('/process', async (req, res) => {
 
 
     const carDetectionServiceUrl = 'http://localhost:5000/startProcess'
-    const faceDetectionServiceUrl = 'http://localhost:5001/startProces'
+    const faceDetectionServiceUrl = 'http://localhost:5009/startProcess'
 
     const processDto = {
         contextId: req.body.contextId,
@@ -150,7 +150,7 @@ app.post('/process', async (req, res) => {
     try {
         const response = await Promise.all([
             axios.post(carDetectionServiceUrl, processDto, {headers: {'Content-Type': 'application/json'}}),
-            // axios.post(faceDetectionServiceUrl, processDto)
+            axios.post(faceDetectionServiceUrl, processDto, {headers: {'Content-Type': 'application/json'}})
         ])
     } catch(err) {
         console.log(err)
@@ -279,8 +279,8 @@ const findDocuments = (db, callback) => ({contextId, userId}) => {
     var query = contextId && contextId.length > 0 ? { contextId: contextId, userId: userId } : { userId: userId }
     console.log("queryyyyy", query)
     collection.find(query).toArray(function(err, docs) {
-      console.log('Found the following records')
-      console.log(docs)
+      //console.log('Found the following records')
+      //console.log(docs)
       callback(docs)
     })
 }
@@ -309,6 +309,7 @@ const calculateAvgFromStatus = (status) => {
 }
 
 app.get('/process', async (req, res) => {
+    console.log("check status process...")
     console.log("processing with contextId: ", req.body.contextId)
     console.log("auth", req.header("Authorization"))
     const decodeData = await decodeJwt.decodeJwt(req.header("Authorization"))
@@ -322,19 +323,30 @@ app.get('/process', async (req, res) => {
     const processes = await getProcessesByUserId(req.body.contextId, userId)
     
     const carDetectionServiceUrl = 'http://localhost:5000/checkStatus'
-    const faceDetectionServiceUrl = 'http://localhost:5001/checkStatus'
+    const faceDetectionServiceUrl = 'http://localhost:5009/checkStatus'
     
+    console.log("created list promises")
+
     const listProcessesPromises = processes.map(process => {
         return new Promise(async (resolve, reject) => {
             try {
-                const response = await axios.get(`${carDetectionServiceUrl}/${process.contextId}`)
-                console.log("res:    sdad: "+ response)
+                const responses = await Promise.allSettled([axios.get(`${carDetectionServiceUrl}/${process.contextId}`), axios.get(`${faceDetectionServiceUrl}/${process.contextId}`)])
+                let avgProcessingPercents = 100
+                if(responses[0] && responses[0].value) {
+                    console.log("response x: ", responses[0].value.data)
+                }
+                if (responses[0] && responses[0].value && responses[0].value.data && responses[0].value.data.processingPercents && responses[1] && responses[1].value && responses[1].value.data && responses[1].value.data.processingPercents) {
+                    avgProcessingPercents = ((Number(responses[0].value.data.processingPercents) + Number(responses[1].value.data.processingPercents)) / 2)
+                    console.log("Avg: " + avgProcessingPercents)
+                }
+                
                 resolve({
                     contextId: process.contextId,
                     message: "success",
-                    processingPercents: response.data.processingPercents ? response.data.processingPercents : 100
+                    processingPercents: avgProcessingPercents
                 })
             } catch(err) {
+                console.log("Error: ", err)
                 resolve({
                     contextId: process.contextId,
                     message: "failed",
@@ -345,11 +357,9 @@ app.get('/process', async (req, res) => {
     })
 
     const statuses = await Promise.allSettled(listProcessesPromises)
-    console.log("statuses promise settled", statuses)
 
     const processWithStatuses = processes.map(process => {
         const statusFromStatuses = statuses.filter(status => status.value.contextId === process.contextId)[0]
-        console.log("statusFromStatuses:", statusFromStatuses)
         return {
             ...process,
             status: statusFromStatuses && statusFromStatuses.value && statusFromStatuses.value.processingPercents
