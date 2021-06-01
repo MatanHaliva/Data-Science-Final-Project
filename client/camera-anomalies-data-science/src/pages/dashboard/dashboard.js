@@ -52,7 +52,7 @@ const Dashboard = ({processedVideos}) => {
         })
         setProcessesVideo(list)
         clearTimeout(timer)
-        const timer = setTimeout(async () => await getProcesses(), 100)
+        const timer = setTimeout(async () => await getProcesses(), 1000)
         setTimer(timer)
     }
 

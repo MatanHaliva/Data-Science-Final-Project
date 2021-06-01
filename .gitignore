@@ -7,3 +7,8 @@ node_modules
 *.png
 *.h5 
 *.hdf5
+**/results.json
+**/webpack/babel
+*.cache
+*.pyc
+*.log

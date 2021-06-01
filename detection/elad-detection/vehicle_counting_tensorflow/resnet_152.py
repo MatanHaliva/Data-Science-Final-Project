@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from keras.optimizers import SGD
-from keras.layers import Input, Dense, Conv2D, MaxPooling2D, AveragePooling2D, ZeroPadding2D, Flatten, Activation, add
-from keras.layers.normalization import BatchNormalization
-from keras.models import Model
-from keras import backend as K
+from tensorflow.keras.optimizers import SGD
+from tensorflow.keras.layers import Input, Dense, Conv2D, MaxPooling2D, AveragePooling2D, ZeroPadding2D, Flatten, Activation, add
+from tensorflow.keras.layers import BatchNormalization
+from tensorflow.keras.models import Model
+from tensorflow.keras import backend as K
 
 from sklearn.metrics import log_loss
 
