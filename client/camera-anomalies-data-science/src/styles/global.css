@@ -122,3 +122,9 @@ margin-left: 4px;
     border-color: #3b3b82;
     border-width: 5px;
 }
+
+
+.pagination-navbar {
+    display: flex;
+    justify-content: center;
+}

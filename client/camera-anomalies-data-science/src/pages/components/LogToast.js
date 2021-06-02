@@ -1,10 +1,46 @@
 import React, {Fragment, useState, useEffect  } from "react"
+import { useSelector } from 'react-redux'
 import * as style from "./css/LogToast.module.css"
+import Feedback from "./Feedback"
+import axios from "axios"
 
-const LogToast = ({id, detectionTime, description, detectionType, accuracy, toastShowFade}) => {
+const feedbackUrl = `https://feedbacks-api.azurewebsites.net/Feedbacks/GetAll`
+
+const carLogToast = ({licensePlate, color, manufacturer}) => {
     return (
         <Fragment>
-           <div style={{height: "200px", 'margin-bottom': "10px"}} className={`${toastShowFade}`} role="alert" aria-live="assertive" aria-atomic="true">
+            <div>License car: {licensePlate} </div>
+            <div>Manufacturer: {manufacturer}</div>
+            <div>Color: {color}</div>
+        </Fragment>
+    )
+}
+
+const faceLogToast = ({}) => {
+    return (
+        <Fragment>
+        </Fragment>
+    )
+}
+
+const LogToast = ({id, detectionTime, description, detectionType, detectionTypeName, accuracy, toastShowFade, licensePlate, color, manufacturer}) => {
+    const [feedbackData, setFeedBackData] = useState({found: false, personName: "N/A"})
+    
+    let feedbackResponses = useSelector(state => {
+        return state.app.feedbackResponses
+    }) || []
+
+    useEffect(async () => {
+        const getFeedbackForLicense = await axios.get(feedbackUrl)
+        const getFeedback = getFeedbackForLicense.data.filter(feedback => feedback.LicensePlate === licensePlate)
+        if (!!getFeedback.length) {
+            setFeedBackData({found: true, personName: getFeedback[0].PersonName})
+        }
+    }, [licensePlate, feedbackResponses])
+
+    return (
+        <Fragment>
+           <div style={{'margin-bottom': "10px"}} className={`${toastShowFade}`} role="alert" aria-live="assertive" aria-atomic="true">
                 <div className="toast-header">
                     <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#f09126"></rect></svg>
                     <strong className="me-auto">Detection Found</strong>
@@ -12,24 +48,15 @@ const LogToast = ({id, detectionTime, description, detectionType, accuracy, toas
                     <small className="text-muted">Video Time: {detectionTime}</small>
                     <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
-                <div style={{height: "100px"}} className="toast-body">
+                <div className="toast-body">
                     <div> Detection Time: {detectionTime}</div>
-                    <div> Detection Type: {detectionType}</div>
+                    <div> Detection Type Name: {detectionTypeName}</div>
                     <div> Description: {description}</div>
                     <div> Accuracy: {accuracy}</div>
-                    <div>Did it happen?</div>
-                    <div class="form-check form-check-inline">
-                        <input onClick={() => {}} class="form-check-input" type="checkbox" id="inlineCheckbox1" value="option1"/>
-                        <label class="form-check-label" for="inlineCheckbox1">Fatal</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox2" value="option2"/>
-                        <label class="form-check-label" for="inlineCheckbox2">High Risk</label>
-                    </div>
-                    <div class="form-check form-check-inline">
-                        <input class="form-check-input" type="checkbox" id="inlineCheckbox3" value="option3"/>
-                        <label class="form-check-label" for="inlineCheckbox3">Potiental Risk</label>
-                    </div>
+                    {detectionType === 0 ? carLogToast({licensePlate, color, manufacturer}) : <Fragment/>}
+                    <br/>
+                    {feedbackData ? <div>This car belongs to: { feedbackData.personName } </div> : <Fragment/>}
+                    {!feedbackData.found ? <Feedback feedbackType={detectionType} licensePlate={licensePlate}/> : <Fragment/>}
                 </div>
                 
             </div>

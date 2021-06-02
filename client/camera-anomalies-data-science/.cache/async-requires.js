@@ -11,6 +11,7 @@ exports.components = {
   "component---src-pages-components-card-loading-js": () => import("./../../../src/pages/components/CardLoading.js" /* webpackChunkName: "component---src-pages-components-card-loading-js" */),
   "component---src-pages-components-container-file-upload-js": () => import("./../../../src/pages/components/ContainerFileUpload.js" /* webpackChunkName: "component---src-pages-components-container-file-upload-js" */),
   "component---src-pages-components-container-nav-bar-js": () => import("./../../../src/pages/components/ContainerNavBar.js" /* webpackChunkName: "component---src-pages-components-container-nav-bar-js" */),
+  "component---src-pages-components-feedback-js": () => import("./../../../src/pages/components/Feedback.js" /* webpackChunkName: "component---src-pages-components-feedback-js" */),
   "component---src-pages-components-file-upload-js": () => import("./../../../src/pages/components/FileUpload.js" /* webpackChunkName: "component---src-pages-components-file-upload-js" */),
   "component---src-pages-components-footer-js": () => import("./../../../src/pages/components/Footer.js" /* webpackChunkName: "component---src-pages-components-footer-js" */),
   "component---src-pages-components-layout-js": () => import("./../../../src/pages/components/Layout.js" /* webpackChunkName: "component---src-pages-components-layout-js" */),

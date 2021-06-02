@@ -1,9 +1,20 @@
 .flex_grow_4 {
-    flex-grow: 4
+    flex-grow: 4;
+    height:100%;
+    width:100%;
 }
 
 .flex_grow_2 {
-    flex-grow: 2
+    flex-grow: 2;
+    max-width: 50%;
+    float: left;
+    height: 100vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background: #EFF0F1;
+    padding: 20px;
+    overflow: scroll;
+    min-width: 300px;
 }
 
 .toast {

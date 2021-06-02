@@ -1,9 +1,22 @@
 .container-dashboard {
     display: flex;
     flex-flow: row wrap;
+    justify-content: center;
 }
 
 .modal-relative {
     position: fixed;
     bottom: 0;
+}
+
+.top-15 {
+    top: 15%!important;
+}
+
+.container-all {
+
+}
+
+.overflow-body {
+    overflow: hidden;
 }

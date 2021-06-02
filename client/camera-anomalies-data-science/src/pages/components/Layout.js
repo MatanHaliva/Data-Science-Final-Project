@@ -36,13 +36,13 @@ const Layout = ({children}) => {
     return (
         isLoggedValue ? 
         <Fragment>
-            <ContainerNavBar/>
-            <div className={`layout ${style.main}`}>
-                {/* <SideBar/> */}
-                <div className="scrollAble flex-fill">
-                    {children}
+            <div className="container-all">
+                <ContainerNavBar/>
+                <div className={`layout ${style.main}`}>
+                    <div className="scrollAble flex-fill">
+                        {children}
+                    </div>
                 </div>
-                {/* <Footer/> */}
             </div>
         </Fragment>
            : navigateToLoginPage()
