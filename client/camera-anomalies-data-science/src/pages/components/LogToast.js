@@ -24,7 +24,7 @@ const faceLogToast = ({}) => {
 }
 
 const LogToast = ({id, detectionTime, description, detectionType, detectionTypeName, accuracy, toastShowFade, licensePlate, color, manufacturer}) => {
-    const [feedbackData, setFeedBackData] = useState({found: false, personName: "N/A"})
+    const [feedbackData, setFeedBackData] = useState({found: false, personName: "N/A", loading: true})
     
     let feedbackResponses = useSelector(state => {
         return state.app.feedbackResponses
@@ -34,13 +34,13 @@ const LogToast = ({id, detectionTime, description, detectionType, detectionTypeN
         const getFeedbackForLicense = await axios.get(feedbackUrl)
         const getFeedback = getFeedbackForLicense.data.filter(feedback => feedback.LicensePlate === licensePlate)
         if (!!getFeedback.length) {
-            setFeedBackData({found: true, personName: getFeedback[0].PersonName})
+            setFeedBackData({found: true, personName: getFeedback[0].PersonName, loading: false})
         }
     }, [licensePlate, feedbackResponses])
 
     return (
         <Fragment>
-           <div style={{'margin-bottom': "10px"}} className={`${toastShowFade}`} role="alert" aria-live="assertive" aria-atomic="true">
+            <div style={{'margin-bottom': "10px"}} className={`${toastShowFade}`} role="alert" aria-live="assertive" aria-atomic="true">
                 <div className="toast-header">
                     <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#f09126"></rect></svg>
                     <strong className="me-auto">Detection Found</strong>
@@ -49,16 +49,28 @@ const LogToast = ({id, detectionTime, description, detectionType, detectionTypeN
                     <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div className="toast-body">
-                    <div> Detection Time: {detectionTime}</div>
-                    <div> Detection Type Name: {detectionTypeName}</div>
-                    <div> Description: {description}</div>
-                    <div> Accuracy: {accuracy}</div>
-                    {detectionType === 0 ? carLogToast({licensePlate, color, manufacturer}) : <Fragment/>}
-                    <br/>
-                    {feedbackData ? <div>This car belongs to: { feedbackData.personName } </div> : <Fragment/>}
-                    {!feedbackData.found ? <Feedback feedbackType={detectionType} licensePlate={licensePlate}/> : <Fragment/>}
+                    {
+                    !feedbackData.loading ?
+                    <Fragment>
+                        <div> Detection Time: {detectionTime}</div>
+                        <div> Detection Type Name: {detectionTypeName}</div>
+                        <div> Description: {description}</div>
+                        <div> Accuracy: {accuracy}</div>
+                        {detectionType === 0 ? carLogToast({licensePlate, color, manufacturer}) : <Fragment/>}
+                        <br/>
+                        {feedbackData ? <div>This car belongs to: { feedbackData.personName } </div> : <Fragment/>}
+                        {!feedbackData.found ? <Feedback feedbackType={detectionType} licensePlate={licensePlate}/> : <Fragment/>}
+                    </Fragment>
+                    :
+                    <Fragment>
+                        <div className="loading-spinner">
+                            <div class="spinner-border text-warning" role="status">
+                                <span class="visually-hidden">Loading...</span>
+                            </div>
+                        </div>
+                    </Fragment>
+                    }
                 </div>
-                
             </div>
         </Fragment>
     )

@@ -5,7 +5,9 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import "./src/styles/global.css"
 import "./src/styles/loading.card.css"
 import "./src/styles/dashbaord.css"
+import "./src/styles/file.upload.css"
 
+import "./src/styles/add.js"
 
 import wrapWithProvider from "./wrap-with-provider"
 export const wrapRootElement = wrapWithProvider

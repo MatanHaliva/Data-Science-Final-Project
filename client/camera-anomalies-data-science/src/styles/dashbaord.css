@@ -20,3 +20,11 @@
 .overflow-body {
     overflow: hidden;
 }
+
+.top-80 {
+    top: 80% !important;
+}
+
+.be-first { 
+    z-index: 999999;
+}
