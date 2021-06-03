@@ -9,6 +9,9 @@ import random
 import cv2 as cv
 import numpy as np
 import scipy.io
+import subprocess
+from subprocess import Popen
+import json 
 
 from utils_models import load_model
 
@@ -76,12 +79,21 @@ class Process(threading.Thread):
                 "Accuracy": float(result["prob"]),
                 "Color": result["detection_car"][0],
                 "Manufacturer": result["label"],
-                "LicensePlate": result["label"]
+                "LicensePlate": result["license_car"]
             })
 
         response = requests.post('https://detections-api.azurewebsites.net/Detections/CreateCars', json=objects_detection_format, verify=True)
 
         print(response.json())
+
+    def detect_license_car(self, img_path):
+        command = '''docker run -it --rm -v $(pwd):/data:ro openalpr -j -c us ''' + img_path
+        process = Popen(command,shell=True,stdout=subprocess.PIPE)
+        result = process.communicate()
+        a,b = result
+
+        return json.loads(a)
+
 
     def model_detect_car(self, car_to_detect, model, cars_meta, class_names, frame_number):
         img_width, img_height = 224, 224
@@ -101,23 +113,30 @@ class Process(threading.Thread):
                 rgb_img = cv.cvtColor(bgr_img, cv.COLOR_BGR2RGB)
                 rgb_img = np.expand_dims(rgb_img, 0)
                 preds = model.predict(rgb_img)
+                license_car = self.detect_license_car(filename)
+                license_plate = "N/A"
+                if license_car["results"]:
+                    license_plate = license_car["results"][0]["plate"]
+                    print("plate: " + str(license_plate))
+                    print("data: " + str(license_car["results"][0]))
                 prob = np.max(preds)
                 class_id = np.argmax(preds)
                 text = ('Predict: {}, prob: {}'.format(class_names[class_id][0][0], prob))
-                results.append({'label': class_names[class_id][0][0], 'prob': '{:.4}'.format(prob), 'picture name': image_name, 'frame_number': car["detection_time"], 'detection_car': car["type"]})
+                results.append({'label': class_names[class_id][0][0], 'prob': '{:.4}'.format(prob), 'picture name': image_name, 'frame_number': car["detection_time"], 'detection_car': car["type"], 'license_car': license_plate})
                 #cv.imwrite('images/{}_out.png'.format(image_name), bgr_img)
                 print("successfully")
             except Exception as e:
                 print(str(e))
 
 
+        results
         
         print(results)
         #detection_collection.insert_many(results)
         print("blaaaa")
 
-        with open('results.json', 'a') as file:
-            json.dump(results, file, indent=4)
+        # with open('results.json', 'a') as file:
+        #     json.dump(results, file, indent=4)
 
         self.create_detections(results)
 
@@ -330,7 +349,7 @@ class Process(threading.Thread):
 
 
 
-                    if len(car_to_detect) > 100:
+                    if len(car_to_detect) > 15:
                         new_list = list(car_to_detect)
                         
                         print("try to process.....")
