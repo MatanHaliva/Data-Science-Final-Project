@@ -10,11 +10,14 @@ import { sleep } from "../../../../../server-files/helper"
 
 
 const Dashboard = ({processedVideos}) => {
+    const numberCardsPerPage = 6
     const endpoint = 'http://localhost:33345'
     const [timer, setTimer] = useState()
     const [processesVideo, setProcessesVideo] = useState([])
     const [rawProcessesVideo, setRawProcessesVideo] = useState([])
     const [rawUploads, setRawUploads] = useState([])
+    const [currentPage, setCurrentPage] = useState(0)
+    const [numberPages, setNumberPages] = useState(6)
 
     const [loading, setLoading] = useState(false)
     const pathUrlProcess = `${endpoint}/process`
@@ -97,6 +100,10 @@ const Dashboard = ({processedVideos}) => {
         }
     })
 
+    useEffect(async () => {
+        setNumberPages(Math.round(processesVideo.length ? processesVideo.length / numberCardsPerPage : 0))
+    }, [processesVideo])
+
     return (
         <Layout>
             <div class="d-flex flex-column bd-highlight mb-3 flex-fill">
@@ -122,7 +129,7 @@ const Dashboard = ({processedVideos}) => {
                                     </h5>
                                 </div>
                             </Fragment> :
-                            processesVideo.map(processedVideo => {
+                            processesVideo.slice(currentPage * numberCardsPerPage, currentPage * numberCardsPerPage + numberCardsPerPage).map(processedVideo => {
                                 console.log("processedVideo", processedVideo)
                                 const pathUrl = `${endpoint}${processedVideo.path}`
 
@@ -140,6 +147,18 @@ const Dashboard = ({processedVideos}) => {
                             })
                         }
                     </div>
+                    <nav className="pagination-navbar" aria-label="Page navigation example">
+                        <ul class="pagination">
+                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            {
+                                [...Array(numberPages).keys()].map(num => {
+                                    return (<li className={`page-item ${num === currentPage ? 'active': ''}`} ><a class="page-link" onClick={(e) => setCurrentPage(num)} href="#">{num}</a></li>)
+                                
+                                }) 
+                            }
+                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </Layout>
