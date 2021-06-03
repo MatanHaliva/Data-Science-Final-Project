@@ -44,7 +44,6 @@ const Layout = ({children}) => {
                         {children}
                     </div>
                 </div>
-                <SelectedUpload/>
             </div>
         </Fragment>
            : navigateToLoginPage()

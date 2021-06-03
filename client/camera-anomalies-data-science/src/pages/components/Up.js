@@ -9,7 +9,6 @@ const Up = ({uploadedVideos, pickVideo}) => {
     const [currentPage, setCurrentPage] = useState(0)
 
     const onCardClicked = (uploadedVideoIndex) => {
-        debugger
         const uploadedVideo = uploadedVideos.filter(uploadedVideo => uploadedVideo.id === uploadedVideoIndex)
         pickVideo(uploadedVideo[0].id, uploadedVideo[0].path)
     }
@@ -17,7 +16,6 @@ const Up = ({uploadedVideos, pickVideo}) => {
     const getVideos = (uploadedVideos) => {
         const numberCardsPerPage = 6
         const numberPages = Math.round(uploadedVideos.length ? uploadedVideos.length / numberCardsPerPage : 0)
-        console.log('num', numberPages)
 
         return (
             <Fragment>
