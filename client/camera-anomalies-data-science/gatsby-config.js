@@ -3,6 +3,7 @@ module.exports = {
     title: "camera-anomalies-data-science",
   },
   plugins: [
+    "gatsby-plugin-fontawesome-css",
     "gatsby-plugin-react-helmet",
     "gatsby-plugin-fontawesome-css",
     "gatsby-plugin-sass",

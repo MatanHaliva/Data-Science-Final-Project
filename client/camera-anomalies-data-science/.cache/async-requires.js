@@ -31,6 +31,7 @@ exports.components = {
   "component---src-pages-my-videos-index-js": () => import("./../../../src/pages/myVideos/index.js" /* webpackChunkName: "component---src-pages-my-videos-index-js" */),
   "component---src-pages-process-video-index-js": () => import("./../../../src/pages/processVideo/index.js" /* webpackChunkName: "component---src-pages-process-video-index-js" */),
   "component---src-pages-process-video-process-video-js": () => import("./../../../src/pages/processVideo/processVideo.js" /* webpackChunkName: "component---src-pages-process-video-process-video-js" */),
+  "component---src-pages-test-card-index-js": () => import("./../../../src/pages/testCard/index.js" /* webpackChunkName: "component---src-pages-test-card-index-js" */),
   "component---src-pages-upload-video-index-js": () => import("./../../../src/pages/uploadVideo/index.js" /* webpackChunkName: "component---src-pages-upload-video-index-js" */),
   "component---src-pages-upload-video-upload-video-js": () => import("./../../../src/pages/uploadVideo/uploadVideo.js" /* webpackChunkName: "component---src-pages-upload-video-upload-video-js" */)
 }

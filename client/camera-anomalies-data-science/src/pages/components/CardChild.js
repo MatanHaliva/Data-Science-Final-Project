@@ -1,9 +1,11 @@
 import React from "react"
 import { Fragment } from "react";
 import { FaVideo } from 'react-icons/fa';
+import {useSelector} from "react-redux"
 
-const CardChild = ({loading, children, cardHeader, cardDescription, width, height, picked}) => {
+const CardChild = ({loading, children, cardHeader, cardDescription, width, height, picked, index, onCardClicked}) => {
     const className = picked ? "card card-picked" : "card"  
+    const contextId = useSelector(state => state.app.contextId)
 
     const loadingPage = () => {
         console.log("picked loading page..")
@@ -34,21 +36,22 @@ const CardChild = ({loading, children, cardHeader, cardDescription, width, heigh
     }
 
     const notLoadingPage = () => {
-        console.log("picked not loading page..")
-
         return (
-            <div className={className} style={{width: width, height: height}}>
-                <div class="card-body">
-                    <h1 class="card-title">{cardHeader} <FaVideo/></h1> 
-                    <p class="card-text">{cardDescription}</p>
-                </div>
-                <div class="position-absolute top-50 start-50 translate-middle">
+            <div className={`selection-wrapper`} style={{width: width, height: height}}>
+            <label htmlFor={`selected-item-${index}`} class="selected-label">
+                <input checked={contextId === index ? true : false} onClick={() => {
+                    debugger
+                    onCardClicked(index)
+                     }
+                } type="radio" name="selected-item" id={`selected-item-${index}`}/>
+                <span class="icon"></span>
+                <div class="selected-content" style={{width: width, height: height}}>
                     {children}
                 </div>
-            </div>
+            </label>
+        </div>
         )
     }
-    console.log("loading", loading)
    
     return loading ? loadingPage() : notLoadingPage()
 

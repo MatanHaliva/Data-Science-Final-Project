@@ -111,7 +111,7 @@ const Dashboard = ({processedVideos}) => {
                     <h4 className="display-4 text-center mb-4">
                         <i className="fab fa-react">My Processing</i>
                     </h4>
-                    <div className="container-dashboard">
+                    <div>
                         {   
                             loading ? 
                             <Fragment>
@@ -129,36 +129,42 @@ const Dashboard = ({processedVideos}) => {
                                     </h5>
                                 </div>
                             </Fragment> :
-                            processesVideo.slice(currentPage * numberCardsPerPage, currentPage * numberCardsPerPage + numberCardsPerPage).map(processedVideo => {
-                                console.log("processedVideo", processedVideo)
-                                const pathUrl = `${endpoint}${processedVideo.path}`
-
-                                return(
-                                    <Fragment key={processedVideo.id}>
-                                            <div class="p-3 bd-highlight">
-                                            <CardChild loading={processedVideo.loading} cardHeader={processedVideo.header} cardDescription={processedVideo.description} width={processedVideo.width} height={processedVideo.height}>
-                                                <Video videoUrl={pathUrl} videoHeight={`${processedVideo.height - 100}px`} videoWidth={`${processedVideo.width - 200}px`}  />
-                                                {processedVideo.status === 100 ? <h8>Finished Processing</h8> : processedVideo.status === 0 ? <h8>Did not start Processing</h8> : <Progress percents={processedVideo.status}/>}
-                                            </CardChild>
-                                            </div>
-                                    </Fragment>
-                                )
-                        
-                            })
+                            <Fragment>
+                                <div className="container-dashboard">
+                                    {
+                                        processesVideo.slice(currentPage * numberCardsPerPage, currentPage * numberCardsPerPage + numberCardsPerPage).map(processedVideo => {
+                                            console.log("processedVideo", processedVideo)
+                                            const pathUrl = `${endpoint}${processedVideo.path}`
+            
+                                            return(
+                                                <Fragment key={processedVideo.id}>
+                                                        <div class="p-3 bd-highlight">
+                                                        <CardChild loading={processedVideo.loading} cardHeader={processedVideo.header} cardDescription={processedVideo.description} width={processedVideo.width} height={processedVideo.height}>
+                                                            <Video videoUrl={pathUrl} videoHeight={`${processedVideo.height - 100}px`} videoWidth={`${processedVideo.width - 200}px`}  />
+                                                            {processedVideo.status === 100 ? <h8>Finished Processing</h8> : processedVideo.status === 0 ? <h8>Did not start Processing</h8> : <Progress percents={processedVideo.status}/>}
+                                                        </CardChild>
+                                                        </div>
+                                                </Fragment>
+                                            )
+                                    
+                                        })
+                                    }
+                                </div>
+                                <nav className="pagination-navbar" aria-label="Page navigation example">
+                                    <ul class="pagination">
+                                        <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                                        {
+                                            [...Array(numberPages).keys()].map(num => {
+                                                return (<li className={`page-item ${num === currentPage ? 'active': ''}`} ><a class="page-link" onClick={(e) => setCurrentPage(num)} href="#">{num}</a></li>)
+                                            
+                                            }) 
+                                        }
+                                        <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                                    </ul>
+                                </nav>
+                            </Fragment>
                         }
                     </div>
-                    <nav className="pagination-navbar" aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-                            {
-                                [...Array(numberPages).keys()].map(num => {
-                                    return (<li className={`page-item ${num === currentPage ? 'active': ''}`} ><a class="page-link" onClick={(e) => setCurrentPage(num)} href="#">{num}</a></li>)
-                                
-                                }) 
-                            }
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-                        </ul>
-                    </nav>
                 </div>
             </div>
         </Layout>

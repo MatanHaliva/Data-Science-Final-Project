@@ -1,10 +1,10 @@
 var plugins = [{
-      name: 'gatsby-plugin-react-helmet',
-      plugin: require('/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/node_modules/gatsby-plugin-react-helmet/gatsby-ssr'),
+      name: 'gatsby-plugin-fontawesome-css',
+      plugin: require('/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/node_modules/gatsby-plugin-fontawesome-css/gatsby-ssr'),
       options: {"plugins":[]},
     },{
-      name: 'gatsby-plugin-fontawesome-css',
-      plugin: require('/Users/eladisraeli/node_modules/gatsby-plugin-fontawesome-css/gatsby-ssr'),
+      name: 'gatsby-plugin-react-helmet',
+      plugin: require('/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/node_modules/gatsby-plugin-react-helmet/gatsby-ssr'),
       options: {"plugins":[]},
     },{
       name: 'gatsby-plugin-google-analytics',

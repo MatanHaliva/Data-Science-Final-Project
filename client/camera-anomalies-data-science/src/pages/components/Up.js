@@ -1,10 +1,18 @@
 import React, { Fragment, useEffect, useState} from "react"
+import { useDispatch } from "react-redux"
+import uploadVideo from "../uploadVideo"
 import CardChild  from "./CardChild"
 import Video from "./Video"
 
 const Up = ({uploadedVideos, pickVideo}) => {
     const endpoint = 'http://localhost:33345'
     const [currentPage, setCurrentPage] = useState(0)
+
+    const onCardClicked = (uploadedVideoIndex) => {
+        debugger
+        const uploadedVideo = uploadedVideos.filter(uploadedVideo => uploadedVideo.id === uploadedVideoIndex)
+        pickVideo(uploadedVideo[0].id, uploadedVideo[0].path)
+    }
 
     const getVideos = (uploadedVideos) => {
         const numberCardsPerPage = 6
@@ -16,13 +24,14 @@ const Up = ({uploadedVideos, pickVideo}) => {
                 <div>
                     <div class="container-dashboard">
                         {
-                            uploadedVideos.slice(currentPage * numberCardsPerPage, currentPage * numberCardsPerPage + numberCardsPerPage).map(uploadedVideo => {
+                            uploadedVideos.slice(currentPage * numberCardsPerPage, currentPage * numberCardsPerPage + numberCardsPerPage).map((uploadedVideo, index) => {
                                 return (
                                     <Fragment>
                                         <div class="p-3 bd-highlight" key={uploadedVideo.id}>
-                                            <CardChild picked={uploadedVideo.picked} loading={uploadedVideo.loading} cardHeader={uploadedVideo.header} cardDescription={uploadedVideo.description} width={uploadedVideo.width} height={uploadedVideo.height}>
-                                                <Video videoUrl={`${endpoint}${uploadedVideo.path}`} videoHeight={`${uploadedVideo.height - 100}px`} videoWidth={`${uploadedVideo.width - 200}px`}  />
-                                                <button value="Pick Video" className="btn btn-primary btn-block mt-4" onClick={() => pickVideo(uploadedVideo.id, uploadedVideo.path)} > Pick Video </button>
+                                            <CardChild index={uploadedVideo.id} picked={uploadedVideo.picked} loading={uploadedVideo.loading} cardHeader={uploadedVideo.header} cardDescription={uploadedVideo.description} width={uploadedVideo.width} height={uploadedVideo.height} onCardClicked={onCardClicked}>
+                                                <Video videoUrl={`${endpoint}${uploadedVideo.path}`} videoHeight={'100%'} videoWidth={`100%`}  />
+                                                <div>Context Id: {uploadedVideo.id}</div>
+                                                <div>File Path: {uploadedVideo.path}</div>
                                             </CardChild>
                                         </div>
                                     </Fragment>

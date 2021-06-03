@@ -4038,14 +4038,14 @@ module.exports.wrap = wrap;
 /***/ ((module, __unused_webpack_exports, __webpack_require__) => {
 
 var plugins = [{
-  name: 'gatsby-plugin-react-helmet',
-  plugin: __webpack_require__(/*! ./node_modules/gatsby-plugin-react-helmet/gatsby-ssr */ "./node_modules/gatsby-plugin-react-helmet/gatsby-ssr.js"),
+  name: 'gatsby-plugin-fontawesome-css',
+  plugin: __webpack_require__(/*! ./node_modules/gatsby-plugin-fontawesome-css/gatsby-ssr */ "./node_modules/gatsby-plugin-fontawesome-css/gatsby-ssr.js"),
   options: {
     "plugins": []
   }
 }, {
-  name: 'gatsby-plugin-fontawesome-css',
-  plugin: __webpack_require__(/*! ../../../../../node_modules/gatsby-plugin-fontawesome-css/gatsby-ssr */ "../../../../../node_modules/gatsby-plugin-fontawesome-css/gatsby-ssr.js"),
+  name: 'gatsby-plugin-react-helmet',
+  plugin: __webpack_require__(/*! ./node_modules/gatsby-plugin-react-helmet/gatsby-ssr */ "./node_modules/gatsby-plugin-react-helmet/gatsby-ssr.js"),
   options: {
     "plugins": []
   }
@@ -4400,6 +4400,52 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _wrap_with_provider__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./wrap-with-provider */ "./wrap-with-provider.js");
 
 const wrapRootElement = _wrap_with_provider__WEBPACK_IMPORTED_MODULE_0__.default;
+
+/***/ }),
+
+/***/ "./node_modules/gatsby-plugin-fontawesome-css/gatsby-ssr.js":
+/*!******************************************************************!*\
+  !*** ./node_modules/gatsby-plugin-fontawesome-css/gatsby-ssr.js ***!
+  \******************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+const {
+  getStyleTag
+} = __webpack_require__(/*! ./utils */ "./node_modules/gatsby-plugin-fontawesome-css/utils.js");
+
+let styleTag = null;
+
+exports.onRenderBody = ({
+  setHeadComponents
+}) => {
+  if (!styleTag) {
+    styleTag = getStyleTag();
+  }
+
+  setHeadComponents([styleTag]);
+};
+
+/***/ }),
+
+/***/ "./node_modules/gatsby-plugin-fontawesome-css/utils.js":
+/*!*************************************************************!*\
+  !*** ./node_modules/gatsby-plugin-fontawesome-css/utils.js ***!
+  \*************************************************************/
+/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
+
+const React = __webpack_require__(/*! react */ "react");
+
+const {
+  dom
+} = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ "../../../../../node_modules/@fortawesome/fontawesome-svg-core/index.es.js");
+
+exports.getStyleTag = () => React.createElement('style', {
+  key: 'gatsby-plugin-fontawesome-css',
+  type: 'text/css',
+  dangerouslySetInnerHTML: {
+    __html: dom.css()
+  }
+});
 
 /***/ }),
 
@@ -47111,44 +47157,6 @@ var SAGA_LOCATION =
 createSymbol('LOCATION');
 
 
-
-
-/***/ }),
-
-/***/ "../../../../../node_modules/gatsby-plugin-fontawesome-css/gatsby-ssr.js":
-/*!*******************************************************************************!*\
-  !*** ../../../../../node_modules/gatsby-plugin-fontawesome-css/gatsby-ssr.js ***!
-  \*******************************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-const { getStyleTag } = __webpack_require__(/*! ./utils */ "../../../../../node_modules/gatsby-plugin-fontawesome-css/utils.js")
-
-let styleTag = null
-exports.onRenderBody = ({ setHeadComponents }) => {
-  if (!styleTag) {
-    styleTag = getStyleTag()
-  }
-  setHeadComponents([styleTag])
-}
-
-
-/***/ }),
-
-/***/ "../../../../../node_modules/gatsby-plugin-fontawesome-css/utils.js":
-/*!**************************************************************************!*\
-  !*** ../../../../../node_modules/gatsby-plugin-fontawesome-css/utils.js ***!
-  \**************************************************************************/
-/***/ ((__unused_webpack_module, exports, __webpack_require__) => {
-
-const React = __webpack_require__(/*! react */ "react")
-const { dom } = __webpack_require__(/*! @fortawesome/fontawesome-svg-core */ "../../../../../node_modules/@fortawesome/fontawesome-svg-core/index.es.js")
-
-exports.getStyleTag = () =>
-  React.createElement('style', {
-    key: 'gatsby-plugin-fontawesome-css',
-    type: 'text/css',
-    dangerouslySetInnerHTML: { __html: dom.css() },
-  })
 
 
 /***/ }),
