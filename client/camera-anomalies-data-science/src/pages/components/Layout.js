@@ -1,6 +1,7 @@
 import React, {Fragment, useState} from "react"
 import { Link, navigate } from "gatsby"
 import ContainerNavBar from "./ContainerNavBar"
+import SelectedUpload from "./SelectedUpload"
 import Footer from "./Footer"
 import SideBar from "./SideBar"
 import * as style from "./css/Layout.module.css"
@@ -43,6 +44,7 @@ const Layout = ({children}) => {
                         {children}
                     </div>
                 </div>
+                <SelectedUpload/>
             </div>
         </Fragment>
            : navigateToLoginPage()

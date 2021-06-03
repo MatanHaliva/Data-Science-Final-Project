@@ -40,10 +40,10 @@ const CardChild = ({loading, children, cardHeader, cardDescription, width, heigh
             <div className={`selection-wrapper`} style={{width: width, height: height}}>
             <label htmlFor={`selected-item-${index}`} class="selected-label">
                 <input checked={contextId === index ? true : false} onClick={() => {
-                    debugger
-                    onCardClicked(index)
-                     }
-                } type="radio" name="selected-item" id={`selected-item-${index}`}/>
+                    if (typeof v === 'function') {
+                        onCardClicked(index)
+                    }
+                }} type="radio" name="selected-item" id={`selected-item-${index}`}/>
                 <span class="icon"></span>
                 <div class="selected-content" style={{width: width, height: height}}>
                     {children}

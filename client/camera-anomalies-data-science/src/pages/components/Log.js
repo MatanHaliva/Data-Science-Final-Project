@@ -32,7 +32,7 @@ const Log = ({rows, videoTime}) => {
 
     return (
         <Fragment>
-            <h2>Logs: </h2>
+            <h2>Alerts: </h2>
             <Fragment>
                 {
                     createToasts()

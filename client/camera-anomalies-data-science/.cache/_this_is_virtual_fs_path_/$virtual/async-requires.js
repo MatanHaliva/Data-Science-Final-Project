@@ -20,6 +20,7 @@ exports.components = {
   "component---src-pages-components-modal-js": () => import("./../../../src/pages/components/Modal.js" /* webpackChunkName: "component---src-pages-components-modal-js" */),
   "component---src-pages-components-nav-bar-js": () => import("./../../../src/pages/components/NavBar.js" /* webpackChunkName: "component---src-pages-components-nav-bar-js" */),
   "component---src-pages-components-progress-js": () => import("./../../../src/pages/components/Progress.js" /* webpackChunkName: "component---src-pages-components-progress-js" */),
+  "component---src-pages-components-selected-upload-js": () => import("./../../../src/pages/components/SelectedUpload.js" /* webpackChunkName: "component---src-pages-components-selected-upload-js" */),
   "component---src-pages-components-side-bar-js": () => import("./../../../src/pages/components/SideBar.js" /* webpackChunkName: "component---src-pages-components-side-bar-js" */),
   "component---src-pages-components-up-js": () => import("./../../../src/pages/components/Up.js" /* webpackChunkName: "component---src-pages-components-up-js" */),
   "component---src-pages-components-video-js": () => import("./../../../src/pages/components/Video.js" /* webpackChunkName: "component---src-pages-components-video-js" */),
