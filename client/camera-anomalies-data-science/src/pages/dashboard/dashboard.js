@@ -7,9 +7,9 @@ import processVideo from "../processVideo"
 import axios from "axios"
 import { useSelector } from 'react-redux'
 import { sleep } from "../../../../../server-files/helper"
+import findPage from "./helper"
 
-
-const Dashboard = ({processedVideos}) => {
+const Dashboard = ({}) => {
     const numberCardsPerPage = 6
     const endpoint = 'http://localhost:33345'
     const [timer, setTimer] = useState()
@@ -24,6 +24,9 @@ const Dashboard = ({processedVideos}) => {
     const pathUrlUpload = `${endpoint}/upload`
     let userToken = useSelector(state => {
         return state.login.loggedToken
+    })
+    const contextId = useSelector(state => {
+        return state.app.contextId
     })
 
     const processesForEver = useRef()
@@ -43,6 +46,7 @@ const Dashboard = ({processedVideos}) => {
         const list = processes.data.processes.map(process => {
             const uploadForProcess = rawUploads.filter(upload => upload.contextId === process.contextId)[0]
             return {
+                contextId: process.contextId,
                 id: process._id,
                 header: 'Process',
                 description: 'Description ' + process._id,
@@ -99,6 +103,12 @@ const Dashboard = ({processedVideos}) => {
             clearTimeout(timer)
         }
     })
+
+    useEffect(() => {
+        debugger
+        const pageContextIdExists = findPage(processesVideo, contextId, numberCardsPerPage)
+        setCurrentPage(pageContextIdExists === -1 ? 0 : pageContextIdExists)
+    }, [processesVideo])
 
     useEffect(async () => {
         setNumberPages(Math.ceil(processesVideo.length ? processesVideo.length / numberCardsPerPage : 0))
