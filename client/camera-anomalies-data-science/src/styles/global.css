@@ -161,3 +161,11 @@ margin-left: 4px;
     color: #6c63ff;
     margin-top: 10px
 }
+
+.float-right {
+    float: right;
+}
+
+.padding-left-25 {
+    padding-left: 55px !important;
+}

@@ -35,7 +35,7 @@ const Up = ({uploadedVideos, pickVideo}) => {
                                 return (
                                     <Fragment>
                                         <div class="p-3 bd-highlight" key={uploadedVideo.id}>
-                                            <CardChild index={uploadedVideo.id} picked={uploadedVideo.picked} loading={uploadedVideo.loading} cardHeader={uploadedVideo.header} cardDescription={uploadedVideo.description} width={uploadedVideo.width} height={uploadedVideo.height} onCardClicked={onCardClicked}>
+                                            <CardChild clickAble={true} index={uploadedVideo.id} picked={uploadedVideo.picked} loading={uploadedVideo.loading} cardHeader={uploadedVideo.header} cardDescription={uploadedVideo.description} width={uploadedVideo.width} height={uploadedVideo.height} onCardClicked={onCardClicked}>
                                                 <Video videoUrl={`${endpoint}${uploadedVideo.path}`} videoHeight={'100%'} videoWidth={`100%`}  />
                                                 <div>Context Id: {uploadedVideo.id}</div>
                                                 <div>File Path: {uploadedVideo.path}</div>

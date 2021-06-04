@@ -59,7 +59,6 @@ const Dashboard = ({}) => {
         })
         setProcessesVideo(list)
         clearTimeout(timer.current)
-        debugger
         const currentTimer = setTimeout(async () => await getProcesses(), 1000)
         timer.current = currentTimer
     }
@@ -101,7 +100,6 @@ const Dashboard = ({}) => {
 
     useEffect(() => {
         return () => {
-            debugger
             timer.current && clearTimeout(timer.current)
         }
     },[])
@@ -149,7 +147,7 @@ const Dashboard = ({}) => {
                                             return(
                                                 <Fragment key={processedVideo.id}>
                                                         <div class="p-3 bd-highlight">
-                                                        <CardChild loading={processedVideo.loading} cardHeader={processedVideo.header} cardDescription={processedVideo.description} width={processedVideo.width} height={processedVideo.height}>
+                                                        <CardChild clickAble={false} loading={processedVideo.loading} cardHeader={processedVideo.header} cardDescription={processedVideo.description} width={processedVideo.width} height={processedVideo.height}>
                                                             <Video videoUrl={pathUrl} videoHeight={`${processedVideo.height - 100}px`} videoWidth={`${processedVideo.width - 200}px`}  />
                                                             {processedVideo.status === 100 ? <h6>Finished Processing</h6> : processedVideo.status === 0 ? <h6>Did not start Processing</h6> : <Progress percents={processedVideo.status}/>}
                                                         </CardChild>
