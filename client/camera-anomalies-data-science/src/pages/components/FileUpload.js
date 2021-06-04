@@ -23,7 +23,6 @@ const FileUpload = ({ contextId, count, increment, setContextId, setFilePath, se
     })
 
     useEffect(() => {
-        debugger
         window.supportDrag = function() {
             let div = document.createElement('div');
             return (('draggable' in div) || ('ondragstart' in div && 'ondrop' in div)) && 'FormData' in window && 'FileReader' in window;
@@ -49,7 +48,7 @@ const FileUpload = ({ contextId, count, increment, setContextId, setFilePath, se
             document.querySelectorAll('.file-input')[0].classList.remove('file-input--active');
             });
         }
-    }, [{}])
+    }, [])
 
     const onChange = e => {
         setFile(e.target.files[0])
@@ -69,7 +68,7 @@ const FileUpload = ({ contextId, count, increment, setContextId, setFilePath, se
                     "Content-Type": "multipart/form-data",
                     "Authorization": userToken
                 },
-                onDownloadProgress: (progressEvent) => {
+                onUploadProgress: (progressEvent) => {
                     const { loaded, total } = progressEvent;
                     setUploadPercentage(Math.round(loaded * 100 / total))
                 }
@@ -99,15 +98,6 @@ const FileUpload = ({ contextId, count, increment, setContextId, setFilePath, se
     return (
         <Fragment>
             <form onSubmit={onSubmit} className="form">
-                {/* <div className="custom-file mb-4">
-                    <input className="form-control" type="file" id="customFile" onChange={onChange} />
-                    <label htmlFor="customFile" className="form-label"> {filename} </label>
-                </div>
-                <Progress percents={uploadPercentage}/>
-
-                {loading ? <div>Loading ...</div> : <div></div>} */}
-
-
                 <div class="file-container">
                     <div class=""></div>
                     <div class="file-wrapper">
@@ -123,15 +113,15 @@ const FileUpload = ({ contextId, count, increment, setContextId, setFilePath, se
                     </div>
                 </div>
 
-                <div className="position-absolute top-80 start-50 translate-middle">
+                <div className="position-absolute be-first">
                     <input disabled={!file} type="submit" value="Upload" className="btn btn-primary btn-block" />
-                    <Progress percents={uploadPercentage}/>
+                    <Progress className="progress-upload" percents={uploadPercentage}/>
                     {loading ? <div>Loading ...</div> : <div></div>}
                 </div>
         
 
                 {uploadedFile.isPassed ? 
-                    <div className="position-absolute top-80 start-50 translate-middle be-first">
+                    <div className="position-absolute top-50 start-50 translate-middle first-level">
                         <Modal modalText={"Are you want to proceed for processing?"} modalTitle={"Upload Passed Successfully"} 
                         onSave={(e) => {
                             navigate("/processVideo")
@@ -145,9 +135,6 @@ const FileUpload = ({ contextId, count, increment, setContextId, setFilePath, se
                 : 
                 <div>{errorUploadingFile && errorUploadingFile.msg}</div>}
             </form>
-
-       
-
         </Fragment>
     )
 }

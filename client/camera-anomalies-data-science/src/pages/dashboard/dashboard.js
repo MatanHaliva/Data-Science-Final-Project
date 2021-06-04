@@ -53,7 +53,6 @@ const Dashboard = ({processedVideos}) => {
                 loading: false
             }
         })
-        debugger
         setProcessesVideo(list)
         clearTimeout(timer)
         const timer = setTimeout(async () => await getProcesses(), 1000)
@@ -109,7 +108,7 @@ const Dashboard = ({processedVideos}) => {
         <Layout>
             <div class="d-flex flex-column bd-highlight mb-3 flex-fill">
                 <div className="">
-                    <h4 className="display-4 text-center mb-4">
+                    <h4 className="display-4 text-center mb-4 header-my-processing">
                         <i className="fab fa-react">My Processing</i>
                     </h4>
                     <div>

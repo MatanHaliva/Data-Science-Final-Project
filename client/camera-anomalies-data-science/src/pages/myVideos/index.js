@@ -71,7 +71,7 @@ const MyVideos = () => {
         <Layout>
             <div class="d-flex flex-column bd-highlight mb-3 flex-fill">
                 <div className="">
-                    <h4 className="display-4 text-center mb-4">
+                    <h4 className="display-4 text-center mb-4 header-my-uploaded">
                         <i className="fab fa-react">My Uploaded Videos</i>
                     </h4>
                     {

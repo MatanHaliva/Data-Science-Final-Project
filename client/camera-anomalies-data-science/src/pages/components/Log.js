@@ -24,16 +24,20 @@ const Log = ({rows, videoTime}) => {
     }
 
     const createToasts = () => {
-        return detections.map((detection, index) => {
+        const filteredList = detections.filter(detection => detection.show === 'show')
+        const listLength = filteredList.length - 1
+        return detections.filter(detection => detection.show === 'show').map((detection, index) => {
             return (
-                <LogToast toastShowFade={`toast ${detection.show} fade ${index === detections.length - 1 ? 'last-toast' : ''}`} {...detection} key={detection.id}/>
+                <LogToast toastShowFade={`toast ${detection.show} fade ${index === listLength ? 'last-toast' : ''}`} {...detection} key={detection.id}/>
             )
         })
     }
 
     return (
         <Fragment>
-            <h2>Alerts: </h2>
+            <div className="header-alerts">
+                <h2 className="header-alerts">Alerts: </h2>
+            </div>
             <Fragment>
                 {
                     createToasts()

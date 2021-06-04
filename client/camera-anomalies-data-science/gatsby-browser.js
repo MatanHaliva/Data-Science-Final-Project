@@ -7,6 +7,7 @@ import "./src/styles/loading.card.css"
 import "./src/styles/dashbaord.css"
 import "./src/styles/file.upload.css"
 import "./src/pages/testCard/testCard.css"
+import "./src/styles/card.process.video.css"
 
 import "./src/styles/add.js"
 

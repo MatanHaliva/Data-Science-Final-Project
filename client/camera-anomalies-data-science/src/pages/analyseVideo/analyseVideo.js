@@ -86,7 +86,6 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
       
             <div class="toast-container position-absolute p-3 top-10 start-0 show">
                 {feedbackResponses.filter(feedbackResponse => {
-                    // debugger
                     // return feedbackResponse.timeStamp > +new Date() - 5000
                     return feedbackResponse
                 }).map(feedbackResponse => {

@@ -128,3 +128,22 @@ margin-left: 4px;
     display: flex;
     justify-content: center;
 }
+
+.header-my-uploaded {
+    color: white;
+    padding-top: 20px;
+}
+
+.header-upload-for-processing {
+    color: white;
+    padding-top: 20px;
+}
+
+.header-my-processing {
+    color: white;
+    padding-top: 20px;
+}
+
+.header-alerts {
+    color: white;
+}

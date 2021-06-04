@@ -13,79 +13,15 @@ const endpointCheckStatus = "checkStatus"
 const startProcessingVideoUrl = "http://localhost:33345" 
 
 
-const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessing, setCurrentRoute}) => {
-    const [socketProccessing, setSocketProccessing] = useState({})
-    const [isStartProcessing, setIsStartProcessing] = useState(false)
-    const [processingProgress, setProcessingProgress] = useState(0)
-    const [intervalCheckStatus, setIntevalCheckStatus] = useState()
-    const [cardData, setCarData] = useState([])
-    const userToken = useSelector(state => state.login.loggedToken)
-
-
-    useEffect(() => {
-        setCarData([{header: `Processing video page with details`, content: `${contextId ? contextId : "N/A"}`}, { header: `File Path`, content: `${filePath ? filePath : "N/A"}`}])
-    }, [contextId, filePath])
-
-
-    const startProcessing = async () => {
-        setProcessingProgress(0)
-
-        try {
-            console.log("start processing")
-            const res = await axios.post(`${startProcessingVideoUrl}/${endpointStartProcessing}`, { contextId, filePath },  {
-                headers: {
-                   "Content-Type": "application/json",
-                   "Authorization": userToken
-                }
-            })
-            setIsStartProcessing(true)
-            
-        } catch (err) { 
-
-        }
-    }
-
-    useEffect(async () => {
-        if(!contextId) {
-            await sleep(3500)
-            setCurrentRoute(4)
-            navigate("/myVideos")
-        }
-    }, [contextId])
+const ProcessVideo = ({contextId, filePath, setCurrentRoute}) => {
 
     return (
         <Layout>
         {
-            contextId ? 
-            <div class="">
-                <div class="position-absolute top-50 start-50 translate-middle">
-                    <div className="container">
-                        <Card rows={cardData} cardHeader={"Upload Video Information"} cardDescription={"Description about the uploaded Video need to process the video and then analyse it."} />
-                        <button type="submit" value="Start Processing" className="btn btn-primary btn-block mt-4" onClick={() => startProcessing()} > Start Processing </button>
-                        {isStartProcessing ? 
-                        (<div>
-                            Processing the uploaded video estimated time:
-                            <Progress percents={processingProgress}/>
-                        </div>) : <div/>}
-
-                        {processingProgress === 100 ?
-                            <Fragment>
-                                <Modal modalText={"Are you want to proceed for analysing?"} modalTitle={"Finished Processing Successfully"} 
-                                onSave={(e) => {
-                                    navigate("/analyseVideo")
-                                    setCurrentRoute(3)
-                                }}
-                                onClose={(e) => {
-                                    setProcessingProgress(0)
-                                    setIsStartProcessing(false)
-                                }}/>
-                            </Fragment> 
-                            :
-                            <div/>
-                        }
-                    </div>
-                </div>
-            </div>
+        contextId ? 
+            <Fragment>
+                <Card setCurrentRoute={setCurrentRoute} contextId={contextId} filePath={filePath} cardHeader={"Uploaded Video Information"} cardDescription={"Description about the uploaded Video need to process the video and then analyse it."} />
+            </Fragment>
         :
         <Fragment>
               <div className="position-absolute top-50 start-50 translate-middle">
