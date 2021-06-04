@@ -40,12 +40,19 @@ class ConfigService:
         return False
 
     @staticmethod
+    def anomaly_detection_enabled():
+        return True
+
+    @staticmethod
     def anomaly_detection_ranges(value):
-        if 0.98 < value <= 1:
+        if 0.97 < value <= 1:
             return "LOW"
 
         if 0.9 < value <= 0.95:
+            return "MEDIUM"
+
+        if 0.65 < value <= 0.9:
             return "HIGH"
 
-        if 0 < value <= 0.9:
+        if 0 < value <= 0.65:
             return "FATAL"
