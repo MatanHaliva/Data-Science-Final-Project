@@ -15,6 +15,14 @@ const startProcessingVideoUrl = "http://localhost:33345"
 
 const ProcessVideo = ({contextId, filePath, setCurrentRoute}) => {
 
+    useEffect(async () => {
+        if(!contextId) {
+            await sleep(2000)
+            setCurrentRoute(4)
+            navigate("/myVideos")
+        }
+    }, [contextId])
+
     return (
         <Layout>
         {
@@ -26,10 +34,10 @@ const ProcessVideo = ({contextId, filePath, setCurrentRoute}) => {
         <Fragment>
               <div className="position-absolute top-50 start-50 translate-middle">
                     <h4 className="display-7 text-center mb-4">
-                        <i className="fab fa-react">You have not picked any uploaded video to process</i>
+                        <i className="fab fa-react"><h2>You have not picked any uploaded video to process</h2></i>
                     </h4>
                     <h4 className="display-7 text-center mb-4">
-                        <i className="fab fa-react">Redirected you to pick a video...</i>
+                        <i className="fab fa-react"><h2>Redirected you to pick a video...</h2></i>
                     </h4>
                 </div>
         </Fragment>

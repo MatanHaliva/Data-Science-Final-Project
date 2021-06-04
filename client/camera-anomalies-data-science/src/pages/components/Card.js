@@ -13,6 +13,7 @@ const startProcessingVideoUrl = "http://localhost:33345"
 
 const Card = ({contextId, filePath, setCurrentRoute, cardHeader, cardDescription}) => {
     const [isStartProcessing, setIsStartProcessing] = useState(false)
+    const [loading, setLoading] = useState(false)
     const [carData, setCarData] = useState([])
     const userToken = useSelector(state => state.login.loggedToken)
 
@@ -24,6 +25,7 @@ const Card = ({contextId, filePath, setCurrentRoute, cardHeader, cardDescription
 
     const startProcessing = async () => {
         try {
+            setLoading(true)
             console.log("start processing")
             const res = await axios.post(`${startProcessingVideoUrl}/${endpointStartProcessing}`, { contextId, filePath },  {
                 headers: {
@@ -33,20 +35,11 @@ const Card = ({contextId, filePath, setCurrentRoute, cardHeader, cardDescription
             })
             console.log("log")
             setIsStartProcessing(true)
-            
+            setLoading(false)
         } catch (err) { 
 
         }
     }
-
-    useEffect(async () => {
-        if(!contextId) {
-            await sleep(3500)
-            setCurrentRoute(4)
-            navigate("/myVideos")
-        }
-    }, [contextId])
-
 
     return (
         <Fragment>
@@ -58,8 +51,8 @@ const Card = ({contextId, filePath, setCurrentRoute, cardHeader, cardDescription
                 <div class="position-absolute top-50 start-50 translate-middle first-level">
                     <Modal modalText={"Are you want to proceed for analysing?"} modalTitle={"Finished Processing Successfully"} 
                     onSave={(e) => {
-                        navigate("/analyseVideo")
-                        setCurrentRoute(3)
+                        navigate("/dashboard")
+                        setCurrentRoute(5)
                     }}
                     onClose={(e) => {
                         setIsStartProcessing(false)
@@ -83,7 +76,14 @@ const Card = ({contextId, filePath, setCurrentRoute, cardHeader, cardDescription
                         })
                     }
                     </div>
-                    <button type="submit" value="Start Processing" className="btn btn-primary btn-block mt-4" onClick={() => startProcessing()} > Start Processing </button>
+                    <div class="start-process">
+                        <button type="submit" value="Start Processing" className="btn btn-primary btn-block mt-4" onClick={() => startProcessing()} > Start Processing </button>
+                        {loading ? <div className="loading-spinner">
+                                <div class="spinner-border spinner-purple" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
+                            </div> : <Fragment/>}
+                    </div>
                 </div>
                 <div class="image-card-process">
                     <img src="/logo.jpeg"/>

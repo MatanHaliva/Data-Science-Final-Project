@@ -12,7 +12,6 @@ import findPage from "./helper"
 const Dashboard = ({}) => {
     const numberCardsPerPage = 6
     const endpoint = 'http://localhost:33345'
-    const [timer, setTimer] = useState()
     const [processesVideo, setProcessesVideo] = useState([])
     const [rawProcessesVideo, setRawProcessesVideo] = useState([])
     const [rawUploads, setRawUploads] = useState([])
@@ -30,6 +29,7 @@ const Dashboard = ({}) => {
     })
 
     const processesForEver = useRef()
+    const timer = useRef()
 
     const getProcesses = async () => {
         if (!userToken) {
@@ -58,9 +58,10 @@ const Dashboard = ({}) => {
             }
         })
         setProcessesVideo(list)
-        clearTimeout(timer)
-        const timer = setTimeout(async () => await getProcesses(), 1000)
-        setTimer(timer)
+        clearTimeout(timer.current)
+        debugger
+        const currentTimer = setTimeout(async () => await getProcesses(), 1000)
+        timer.current = currentTimer
     }
 
     const getUploads = async () => {
@@ -100,12 +101,12 @@ const Dashboard = ({}) => {
 
     useEffect(() => {
         return () => {
-            clearTimeout(timer)
+            debugger
+            timer.current && clearTimeout(timer.current)
         }
-    })
+    },[])
 
     useEffect(() => {
-        debugger
         const pageContextIdExists = findPage(processesVideo, contextId, numberCardsPerPage)
         setCurrentPage(pageContextIdExists === -1 ? 0 : pageContextIdExists)
     }, [processesVideo])
@@ -143,7 +144,6 @@ const Dashboard = ({}) => {
                                 <div className="container-dashboard">
                                     {
                                         processesVideo.slice(currentPage * numberCardsPerPage, currentPage * numberCardsPerPage + numberCardsPerPage).map(processedVideo => {
-                                            console.log("processedVideo", processedVideo)
                                             const pathUrl = `${endpoint}${processedVideo.path}`
             
                                             return(
@@ -151,7 +151,7 @@ const Dashboard = ({}) => {
                                                         <div class="p-3 bd-highlight">
                                                         <CardChild loading={processedVideo.loading} cardHeader={processedVideo.header} cardDescription={processedVideo.description} width={processedVideo.width} height={processedVideo.height}>
                                                             <Video videoUrl={pathUrl} videoHeight={`${processedVideo.height - 100}px`} videoWidth={`${processedVideo.width - 200}px`}  />
-                                                            {processedVideo.status === 100 ? <h8>Finished Processing</h8> : processedVideo.status === 0 ? <h8>Did not start Processing</h8> : <Progress percents={processedVideo.status}/>}
+                                                            {processedVideo.status === 100 ? <h6>Finished Processing</h6> : processedVideo.status === 0 ? <h6>Did not start Processing</h6> : <Progress percents={processedVideo.status}/>}
                                                         </CardChild>
                                                         </div>
                                                 </Fragment>
