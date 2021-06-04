@@ -4,6 +4,7 @@ import * as style from "./css/LogToast.module.css"
 
 const Log = ({rows, videoTime}) => {
     const [detections, setDetections] = useState([])
+    const [logTTL, setLogTTL] = useState(50)
 
     useEffect(() => {
         console.log("rows", rows)
@@ -14,7 +15,7 @@ const Log = ({rows, videoTime}) => {
 
     const getLogs = logs => {
         return logs.map(log => {
-            if(log.detectionTime <= videoTime && videoTime - log.detectionTime < 10) {
+            if(log.detectionTime <= videoTime && videoTime - log.detectionTime < logTTL) {
                 return {...log, show: `show`}
             } else {
                 return {...log, show: `hide`}
@@ -23,9 +24,9 @@ const Log = ({rows, videoTime}) => {
     }
 
     const createToasts = () => {
-        return detections.map(detection => {
+        return detections.map((detection, index) => {
             return (
-                <LogToast toastShowFade={`toast ${detection.show} fade`} {...detection} key={detection.id}/>
+                <LogToast toastShowFade={`toast ${detection.show} fade ${index === detections.length - 1 ? 'last-toast' : ''}`} {...detection} key={detection.id}/>
             )
         })
     }

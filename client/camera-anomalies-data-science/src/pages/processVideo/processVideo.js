@@ -28,7 +28,7 @@ const ProcessVideo = ({contextId, filePath, setFinishProcessing, finishProcessin
 
 
     const startProcessing = async () => {
-        setProcessingProgress(100)
+        setProcessingProgress(0)
 
         try {
             console.log("start processing")

@@ -53,6 +53,7 @@ const Dashboard = ({processedVideos}) => {
                 loading: false
             }
         })
+        debugger
         setProcessesVideo(list)
         clearTimeout(timer)
         const timer = setTimeout(async () => await getProcesses(), 1000)
@@ -101,7 +102,7 @@ const Dashboard = ({processedVideos}) => {
     })
 
     useEffect(async () => {
-        setNumberPages(Math.round(processesVideo.length ? processesVideo.length / numberCardsPerPage : 0))
+        setNumberPages(Math.ceil(processesVideo.length ? processesVideo.length / numberCardsPerPage : 0))
     }, [processesVideo])
 
     return (

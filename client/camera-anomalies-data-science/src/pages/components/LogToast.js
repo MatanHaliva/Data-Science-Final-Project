@@ -35,6 +35,8 @@ const LogToast = ({id, detectionTime, description, detectionType, detectionTypeN
         const getFeedback = getFeedbackForLicense.data.filter(feedback => feedback.LicensePlate === licensePlate)
         if (!!getFeedback.length) {
             setFeedBackData({found: true, personName: getFeedback[0].PersonName, loading: false})
+        } else {
+            setFeedBackData({found: false, personName: "N/A", loading: false})
         }
     }, [licensePlate, feedbackResponses])
 
@@ -50,7 +52,6 @@ const LogToast = ({id, detectionTime, description, detectionType, detectionTypeN
                 </div>
                 <div className="toast-body">
                     {
-                    !feedbackData.loading ?
                     <Fragment>
                         <div> Detection Time: {detectionTime}</div>
                         <div> Detection Type Name: {detectionTypeName}</div>
@@ -58,16 +59,23 @@ const LogToast = ({id, detectionTime, description, detectionType, detectionTypeN
                         <div> Accuracy: {accuracy}</div>
                         {detectionType === 0 ? carLogToast({licensePlate, color, manufacturer}) : <Fragment/>}
                         <br/>
-                        {feedbackData ? <div>This car belongs to: { feedbackData.personName } </div> : <Fragment/>}
-                        {!feedbackData.found ? <Feedback feedbackType={detectionType} licensePlate={licensePlate}/> : <Fragment/>}
-                    </Fragment>
-                    :
-                    <Fragment>
-                        <div className="loading-spinner">
-                            <div class="spinner-border text-warning" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                        <div> History Knowledge:</div>
+                        {
+                        feedbackData.loading ?
+                        <Fragment>
+                            <div className="loading-spinner">
+                                <div class="spinner-border text-warning" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
                             </div>
-                        </div>
+                        </Fragment>
+                        :
+                        !feedbackData.found
+                        ? 
+                        <Feedback feedbackType={detectionType} licensePlate={licensePlate}/> 
+                        : 
+                        <div>This car belongs to: { feedbackData.personName } </div>
+                        }
                     </Fragment>
                     }
                 </div>

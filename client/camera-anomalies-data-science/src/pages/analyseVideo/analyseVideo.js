@@ -47,12 +47,12 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
             setDetections(convertToPresentation([
                 {ContextId: 1, Description: "hi", DetectionType: 0, DetectionTime: 1, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
                 {ContextId: 1, Description: "hi", DetectionType: 0, DetectionTime: 4, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
-                {ContextId: 1, Description: "hi", DetectionType: 0, DetectionTime: 7, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
-                {ContextId: 1, Description: "hi", DetectionType: 0, DetectionTime: 11, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
+                {ContextId: 1, Description: "hi", DetectionType: 0, DetectionTime: 7, Accuracy: 0.99, LicensePlate: "32-355-3", Manufacturer: "Honda", Color: "white"},
+                {ContextId: 1, Description: "hi", DetectionType: 0, DetectionTime: 11, Accuracy: 0.99, LicensePlate: "32-345555533-3", Manufacturer: "Honda", Color: "white"},
                 {ContextId: 1, Description: "hi", DetectionType: 0, DetectionTime: 14, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
     
                 {ContextId: 2, Description: "hi", DetectionType: 0, DetectionTime: 18, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Hyundai", Color: "white"},
-                {ContextId: 2, Description: "hi", DetectionType: 0, DetectionTime: 15, Accuracy: 0.97, LicensePlate: "32-3-3", Manufacturer: "Tesla", Color: "red"},
+                {ContextId: 2, Description: "hi", DetectionType: 0, DetectionTime: 15, Accuracy: 0.97, LicensePlate: "32-3555-3", Manufacturer: "Tesla", Color: "red"},
                 {ContextId: 2, Description: "hi", DetectionType: 0, DetectionTime: 20, Accuracy: 0.97, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "black"},
                 {ContextId: 2, Description: "hi", DetectionType: 0, DetectionTime: 30, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "green"},
                 {ContextId: 2, Description: "hi", DetectionType: 0, DetectionTime: 35, Accuracy: 0.95, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "black"},
@@ -84,7 +84,7 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
                 </div>
             </div>
       
-            <div class="toast-container position-absolute p-3 top-15 start-0 show">
+            <div class="toast-container position-absolute p-3 top-10 start-0 show">
                 {feedbackResponses.filter(feedbackResponse => {
                     // debugger
                     // return feedbackResponse.timeStamp > +new Date() - 5000
@@ -94,7 +94,7 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
                             <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
                                 <div class="toast-header">
                                     <strong class="me-auto">Feedback</strong>
-                                    <small>{calculateTime(feedbackResponse.timeStamp)}</small>
+                                    <small>{Math.ceil(calculateTime(feedbackResponse.timeStamp))} secs ago</small>
                                     <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                                 </div>
                                 <div class="toast-body">

@@ -15,7 +15,7 @@ const Up = ({uploadedVideos, pickVideo}) => {
 
     const getVideos = (uploadedVideos) => {
         const numberCardsPerPage = 6
-        const numberPages = Math.round(uploadedVideos.length ? uploadedVideos.length / numberCardsPerPage : 0)
+        const numberPages = Math.ceil(uploadedVideos.length ? uploadedVideos.length / numberCardsPerPage : 0)
 
         return (
             <Fragment>
