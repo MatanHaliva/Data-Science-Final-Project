@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 namespace Detections_API.Models
 {
     [BsonIgnoreExtraElements]
-    [BsonKnownTypes(typeof(CarModel), typeof(MaskModel),typeof(MotionModel),typeof(AnomalyModel))]
+    [BsonKnownTypes(typeof(CarModel), typeof(MaskModel),typeof(MotionModel),typeof(AnomalyModel),typeof(FaceModel))]
     public  class DetectionsBase
     {
         [BsonId]
