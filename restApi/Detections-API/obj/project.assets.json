@@ -176,6 +176,19 @@
             "rid": "win"
           }
         }
+      },
+      "Services/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v3.1",
+        "dependencies": {
+          "MongoDB.Driver": "2.12.3"
+        },
+        "compile": {
+          "bin/placeholder/Services.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/Services.dll": {}
+        }
       }
     }
   },
@@ -477,39 +490,50 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "Services/1.0.0": {
+      "type": "project",
+      "path": "../../../Detections-API/Services/Services.csproj",
+      "msbuildProject": "../../../Detections-API/Services/Services.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v3.1": [
       "MongoDB.Driver >= 2.12.3",
-      "Newtonsoft.Json >= 13.0.1"
+      "Newtonsoft.Json >= 13.0.1",
+      "Services >= 1.0.0"
     ]
   },
   "packageFolders": {
-    "/Users/eladisraeli/.nuget/packages/": {}
+    "C:\\Users\\chenb\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/restApi/Detections-API/Detections-API.csproj",
+      "projectUniqueName": "C:\\Users\\chenb\\Source\\Repos\\Data-Science-Final-Project7\\restApi\\Detections-API\\Detections-API.csproj",
       "projectName": "Detections-API",
-      "projectPath": "/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/restApi/Detections-API/Detections-API.csproj",
-      "packagesPath": "/Users/eladisraeli/.nuget/packages/",
-      "outputPath": "/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/restApi/Detections-API/obj/",
+      "projectPath": "C:\\Users\\chenb\\Source\\Repos\\Data-Science-Final-Project7\\restApi\\Detections-API\\Detections-API.csproj",
+      "packagesPath": "C:\\Users\\chenb\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\chenb\\Source\\Repos\\Data-Science-Final-Project7\\restApi\\Detections-API\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "/Users/eladisraeli/.config/NuGet/NuGet.Config"
+        "C:\\Users\\chenb\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
         "netcoreapp3.1": {
-          "targetAlias": "netcoreapp3.1",
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\Users\\chenb\\Source\\Repos\\Detections-API\\Services\\Services.csproj": {
+              "projectPath": "C:\\Users\\chenb\\Source\\Repos\\Detections-API\\Services\\Services.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -520,7 +544,6 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
-        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "MongoDB.Driver": {
             "target": "Package",
@@ -549,7 +572,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/5.0.203/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.200\\RuntimeIdentifierGraph.json"
       }
     }
   }

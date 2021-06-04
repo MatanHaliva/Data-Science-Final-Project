@@ -24,18 +24,23 @@ namespace Detections_API.Controllers
         [HttpGet("GetAll")]
         public ActionResult<object> GetDetectionsById()
         {
+            AddHeaders();
             return JsonConvert.SerializeObject(_detectionService.Get());
         }
 
         [HttpGet("GetById/{id}")]
         public ActionResult<object> GetDetectionsById(string id)
         {
+            AddHeaders();
+
             return JsonConvert.SerializeObject(_detectionService.Get(id));
         }
 
         [HttpGet("GetByType/{type}")]
         public ActionResult<object> GetDetectionsByType(DetectionType type)
         {
+            AddHeaders();
+
             return JsonConvert.SerializeObject(_detectionService.Get(type));
         }
         #endregion
@@ -88,9 +93,24 @@ namespace Detections_API.Controllers
             }
             else
                 return BadRequest();
-
+        }
+        [HttpPost("CreateAnomalies")]
+        public ActionResult<IEnumerable<DetectionsBase>> Create([FromBody] IEnumerable<AnomalyModel> detections)
+        {
+            if (ModelState.IsValid)
+            {
+                _detectionService.CreateMany(detections);
+                return Ok(detections);
+            }
+            else
+                return BadRequest();
         }
         #endregion
-
+        private void AddHeaders()
+        {
+            Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            Response.Headers.Add("Access-Control-Allow-Headers", "*");
+            Response.Headers.Add("Access-Control-Allow-Methods", "PUT, GET, POST, DELETE, OPTIONS");
+        }
     }
 }
