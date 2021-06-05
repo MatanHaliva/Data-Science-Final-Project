@@ -11,7 +11,7 @@ import os
 
 
 class AnomalyDetection:
-    def __init__(self, cache_dir=".cache/", tolerance_frames=5):
+    def __init__(self, cache_dir="cache/", tolerance_frames=5):
         model_file = "models/model_lstm_gil.hdf5"
         self.model = load_model(model_file, custom_objects={'LayerNormalization': LayerNormalization})
         self.batch_size = 3
