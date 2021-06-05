@@ -1,8 +1,8 @@
 import requests
-from detection_dto import DetectionDto
+from dtos.detection_dto import DetectionDto
 from config_service import ConfigService
 import numpy as np
-from detection_type_enum import DetectionType
+from dtos.detection_type_enum import DetectionType
 
 class DetectionApiConnector:
 
@@ -24,3 +24,4 @@ class DetectionApiConnector:
 
         myobj = np.array([detection.tojson()]).tolist()
         response = requests.post(url, json = myobj, verify=True)
+        return response.json()[0]["id"]
