@@ -1,4 +1,4 @@
-from math import floor
+from math import ceil
 
 from dtos.anomaly_detection_dto import AnomalyDetectionDto
 from detectors.anomaly_detection import AnomalyDetection
@@ -25,7 +25,7 @@ class ProcessAnomaly(Process):
     @property
     def processing_percents(self):
         # print("Getting value...")
-        batches = floor(self.anomaly_detection.total_frames / self.anomaly_detection.sample_size)
+        batches = ceil(self.anomaly_detection.total_frames / self.anomaly_detection.sample_size)
         batch_precent = 100 / batches
         return self._processing_percents[0] * batch_precent
 
