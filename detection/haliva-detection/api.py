@@ -8,7 +8,7 @@ import os
 
 process_manager: ProcessManager = ProcessManager()
 face_clustering = FaceClustering()
-# face_detection = FaceDetection()
+face_detection = FaceDetection()
 
 app = Flask(__name__)
 cors = CORS(app)
