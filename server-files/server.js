@@ -41,6 +41,9 @@ const app = express()
 
 app.use('/files', express.static('files'))
 
+app.use('/faces', express.static(__dirname + '/../detection/haliva-detection/faces'))
+
+
 app.use(fileUpload())
 
 app.use(bodyParser.json())

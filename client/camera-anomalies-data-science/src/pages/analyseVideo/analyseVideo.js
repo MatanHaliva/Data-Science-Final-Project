@@ -15,6 +15,7 @@ const calculateTime = (timeStampCreated) => {
 
 const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTime}) => {
     const videoUrl = `http://localhost:33345${filePath}`
+    const videoUrlPostProcessing = `http://localhost:5009/processes/${contextId}/output.mp4`
     const detectionApi = `https://detections-api.azurewebsites.net/Detections`
     const [detections, setDetections] = useState([])
     const [videoTime, setVideoTime] = useState({})
@@ -38,15 +39,33 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
                 licensePlate: detection.LicensePlate,
                 manufacturer: detection.Manufacturer,
                 color: detection.Color,
-                img: getImagePath(detection)
+                img: getImagePath(detection),
+                faceId: detection.FaceId,
+                severity: detection.AnomalySeverity
             }
+        })
+    }
+
+    const orderByDetectionTime = (detections) => {
+        // return detections
+        return detections.sort((a,b) => {
+            if(a.detectionTime > b.detectionTime){
+                return 1
+            }
+            else if(a.id > b.id) {
+               return 0
+            }
+              return -1
         })
     }
 
     const getDetections = async () => {
         try {
             const detections = await axios.get(`${detectionApi}/GetById/${contextId}`)
-            setDetections(convertToPresentation(detections.data))
+            const anomaly = {Id: '2a709381-7140-43a3-8a17-b6e3e246cee93', ContextId: contextId, Description: "hi", DetectionType: 4, DetectionTime: 0.25, Accuracy: 0.99, AnomalySeverity: "Serious"}
+            setDetections(convertToPresentation(orderByDetectionTime([...detections.data, anomaly])))
+
+
             // setDetections(convertToPresentation([
             //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 1, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
             //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 4, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
@@ -80,7 +99,7 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
             />
             <div className="d-flex flex-row">
                 <div className={`${style.flex_grow_4} p-2`}>
-                    <Video videoHeight='100%' videoWidth='100%' videoUrl={videoUrl} setVideoCurrentTime={setVideoCurrentTime}/>
+                    <Video videoHeight='100%' videoWidth='100%' videoUrl={videoUrlPostProcessing} setVideoCurrentTime={setVideoCurrentTime}/>
                 </div>
                 <div className={`${style.flex_grow_2} p-3`}>
                     <Log videoTime={videoCurrentTime} rows={detections}/>

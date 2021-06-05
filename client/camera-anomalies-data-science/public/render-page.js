@@ -4773,8 +4773,6 @@ const initialState = {
 };
 
 const app = (state = initialState, action) => {
-  console.log(action.type);
-
   switch (action.type) {
     case _actions__WEBPACK_IMPORTED_MODULE_0__.INCREMENT:
       return { ...state,
@@ -4807,7 +4805,6 @@ const app = (state = initialState, action) => {
       };
 
     case _actions__WEBPACK_IMPORTED_MODULE_0__.DELETE_FEEDBACK_CREATED_SUCCESSFULY:
-      debugger;
       const posElement = state.feedbackResponses.findIndex(feedbackResponses => feedbackResponses.timeStamp === action.payload.timeStamp);
       const dupArr = [...state.feedbackResponses];
       dupArr.splice(posElement, 1);

@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux'
 import * as style from "./css/LogToast.module.css"
 import Feedback from "./Feedback"
 import axios from "axios"
+import { detectionTypes } from "../../shared/detectionTypes"
 
 const feedbackUrl = `https://feedbacks-api.azurewebsites.net/Feedbacks/GetAll`
 
@@ -17,14 +18,24 @@ const carLogToast = ({licensePlate, color, manufacturer}) => {
     )
 }
 
-const faceLogToast = ({}) => {
+const faceLogToast = ({faceId}) => {
     return (
         <Fragment>
+            <div><b>Face Details: </b></div>
+            <div>Face Id: { faceId === '-1' ? "Unknown" : faceId} </div>
         </Fragment>
     )
 }
 
-const LogToast = ({id, detectionTime, description, detectionType, detectionTypeName, accuracy, toastShowFade, licensePlate, color, manufacturer, img}) => {
+const anomalyLogToast = ({severity}) => {
+    debugger
+    return (<Fragment>
+        <div><b>Anomaly Details: </b></div>
+        <div>Severity: {severity} </div>
+    </Fragment>)
+}
+
+const LogToast = ({id, detectionTime, description, detectionType, detectionTypeName, accuracy, toastShowFade, licensePlate, color, manufacturer, img, faceId, severity}) => {
     const [feedbackData, setFeedBackData] = useState({found: false, personName: "N/A", loading: true})
     
     let feedbackResponses = useSelector(state => {
@@ -43,24 +54,24 @@ const LogToast = ({id, detectionTime, description, detectionType, detectionTypeN
 
     return (
         <Fragment>
-            <div style={{'margin-bottom': "10px"}} className={`${toastShowFade}`} role="alert" aria-live="assertive" aria-atomic="true">
+            <div style={{'margin-bottom': "10px"}} className={`${toastShowFade} ${detectionType === 4 ? 'anomaly-div' : ''}`} role="alert" aria-live="assertive" aria-atomic="true">
                 <div className="toast-header">
                     <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#f09126"></rect></svg>
                     <strong className="me-auto">Detection Found</strong>
-                    <strong className="me-auto">Id: {id}</strong>
+                    <strong className="me-auto">Id: {id.slice(0, 5)}</strong>
                     <small className="text-muted">Video Time: {detectionTime}</small>
                     <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div className="toast-body">
                     {
                     <Fragment>
-                        <div class="img-float-right"><img src={img}/></div>
+                        {detectionTypes !== 4 ? <div class="img-float-right"><img src={img}/></div> : <Fragment/>}
                         <div><b>Generic details</b></div>
                         <div> Detection Time: {detectionTime}</div>
                         <div> Detection Type Name: {detectionTypeName}</div>
                         <div> Description: {description}</div>
                         <div> Accuracy: {accuracy}</div>
-                        {detectionType === 0 ? carLogToast({licensePlate, color, manufacturer}) : <Fragment/>}
+                        {detectionType === 0 ? carLogToast({licensePlate, color, manufacturer}) : detectionType === 1 ? faceLogToast({faceId}) : anomalyLogToast({severity})}
                         <br/>
                         <div><b> History Knowledge: </b></div>
                         {
