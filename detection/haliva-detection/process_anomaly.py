@@ -30,14 +30,10 @@ class ProcessAnomaly(Process):
         # print("set value...")
         self._processing_percents = value
 
-
     def detect_anomaly(self):
         for detection in self.anomaly_detection.detect_anomaly(self.video_path)["anomaly"]:
-            message: AnomalyDetectionDto = AnomalyDetectionDto(1, detection[1],
+            message: AnomalyDetectionDto = AnomalyDetectionDto(self.context_id, detection[1],
                                                                DetectionType.Anomaly.value, "Anomaly was detected",
                                                                detection[0],
                                                                ConfigService.anomaly_detection_ranges(detection[2]))
             DetectionApiConnector.create_detection(message)
-
-
-

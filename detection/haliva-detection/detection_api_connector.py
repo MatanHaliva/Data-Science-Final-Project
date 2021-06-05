@@ -10,8 +10,6 @@ class DetectionApiConnector:
     def create_detection(detection: DetectionDto):
 
         if(ConfigService.detection_api_enabled() == False):
-            myobj = np.array([detection.tojson()]).tolist()
-            print(myobj)
             return
 
         url = None

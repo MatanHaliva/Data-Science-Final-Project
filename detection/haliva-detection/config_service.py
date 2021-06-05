@@ -18,7 +18,7 @@ class ConfigService:
 
     @staticmethod
     def detection_api_create_anomaly_url():
-        return "https://detections-api.azurewebsites.net/Detections/CreateAnomaly"
+        return "https://detections-api.azurewebsites.net/Detections/CreateAnomalies"
 
     @staticmethod
     def object_detection_threshold():
@@ -34,10 +34,6 @@ class ConfigService:
     
     @staticmethod
     def detection_api_enabled():
-        return False
-
-    @staticmethod
-    def anomaly_detection_enabled():
         return True
 
     @staticmethod

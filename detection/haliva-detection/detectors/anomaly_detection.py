@@ -13,7 +13,7 @@ class AnomalyDetection:
     def __init__(self, cache_dir="F:/", tolerance_frames=5):
         model_file = "models/model_lstm_gil.hdf5"
         self.model = load_model(model_file, custom_objects={'LayerNormalization': LayerNormalization})
-        self.batch_size = 4
+        self.batch_size = 3
         self.cache_dir = cache_dir
         self.queue = queue.Queue()
         self.rec_thread: Thread
@@ -111,10 +111,10 @@ class AnomalyDetection:
         while (srs):
             sr_score, video_idx = srs.pop(0)
             total_clip_sr = np.concatenate((total_clip_sr, sr_score))
-        plt.plot(total_clip_sr)
-        plt.ylabel('regularity score Sr(t)')
-        plt.xlabel('frame t')
-        plt.show()
+        # plt.plot(total_clip_sr)
+        # plt.ylabel('regularity score Sr(t)')
+        # plt.xlabel('frame t')
+        # plt.show()
         ll = [(*idx, val) for idx, val in np.ndenumerate(total_clip_sr)]
         ll = list(filter(lambda x: x[1] < 0.88, ll))
         if ll:
@@ -135,7 +135,7 @@ class AnomalyDetection:
                 min_val = min(list(total_clip_sr)[start:len(total_clip_sr)])
                 anomal2.append((cnt, list(total_clip_sr).index(min_val), min_val))
 
-        print(anomal2)
+        # print(anomal2)
         anomaly = {
             "anomaly": anomal2,
         }
