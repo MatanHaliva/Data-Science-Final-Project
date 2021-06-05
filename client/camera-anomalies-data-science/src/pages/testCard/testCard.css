@@ -10,7 +10,7 @@ body{
   font-size: 15px;
   line-height: 1.5;
   font-weight: 400;
-  background: #f0f3f6;
+  background: #36345f;
   color: #3a3a3a;
 }
 hr {
@@ -152,7 +152,6 @@ img{
 	z-index: 1;
 }
 .selected-label .icon:before{
-	content: "\f00c";
 	position: absolute;
 	width: 100%;
 	height: 100%;

@@ -30,17 +30,13 @@ class ConfigService:
     @staticmethod
     def face_detection_threshold():
         return 0.95
-    
+
     @staticmethod
     def mask_detection_threshold():
         return 0.95
     
     @staticmethod
     def detection_api_enabled():
-        return True
-
-    @staticmethod
-    def anomaly_detection_enabled():
         return True
 
     @staticmethod
@@ -56,3 +52,17 @@ class ConfigService:
 
         if 0 < value <= 0.65:
             return "FATAL"
+    @staticmethod
+    def save_to_mp4_enabled():
+        return True
+
+    @staticmethod
+    def load_clustering_data_enabled():
+        return True
+
+    @staticmethod
+    def knn_clustering_k_paramerter():
+        return 3
+
+
+

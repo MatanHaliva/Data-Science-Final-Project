@@ -7,12 +7,11 @@ import processVideo from "../processVideo"
 import axios from "axios"
 import { useSelector } from 'react-redux'
 import { sleep } from "../../../../../server-files/helper"
+import findPage from "./helper"
 
-
-const Dashboard = ({processedVideos}) => {
+const Dashboard = ({}) => {
     const numberCardsPerPage = 6
     const endpoint = 'http://localhost:33345'
-    const [timer, setTimer] = useState()
     const [processesVideo, setProcessesVideo] = useState([])
     const [rawProcessesVideo, setRawProcessesVideo] = useState([])
     const [rawUploads, setRawUploads] = useState([])
@@ -25,8 +24,12 @@ const Dashboard = ({processedVideos}) => {
     let userToken = useSelector(state => {
         return state.login.loggedToken
     })
+    const contextId = useSelector(state => {
+        return state.app.contextId
+    })
 
     const processesForEver = useRef()
+    const timer = useRef()
 
     const getProcesses = async () => {
         if (!userToken) {
@@ -43,6 +46,7 @@ const Dashboard = ({processedVideos}) => {
         const list = processes.data.processes.map(process => {
             const uploadForProcess = rawUploads.filter(upload => upload.contextId === process.contextId)[0]
             return {
+                contextId: process.contextId,
                 id: process._id,
                 header: 'Process',
                 description: 'Description ' + process._id,
@@ -54,9 +58,9 @@ const Dashboard = ({processedVideos}) => {
             }
         })
         setProcessesVideo(list)
-        clearTimeout(timer)
-        const timer = setTimeout(async () => await getProcesses(), 1000)
-        setTimer(timer)
+        clearTimeout(timer.current)
+        const currentTimer = setTimeout(async () => await getProcesses(), 1000)
+        timer.current = currentTimer
     }
 
     const getUploads = async () => {
@@ -96,19 +100,24 @@ const Dashboard = ({processedVideos}) => {
 
     useEffect(() => {
         return () => {
-            clearTimeout(timer)
+            timer.current && clearTimeout(timer.current)
         }
-    })
+    },[])
+
+    useEffect(() => {
+        const pageContextIdExists = findPage(processesVideo, contextId, numberCardsPerPage)
+        setCurrentPage(pageContextIdExists === -1 ? 0 : pageContextIdExists)
+    }, [processesVideo])
 
     useEffect(async () => {
-        setNumberPages(Math.round(processesVideo.length ? processesVideo.length / numberCardsPerPage : 0))
+        setNumberPages(Math.ceil(processesVideo.length ? processesVideo.length / numberCardsPerPage : 0))
     }, [processesVideo])
 
     return (
         <Layout>
             <div class="d-flex flex-column bd-highlight mb-3 flex-fill">
                 <div className="">
-                    <h4 className="display-4 text-center mb-4">
+                    <h4 className="display-4 text-center mb-4 header-my-processing">
                         <i className="fab fa-react">My Processing</i>
                     </h4>
                     <div>
@@ -133,15 +142,14 @@ const Dashboard = ({processedVideos}) => {
                                 <div className="container-dashboard">
                                     {
                                         processesVideo.slice(currentPage * numberCardsPerPage, currentPage * numberCardsPerPage + numberCardsPerPage).map(processedVideo => {
-                                            console.log("processedVideo", processedVideo)
                                             const pathUrl = `${endpoint}${processedVideo.path}`
             
                                             return(
                                                 <Fragment key={processedVideo.id}>
-                                                        <div class="p-3 bd-highlight">
-                                                        <CardChild loading={processedVideo.loading} cardHeader={processedVideo.header} cardDescription={processedVideo.description} width={processedVideo.width} height={processedVideo.height}>
+                                                        <div class="p-3 bd-highlight" key={processedVideo.id}>
+                                                        <CardChild clickAble={false} loading={processedVideo.loading} cardHeader={processedVideo.header} cardDescription={processedVideo.description} width={processedVideo.width} height={processedVideo.height}>
                                                             <Video videoUrl={pathUrl} videoHeight={`${processedVideo.height - 100}px`} videoWidth={`${processedVideo.width - 200}px`}  />
-                                                            {processedVideo.status === 100 ? <h8>Finished Processing</h8> : processedVideo.status === 0 ? <h8>Did not start Processing</h8> : <Progress percents={processedVideo.status}/>}
+                                                            {processedVideo.status === 100 ? <h6>Finished Processing</h6> : processedVideo.status === 0 ? <h6>Did not start Processing</h6> : <Progress percents={processedVideo.status}/>}
                                                         </CardChild>
                                                         </div>
                                                 </Fragment>
@@ -155,7 +163,7 @@ const Dashboard = ({processedVideos}) => {
                                         <li class="page-item"><a class="page-link" href="#">Previous</a></li>
                                         {
                                             [...Array(numberPages).keys()].map(num => {
-                                                return (<li className={`page-item ${num === currentPage ? 'active': ''}`} ><a class="page-link" onClick={(e) => setCurrentPage(num)} href="#">{num}</a></li>)
+                                                return (<li key={num} className={`page-item ${num === currentPage ? 'active': ''}`} ><a class="page-link" onClick={(e) => setCurrentPage(num)} href="#">{num}</a></li>)
                                             
                                             }) 
                                         }

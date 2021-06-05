@@ -13,6 +13,11 @@
     top: 15%!important;
 }
 
+.top-10 {
+    top: 10%!important;
+}
+
+
 .container-all {
 
 }
@@ -26,5 +31,31 @@
 }
 
 .be-first { 
+    width: 600px;
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+    justify-content: center;
+    top: 95%;
+    transform: translate(-50%,-50%)!important;
+    left: 50%;
+}
+
+.last-toast{
+    margin-bottom: 50px!important;
+}
+
+
+.progress-upload {
+    width: 100%;
+}
+
+.first-level {
     z-index: 999999;
+}
+
+.img-float-right {
+    width: 100px;
+    float: right;
 }

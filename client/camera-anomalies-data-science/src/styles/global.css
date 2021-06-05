@@ -128,3 +128,48 @@ margin-left: 4px;
     display: flex;
     justify-content: center;
 }
+
+.header-my-uploaded {
+    color: white;
+    padding-top: 20px;
+}
+
+.header-upload-for-processing {
+    color: white;
+    padding-top: 20px;
+}
+
+.header-my-processing {
+    color: white;
+    padding-top: 20px;
+}
+
+.header-alerts {
+    color: white;
+}
+
+
+.start-process {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: flex-start;
+    justify-content: space-around;
+}
+
+.spinner-purple {
+    color: #6c63ff;
+    margin-top: 10px
+}
+
+.float-right {
+    float: right;
+}
+
+.padding-left-25 {
+    padding-left: 55px !important;
+}
+
+.navbar-context-id {
+    color: #dcc28e !important; 
+}

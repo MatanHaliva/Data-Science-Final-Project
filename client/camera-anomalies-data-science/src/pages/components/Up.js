@@ -1,12 +1,22 @@
 import React, { Fragment, useEffect, useState} from "react"
-import { useDispatch } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import uploadVideo from "../uploadVideo"
 import CardChild  from "./CardChild"
 import Video from "./Video"
+import findPage from "../dashboard/helper"
 
 const Up = ({uploadedVideos, pickVideo}) => {
     const endpoint = 'http://localhost:33345'
     const [currentPage, setCurrentPage] = useState(0)
+    const numberCardsPerPage = 6
+    const contextId = useSelector(state => state.app.contextId)
+
+    useEffect(() => {
+        const findPageFormatList = uploadedVideos.map(uploadVideo => ({...uploadVideo, contextId: uploadVideo.id}))
+        const pageContextIdExists = findPage(findPageFormatList, contextId, numberCardsPerPage)
+        setCurrentPage(pageContextIdExists === -1 ? 0 : pageContextIdExists)
+    }, [uploadedVideos])
+
 
     const onCardClicked = (uploadedVideoIndex) => {
         const uploadedVideo = uploadedVideos.filter(uploadedVideo => uploadedVideo.id === uploadedVideoIndex)
@@ -14,8 +24,7 @@ const Up = ({uploadedVideos, pickVideo}) => {
     }
 
     const getVideos = (uploadedVideos) => {
-        const numberCardsPerPage = 6
-        const numberPages = Math.round(uploadedVideos.length ? uploadedVideos.length / numberCardsPerPage : 0)
+        const numberPages = Math.ceil(uploadedVideos.length ? uploadedVideos.length / numberCardsPerPage : 0)
 
         return (
             <Fragment>
@@ -26,7 +35,7 @@ const Up = ({uploadedVideos, pickVideo}) => {
                                 return (
                                     <Fragment>
                                         <div class="p-3 bd-highlight" key={uploadedVideo.id}>
-                                            <CardChild index={uploadedVideo.id} picked={uploadedVideo.picked} loading={uploadedVideo.loading} cardHeader={uploadedVideo.header} cardDescription={uploadedVideo.description} width={uploadedVideo.width} height={uploadedVideo.height} onCardClicked={onCardClicked}>
+                                            <CardChild clickAble={true} index={uploadedVideo.id} picked={uploadedVideo.picked} loading={uploadedVideo.loading} cardHeader={uploadedVideo.header} cardDescription={uploadedVideo.description} width={uploadedVideo.width} height={uploadedVideo.height} onCardClicked={onCardClicked}>
                                                 <Video videoUrl={`${endpoint}${uploadedVideo.path}`} videoHeight={'100%'} videoWidth={`100%`}  />
                                                 <div>Context Id: {uploadedVideo.id}</div>
                                                 <div>File Path: {uploadedVideo.path}</div>
@@ -55,6 +64,7 @@ const Up = ({uploadedVideos, pickVideo}) => {
             </Fragment>
         )
     }
+    
 
     return (
     <div className="container-dashboard">

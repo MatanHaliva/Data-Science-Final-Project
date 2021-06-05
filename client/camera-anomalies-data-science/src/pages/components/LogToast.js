@@ -9,6 +9,7 @@ const feedbackUrl = `https://feedbacks-api.azurewebsites.net/Feedbacks/GetAll`
 const carLogToast = ({licensePlate, color, manufacturer}) => {
     return (
         <Fragment>
+            <div><b>Car Details: </b></div>
             <div>License car: {licensePlate} </div>
             <div>Manufacturer: {manufacturer}</div>
             <div>Color: {color}</div>
@@ -23,7 +24,7 @@ const faceLogToast = ({}) => {
     )
 }
 
-const LogToast = ({id, detectionTime, description, detectionType, detectionTypeName, accuracy, toastShowFade, licensePlate, color, manufacturer}) => {
+const LogToast = ({id, detectionTime, description, detectionType, detectionTypeName, accuracy, toastShowFade, licensePlate, color, manufacturer, img}) => {
     const [feedbackData, setFeedBackData] = useState({found: false, personName: "N/A", loading: true})
     
     let feedbackResponses = useSelector(state => {
@@ -35,6 +36,8 @@ const LogToast = ({id, detectionTime, description, detectionType, detectionTypeN
         const getFeedback = getFeedbackForLicense.data.filter(feedback => feedback.LicensePlate === licensePlate)
         if (!!getFeedback.length) {
             setFeedBackData({found: true, personName: getFeedback[0].PersonName, loading: false})
+        } else {
+            setFeedBackData({found: false, personName: "N/A", loading: false})
         }
     }, [licensePlate, feedbackResponses])
 
@@ -50,24 +53,32 @@ const LogToast = ({id, detectionTime, description, detectionType, detectionTypeN
                 </div>
                 <div className="toast-body">
                     {
-                    !feedbackData.loading ?
                     <Fragment>
+                        <div class="img-float-right"><img src={img}/></div>
+                        <div><b>Generic details</b></div>
                         <div> Detection Time: {detectionTime}</div>
                         <div> Detection Type Name: {detectionTypeName}</div>
                         <div> Description: {description}</div>
                         <div> Accuracy: {accuracy}</div>
                         {detectionType === 0 ? carLogToast({licensePlate, color, manufacturer}) : <Fragment/>}
                         <br/>
-                        {feedbackData ? <div>This car belongs to: { feedbackData.personName } </div> : <Fragment/>}
-                        {!feedbackData.found ? <Feedback feedbackType={detectionType} licensePlate={licensePlate}/> : <Fragment/>}
-                    </Fragment>
-                    :
-                    <Fragment>
-                        <div className="loading-spinner">
-                            <div class="spinner-border text-warning" role="status">
-                                <span class="visually-hidden">Loading...</span>
+                        <div><b> History Knowledge: </b></div>
+                        {
+                        feedbackData.loading ?
+                        <Fragment>
+                            <div className="loading-spinner">
+                                <div class="spinner-border text-warning" role="status">
+                                    <span class="visually-hidden">Loading...</span>
+                                </div>
                             </div>
-                        </div>
+                        </Fragment>
+                        :
+                        !feedbackData.found
+                        ? 
+                        <Feedback feedbackType={detectionType} licensePlate={licensePlate}/> 
+                        : 
+                        <div>This car belongs to: { feedbackData.personName } </div>
+                        }
                     </Fragment>
                     }
                 </div>

@@ -11,11 +11,11 @@
     height: 100vh;
     overflow-x: hidden;
     overflow-y: scroll;
-    background: #EFF0F1;
     padding: 20px;
     overflow: scroll;
     min-width: 300px;
 }
+
 
 .toast {
     width: 0px;

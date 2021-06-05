@@ -17,7 +17,7 @@ const Video = ({videoUrl, setVideoCurrentTime, videoHeight, videoWidth}) => {
 
     return (
         <Fragment>
-            <video height={videoHeight ? videoHeight : defaultHeight} width={videoWidth ? videoWidth : defaultWidth} controls>
+            <video height={videoHeight ? videoHeight : defaultHeight} width={videoWidth ? videoWidth : defaultWidth} controls muted>
                 <source src={videoUrl} type="video/mp4" />
             </video>
         </Fragment>

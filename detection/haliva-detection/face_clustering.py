@@ -4,11 +4,51 @@ import pandas as pd
 from sklearn.cluster import DBSCAN
 from sklearn.decomposition import PCA
 from sklearn.metrics import silhouette_score
+from config_service import ConfigService
+import pickle
+from collections import Counter
+from plot_utils import plot_clusters, plot_pca_variance
+from sklearn.neighbors import NearestNeighbors
 
 class FaceClustering:
 
     def __init__(self):
         self.faces = []
+        self.face_encodings = None
+        self.pca_df_all_data = None
+
+        if(ConfigService.load_clustering_data_enabled()):
+            self.load_clustering_data_from_pickle_file()
+
+    def save_clustering_data_in_pickle_file(self):
+
+        db = {}
+        db['faces'] = self.faces
+        db['face_encodings'] = self.face_encodings
+        db['pca_df_all_data'] = self.pca_df_all_data
+
+        dbfile = open('models/face_clustering_model', 'wb')
+        pickle.dump(db, dbfile)                     
+        dbfile.close()
+    
+    def load_clustering_data_from_pickle_file(self):
+
+        # for reading also binary mode is important
+        try:
+            dbfile = open('models/face_clustering_model', 'rb')    
+        except FileNotFoundError:
+            return
+        
+        db = pickle.load(dbfile)
+        self.faces = db['faces']
+        self.face_encodings = db['face_encodings']
+        self.pca_df_all_data = db['pca_df_all_data']
+
+        print("\n")
+        print("load_clustering_data_from_pickle_file")
+        labels = self.pca_df_all_data['cluster']
+        self.print_clustering_summary(labels)
+        dbfile.close()
 
     def get_best_pca_dimensions(self, data, threshold_variance: int = 90) -> int:
 
@@ -20,6 +60,8 @@ class FaceClustering:
         variance = pca.explained_variance_ratio_
         var = np.cumsum(np.round(variance, 3)*100)
         best_pca_dimensions = next(item[0] for item in enumerate(var) if item[1] > threshold_variance)
+
+        plot_pca_variance(var)
 
         print("best_pca_dimensions for", threshold_variance, "% Variance is: ", best_pca_dimensions, "Features\n")
 
@@ -129,11 +171,7 @@ class FaceClustering:
 
         labels, sil_score = self.start_dbscan(pca_df, eps=best_eps, min_samples=best_min_samples)
 
-        label_ids = np.unique(labels)
-        num_unique_faces = len(np.where(label_ids > -1)[0])
-        print('Estimated number of unique faces: %d' % num_unique_faces)
-        n_noise_ = list(labels).count(-1)
-        print('Estimated number of noise points: %d' % n_noise_)
+        self.print_clustering_summary(labels)
         print("DBSCAN silhouette_score :", sil_score)
 
         pca_df_all_data['cluster'] = labels
@@ -154,4 +192,48 @@ class FaceClustering:
         pca_df_all_data, pca_df = self.create_pca(faces, face_encodings, best_pca_dimensions)
         
         pca_df_all_data, pca_df, dbscan_sil_score = self.cluster_faces_with_db_scan(pca_df_all_data, pca_df, best_pca_dimensions)
-        return pca_df_all_data, pca_df, dbscan_sil_score, face_encodings
+
+        self.pca_df_all_data = pca_df_all_data
+        self.face_encodings = face_encodings
+
+        plot_clusters(pca_df, self.pca_df_all_data['cluster'], "DBSCAN")
+
+        self.save_clustering_data_in_pickle_file()
+
+    def get_person_id(self, unknown_face_encoding):
+
+        face_distances = []
+
+        k=ConfigService.knn_clustering_k_paramerter()
+
+        for ind in self.pca_df_all_data.index:
+            dis = np.linalg.norm(self.pca_df_all_data['face_encoding'][ind]-unknown_face_encoding)
+            if(dis > 7.5):
+                continue
+            cluster_id = self.pca_df_all_data['cluster'][ind]
+            face_distances.append([dis, cluster_id])
+
+        # Sort based on distance and get top k
+        dk = sorted(face_distances, key=lambda x: x[0])[:k]
+
+        if(len(dk)==0):
+            return -1
+
+        # Retrieve only the labels
+        labels = np.array(dk)[:, -1]
+
+        # Get frequencies of each label
+        test_list = Counter(labels)
+        face_id = test_list.most_common(1)[0][0].astype("int")
+
+        return face_id
+
+    def print_clustering_summary(self, labels):
+        
+        label_ids = np.unique(labels)
+        num_unique_faces = len(np.where(label_ids > -1)[0])
+        n_noise_ = list(labels).count(-1)
+        
+        print('number of faces: %d' % len(self.faces))
+        print('Estimated number of unique faces: %d' % num_unique_faces)
+        print('Estimated number of noise points: %d\n' % n_noise_)

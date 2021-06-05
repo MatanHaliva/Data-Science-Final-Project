@@ -9,9 +9,12 @@ using System.Threading.Tasks;
 namespace Detections_API.Models
 {
     [BsonIgnoreExtraElements]
-    [BsonKnownTypes(typeof(CarModel), typeof(MaskModel),typeof(MotionModel),typeof(AnomalyModel))]
+    [BsonKnownTypes(typeof(CarModel), typeof(MaskModel),typeof(MotionModel),typeof(AnomalyModel),typeof(FaceModel))]
     public  class DetectionsBase
     {
+        [BsonId]
+        [BsonRepresentation(BsonType.ObjectId)]
+        public string Id { get; set; }
 
         [Required]
         public string ContextId { get; set; }
@@ -21,6 +24,11 @@ namespace Detections_API.Models
         public double DetectionTime { get; set; }
         public string Description { get; set; }
         public double Accuracy { get; set; }
+
+        public DetectionsBase()
+        {
+            Id = Guid.NewGuid().ToString();
+        }
     }
 
 

@@ -1,9 +1,10 @@
 import React from "react"
 import { Fragment } from "react";
-import { FaVideo } from 'react-icons/fa';
+import { FaCheck } from 'react-icons/fa';
 import {useSelector} from "react-redux"
+import {IconContext} from "react-icons"
 
-const CardChild = ({loading, children, cardHeader, cardDescription, width, height, picked, index, onCardClicked}) => {
+const CardChild = ({loading, children, cardHeader, cardDescription, width, height, picked, index, onCardClicked, clickAble}) => {
     const className = picked ? "card card-picked" : "card"  
     const contextId = useSelector(state => state.app.contextId)
 
@@ -39,12 +40,23 @@ const CardChild = ({loading, children, cardHeader, cardDescription, width, heigh
         return (
             <div className={`selection-wrapper`} style={{width: width, height: height}}>
             <label htmlFor={`selected-item-${index}`} class="selected-label">
-                <input defaultChecked={contextId === index ? true : false} onClick={() => {
-                    if (typeof onCardClicked === 'function') {
-                        onCardClicked(index)
-                    }
-                }} type="radio" name="selected-item" id={`selected-item-${index}`}/>
-                <span class="icon"></span>
+                {
+                    clickAble ?
+                    <Fragment>
+                    <input defaultChecked={contextId === index ? true : false} onClick={() => {
+                        if (typeof onCardClicked === 'function') {
+                            onCardClicked(index)
+                        }
+                    }} type="radio" name="selected-item" id={`selected-item-${index}`}/>
+                    {contextId === index ?
+                        <IconContext.Provider value={{ color: 'white'}}>
+                            <FaCheck class="icon"/>
+                        </IconContext.Provider> : <span class="icon"/>}
+                    </Fragment>
+                    :
+                    <Fragment/>
+                }
+                
                 <div class="selected-content" style={{width: width, height: height}}>
                     {children}
                 </div>

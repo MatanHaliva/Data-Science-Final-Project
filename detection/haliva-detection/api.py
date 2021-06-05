@@ -1,9 +1,14 @@
-from flask import Flask
+from flask import Flask,send_file
 from flask_restx import Api, Resource, fields
 from process_manager import ProcessManager
 from flask_cors import CORS
+from face_clustering import FaceClustering
+from detectors.face_detector import FaceDetection
+import os
 
 process_manager: ProcessManager = ProcessManager()
+face_clustering = FaceClustering()
+face_detection = FaceDetection()
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -28,7 +33,7 @@ class DetectorService(Resource):
         print("startProcess")
         recording_file_dto = api.payload
         process_manager.create_process(
-            recording_file_dto["filePath"], recording_file_dto["contextId"])
+            recording_file_dto["filePath"], recording_file_dto["contextId"], face_clustering, face_detection)
         print("send")
         return recording_file_dto, 200
 
@@ -61,6 +66,41 @@ class DetectorService(Resource):
         except KeyError:
             return {"message": "context_id not found"}, 404
 
+@api.route('/startClustering')
+class ClusteringService(Resource):
+
+    def post(self):
+        video_list = api.payload
+
+        dir_path = video_list[0]
+
+        video_list = os.listdir(dir_path)
+
+        faces=[]
+
+        for video_path in video_list:
+            path = "{}/{}".format(dir_path,video_path)
+            faces.extend(face_detection.get_faces_from_video(path))
+
+        face_clustering.start(faces)
+
+@api.route('/processes/<string:context_id>/getVideo')
+class RecordingsService(Resource):
+    def get(self, context_id):
+        try:
+            filename = "faces\context_id_{}\output.mp4".format(context_id)
+            return send_file(filename, mimetype='video/mp4', as_attachment=True)
+        except FileNotFoundError:
+            return {"message": "file not found"}, 404
+
+@api.route('/processes/<string:context_id>/<string:face_id>/<string:detection_id>/getImage')
+class GetImageService(Resource):
+    def get(self, context_id, face_id, detection_id):
+        try:
+            filename = "faces/context_id_{}/{}/{}.png".format(context_id,face_id,detection_id)
+            return send_file(filename, mimetype='image/png', as_attachment=True)
+        except FileNotFoundError:
+            return {"message": "file not found"}, 404
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
