@@ -11,8 +11,7 @@ class DetectionApiConnector:
 
         if(ConfigService.detection_api_enabled() == False):
             myobj = np.array([detection.tojson()]).tolist()
-            response = requests.post(url, json = myobj, verify=True)
-            print(response)
+            print(myobj)
             return
 
         url = None

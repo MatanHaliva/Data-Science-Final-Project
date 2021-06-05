@@ -1,10 +1,8 @@
-import threading
-from anomaly_detection_dto import AnomalyDetectionDto
-from anomaly_detection import AnomalyDetection
+from dtos.anomaly_detection_dto import AnomalyDetectionDto
+from detectors.anomaly_detection import AnomalyDetection
 from detection_api_connector import DetectionApiConnector
 from config_service import ConfigService
-from detection_type_enum import DetectionType
-import os
+from dtos.detection_type_enum import DetectionType
 from process import Process
 
 

@@ -5,19 +5,13 @@ import numpy as np
 from tensorflow.python.keras.models import load_model
 from tensorflow.keras.layers import LayerNormalization
 import matplotlib.pyplot as plt
-from anomaly_detection_dto import AnomalyDetectionDto
 import cv2 as cv2
-import time
 import os
-
-from config_service import ConfigService
-from detection_api_connector import DetectionApiConnector
-from detection_type_enum import DetectionType
 
 
 class AnomalyDetection:
     def __init__(self, cache_dir="F:/", tolerance_frames=5):
-        model_file = "models/model_lstm_gil.hdf5"
+        model_file = "../models/model_lstm_gil.hdf5"
         self.model = load_model(model_file, custom_objects={'LayerNormalization': LayerNormalization})
         self.batch_size = 4
         self.cache_dir = cache_dir

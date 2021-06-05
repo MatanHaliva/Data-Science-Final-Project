@@ -5,7 +5,6 @@ from typing import List
 
 from config_service import ConfigService
 from process_anomaly import ProcessAnomaly
-from process_dto import ProcessDto
 from face_clustering import FaceClustering
 from process_faces import ProcessFaces
 from process import Process
