@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, send_file
 from flask_restx import Api, Resource, fields
 from process_manager import ProcessManager
 from flask_cors import CORS
@@ -62,5 +62,27 @@ class DetectorService(Resource):
             return {"message": "context_id not found"}, 404
 
 
+@api.route('/processes/<string:context_id>/getVideo')
+class RecordingsService(Resource):
+    def get(self, context_id):
+        try:
+
+            process = process_manager.get_process_by_id(context_id)
+            filename = "faces\context_id_{}\output.mp4".format(context_id)
+            return send_file(filename, mimetype='video/mp4') , 200
+        except KeyError:
+            return {"message": "context_id not found"}, 404
+
+@api.route('/processes/<string:context_id>/<string:detection_id>/getImage')
+class GetImageService(Resource):
+    def get(self, context_id, detection_id):
+        try:
+            process = process_manager.get_process_by_id(context_id)
+            filename = 'Images/Processing/{}/cars/{}.png'.format(context_id, detection_id)
+            return send_file(filename, mimetype='image/png', as_attachment=True)
+        except KeyError:
+            return {"message": "context_id not found"}, 404
+
+
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)

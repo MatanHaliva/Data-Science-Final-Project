@@ -46,11 +46,13 @@ class Process(threading.Thread):
         self.video_path = video_path
         self.processing_percents = 0
         self.processing_path = 'Images/Processing/' + self.context_id
+        self.images_path = self.processing_path + '/cars/{}'
         self.create_dir()
         print("init", context_id)
 
     def create_dir(self):
         Path(self.processing_path).mkdir(parents=True, exist_ok=True)
+        Path(self.processing_path + '/cars/').mkdir(parents=True, exist_ok=True)
 
 
     def load_model_init(self):  
@@ -86,6 +88,8 @@ class Process(threading.Thread):
 
         print(response.json())
 
+        return response.json()
+
     def detect_license_car(self, img_path):
         command = '''docker run -it --rm -v $(pwd):/data:ro openalpr -j -c us ''' + img_path
         process = Popen(command,shell=True,stdout=subprocess.PIPE)
@@ -94,12 +98,18 @@ class Process(threading.Thread):
 
         return json.loads(a)
 
+    def write_detections_locally(self, responses, results):
+        for index, response in enumerate(responses):
+            img = results[index]["img"]
+            detection_id = response["id"]
+            path = self.images_path.format(detection_id) + '.png'
+            print("path to save: " + str(path))
+            cv2.imwrite(path.format(detection_id), img)
 
     def model_detect_car(self, car_to_detect, model, cars_meta, class_names, frame_number):
         img_width, img_height = 224, 224
     
     
-        #samples = random.sample(test_images, num_samples)
         results = []
         
         for car in car_to_detect:
@@ -121,26 +131,26 @@ class Process(threading.Thread):
                     print("data: " + str(license_car["results"][0]))
                 prob = np.max(preds)
                 class_id = np.argmax(preds)
-                text = ('Predict: {}, prob: {}'.format(class_names[class_id][0][0], prob))
-                results.append({'label': class_names[class_id][0][0], 'prob': '{:.4}'.format(prob), 'picture name': image_name, 'frame_number': car["detection_time"], 'detection_car': car["type"], 'license_car': license_plate})
-                #cv.imwrite('images/{}_out.png'.format(image_name), bgr_img)
+                results.append({'label': class_names[class_id][0][0], 'prob': '{:.4}'.format(prob), 'picture name': image_name, 'frame_number': car["detection_time"], 'detection_car': car["type"], 'license_car': license_plate, 'img': bgr_img})
+                #text = ('Predict: {}, prob: {}'.format(class_names[class_id][0][0], prob))
+                #cv.imwrite('Images/{}_out.png'.format(image_name), bgr_img)
+                #cv2.imwrite(self.processing_path + "/" + str(i) + '.jpg', crop_img)
+
                 print("successfully")
             except Exception as e:
                 print(str(e))
 
 
-        results
         
         print(results)
-        #detection_collection.insert_many(results)
-        print("blaaaa")
+        print("finished round of detetctions")
 
-        # with open('results.json', 'a') as file:
-        #     json.dump(results, file, indent=4)
+        responses = self.create_detections(results)
 
-        self.create_detections(results)
+        self.write_detections_locally(responses, results)
 
-        print("put in results files")
+
+        print("send it to the detection service")
         #K.clear_session()
 
     def crop_objects(self, width, height, image_np, output_dict, i):
@@ -349,7 +359,7 @@ class Process(threading.Thread):
 
 
 
-                    if len(car_to_detect) > 15:
+                    if len(car_to_detect) > 1:
                         new_list = list(car_to_detect)
                         
                         print("try to process.....")
