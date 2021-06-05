@@ -4,13 +4,14 @@ import queue
 import numpy as np
 from tensorflow.python.keras.models import load_model
 from tensorflow.keras.layers import LayerNormalization
+
 import matplotlib.pyplot as plt
 import cv2 as cv2
 import os
 
 
 class AnomalyDetection:
-    def __init__(self, cache_dir="F:/", tolerance_frames=5):
+    def __init__(self, cache_dir=".cache/", tolerance_frames=5):
         model_file = "models/model_lstm_gil.hdf5"
         self.model = load_model(model_file, custom_objects={'LayerNormalization': LayerNormalization})
         self.batch_size = 3
