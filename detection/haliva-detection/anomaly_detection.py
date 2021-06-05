@@ -17,7 +17,7 @@ from detection_type_enum import DetectionType
 
 class AnomalyDetection:
     def __init__(self, cache_dir="F:/", tolerance_frames=5):
-        model_file = "models/model_lstm_gil2.hdf5"
+        model_file = "models/model_lstm_gil.hdf5"
         self.model = load_model(model_file, custom_objects={'LayerNormalization': LayerNormalization})
         self.batch_size = 4
         self.cache_dir = cache_dir
@@ -26,6 +26,7 @@ class AnomalyDetection:
         self.sample_size = 200
         self.tolerance_frames = tolerance_frames
         self.total_frames = 0
+        self.done_tasks = [0]
 
     def __addToQueue(self):
         if self.queue.empty():
@@ -55,10 +56,13 @@ class AnomalyDetection:
 
     def get_anomaly(self, video) -> np.array:
         def start_recording_thread():
+            print(video)
             vs = cv2.VideoCapture(video)
             property_id = int(cv2.CAP_PROP_FRAME_COUNT)
             test_length = int(cv2.VideoCapture.get(vs, property_id))
+            print("test_length: " + str(test_length))
             self.total_frames = test_length
+            print("total_frames: " + str(self.total_frames))
             # test_length = len(list(filter(lambda x: '.jpg' in x, os.listdir(video[:-7]))))
             sz = self.sample_size if test_length >= self.sample_size else test_length
             test_length = test_length - sz
@@ -99,6 +103,7 @@ class AnomalyDetection:
             sa: np.ndarray = (sequences_reconstruction_cost - np.min(sequences_reconstruction_cost)) / np.max(
                 sequences_reconstruction_cost)
             srs.append((1.0 - sa, video_counter))
+            self.done_tasks[0] += 1
             # plot the regularity scores
             # plt.plot(1.0 - sa)
             # plt.ylabel('regularity score Sr(t)')
@@ -125,17 +130,17 @@ class AnomalyDetection:
             cnt = 0
             start = ll[0][0]
             for x in range(1, len(ll)):
-                if (ll[x][0] - ll[x - 1][0] == 1 and ll[x][0] < len(total_clip_sr) -1):
+                if (ll[x][0] - ll[x - 1][0] == 1 and ll[x][0] < len(total_clip_sr) - 1):
                     cnt += 1
                 else:
                     # anomal.append((cnt, start,(ll[x - 1][0] + 10)))
-                    if cnt> self.tolerance_frames:
+                    if cnt > self.tolerance_frames:
                         min_val = min(list(total_clip_sr)[start:(ll[x - 1][0] + 10)])
                         anomal2.append((cnt, list(total_clip_sr).index(min_val), min_val))
                     start = (ll[x][0] + 1)
                     cnt = 1
             # anomal.append((cnt, start,(ll[x - 1][0] + 10)))
-            if cnt> self.tolerance_frames:
+            if cnt > self.tolerance_frames:
                 min_val = min(list(total_clip_sr)[start:len(total_clip_sr)])
                 anomal2.append((cnt, list(total_clip_sr).index(min_val), min_val))
 

@@ -37,7 +37,7 @@ class ConfigService:
     
     @staticmethod
     def detection_api_enabled():
-        return False
+        return True
 
     @staticmethod
     def anomaly_detection_enabled():
