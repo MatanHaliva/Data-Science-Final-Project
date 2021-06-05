@@ -7,6 +7,7 @@ exports.components = {
   "component---cache-dev-404-page-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/.cache/dev-404-page.js")),
   "component---src-pages-404-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/404.js")),
   "component---src-pages-analyse-video-analyse-video-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/analyseVideo/analyseVideo.js")),
+  "component---src-pages-analyse-video-helper-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/analyseVideo/helper.js")),
   "component---src-pages-analyse-video-index-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/analyseVideo/index.js")),
   "component---src-pages-components-card-child-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/components/CardChild.js")),
   "component---src-pages-components-card-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/components/Card.js")),

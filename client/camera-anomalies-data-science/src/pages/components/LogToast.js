@@ -9,6 +9,7 @@ const feedbackUrl = `https://feedbacks-api.azurewebsites.net/Feedbacks/GetAll`
 const carLogToast = ({licensePlate, color, manufacturer}) => {
     return (
         <Fragment>
+            <div><b>Car Details: </b></div>
             <div>License car: {licensePlate} </div>
             <div>Manufacturer: {manufacturer}</div>
             <div>Color: {color}</div>
@@ -23,7 +24,7 @@ const faceLogToast = ({}) => {
     )
 }
 
-const LogToast = ({id, detectionTime, description, detectionType, detectionTypeName, accuracy, toastShowFade, licensePlate, color, manufacturer}) => {
+const LogToast = ({id, detectionTime, description, detectionType, detectionTypeName, accuracy, toastShowFade, licensePlate, color, manufacturer, img}) => {
     const [feedbackData, setFeedBackData] = useState({found: false, personName: "N/A", loading: true})
     
     let feedbackResponses = useSelector(state => {
@@ -53,13 +54,15 @@ const LogToast = ({id, detectionTime, description, detectionType, detectionTypeN
                 <div className="toast-body">
                     {
                     <Fragment>
+                        <div class="img-float-right"><img src={img}/></div>
+                        <div><b>Generic details</b></div>
                         <div> Detection Time: {detectionTime}</div>
                         <div> Detection Type Name: {detectionTypeName}</div>
                         <div> Description: {description}</div>
                         <div> Accuracy: {accuracy}</div>
                         {detectionType === 0 ? carLogToast({licensePlate, color, manufacturer}) : <Fragment/>}
                         <br/>
-                        <div> History Knowledge:</div>
+                        <div><b> History Knowledge: </b></div>
                         {
                         feedbackData.loading ?
                         <Fragment>

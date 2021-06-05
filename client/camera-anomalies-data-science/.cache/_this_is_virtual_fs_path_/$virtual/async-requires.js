@@ -5,6 +5,7 @@ exports.components = {
   "component---cache-dev-404-page-js": () => import("./../../dev-404-page.js" /* webpackChunkName: "component---cache-dev-404-page-js" */),
   "component---src-pages-404-js": () => import("./../../../src/pages/404.js" /* webpackChunkName: "component---src-pages-404-js" */),
   "component---src-pages-analyse-video-analyse-video-js": () => import("./../../../src/pages/analyseVideo/analyseVideo.js" /* webpackChunkName: "component---src-pages-analyse-video-analyse-video-js" */),
+  "component---src-pages-analyse-video-helper-js": () => import("./../../../src/pages/analyseVideo/helper.js" /* webpackChunkName: "component---src-pages-analyse-video-helper-js" */),
   "component---src-pages-analyse-video-index-js": () => import("./../../../src/pages/analyseVideo/index.js" /* webpackChunkName: "component---src-pages-analyse-video-index-js" */),
   "component---src-pages-components-card-child-js": () => import("./../../../src/pages/components/CardChild.js" /* webpackChunkName: "component---src-pages-components-card-child-js" */),
   "component---src-pages-components-card-js": () => import("./../../../src/pages/components/Card.js" /* webpackChunkName: "component---src-pages-components-card-js" */),

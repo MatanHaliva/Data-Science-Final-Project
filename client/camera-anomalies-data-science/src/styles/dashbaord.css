@@ -54,3 +54,8 @@
 .first-level {
     z-index: 999999;
 }
+
+.img-float-right {
+    width: 100px;
+    float: right;
+}
