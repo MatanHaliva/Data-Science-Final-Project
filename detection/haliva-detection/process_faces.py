@@ -1,9 +1,5 @@
-import threading
-import time
 import os
 import cv2 as cv2
-from detectors.face_detector import FaceDetection
-import time
 from detectors.object_detection import ObjectDetection
 from dtos.detection_dto import DetectionDto
 from dtos.face_detection_dto import FaceDetectionDto

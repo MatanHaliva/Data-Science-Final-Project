@@ -11,7 +11,7 @@ import os
 
 class AnomalyDetection:
     def __init__(self, cache_dir="F:/", tolerance_frames=5):
-        model_file = "../models/model_lstm_gil.hdf5"
+        model_file = "models/model_lstm_gil.hdf5"
         self.model = load_model(model_file, custom_objects={'LayerNormalization': LayerNormalization})
         self.batch_size = 4
         self.cache_dir = cache_dir
@@ -50,13 +50,10 @@ class AnomalyDetection:
 
     def get_anomaly(self, video) -> np.array:
         def start_recording_thread():
-            print(video)
             vs = cv2.VideoCapture(video)
             property_id = int(cv2.CAP_PROP_FRAME_COUNT)
             test_length = int(cv2.VideoCapture.get(vs, property_id))
-            print("test_length: " + str(test_length))
             self.total_frames = test_length
-            print("total_frames: " + str(self.total_frames))
             # test_length = len(list(filter(lambda x: '.jpg' in x, os.listdir(video[:-7]))))
             sz = self.sample_size if test_length >= self.sample_size else test_length
             test_length = test_length - sz

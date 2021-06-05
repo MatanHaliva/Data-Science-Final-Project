@@ -15,16 +15,19 @@ class ProcessManager():
         self._processes = {}
 
     def create_process(self, video_path: String, context_id: String, face_clustering, face_detection) -> None:
-        # process: ProcessFaces = ProcessFaces(video_path, context_id, face_clustering, face_detection)
-        process: Process = Process(video_path, context_id)
-        self._processes[context_id] = [process]
-        # process.start()
-        if ConfigService.anomaly_detection_enabled():
-            self.create_anomaly_process(video_path, context_id)
+        process: ProcessFaces = ProcessFaces(video_path, context_id, face_clustering, face_detection)
+        if context_id in self._processes.keys():
+            self._processes[context_id].append(process)
+        else:
+            self._processes[context_id] = [process]
+        process.start()
 
     def create_anomaly_process(self, video_path: String, context_id: String) -> None:
         process: ProcessAnomaly = ProcessAnomaly(video_path, context_id)
-        self._processes[context_id].append(process)
+        if context_id in self._processes.keys():
+            self._processes[context_id].append(process)
+        else:
+            self._processes[context_id] = [process]
         process.start()
 
     def get_processing_percents_by_context_id(self, context_id: String) -> String:

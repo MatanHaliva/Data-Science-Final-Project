@@ -1,4 +1,4 @@
-from detection_dto import DetectionDto
+from dtos.detection_dto import DetectionDto
 
 
 class AnomalyDetectionDto(DetectionDto):

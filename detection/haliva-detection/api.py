@@ -8,7 +8,7 @@ import os
 
 process_manager: ProcessManager = ProcessManager()
 face_clustering = FaceClustering()
-face_detection = FaceDetection()
+# face_detection = FaceDetection()
 
 app = Flask(__name__)
 cors = CORS(app)
@@ -35,6 +35,16 @@ class DetectorService(Resource):
         process_manager.create_process(
             recording_file_dto["filePath"], recording_file_dto["contextId"], face_clustering, face_detection)
         print("send")
+        return recording_file_dto, 200
+
+@api.route('/startAnomalyProcess')
+class DetectorService(Resource):
+
+    @api.expect(recording_file_dto)
+    def post(self):
+        recording_file_dto = api.payload
+        process_manager.create_anomaly_process(
+            recording_file_dto["filePath"], recording_file_dto["contextId"])
         return recording_file_dto, 200
 
 @api.route('/processes')
