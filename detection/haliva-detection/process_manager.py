@@ -1,16 +1,14 @@
 from flask_restx.fields import String
 from process import Process
-from process_dto import ProcessDto
-from face_clustering import FaceClustering
+from dtos.process_dto import ProcessDto
 
 class ProcessManager():
 
     def __init__(self):
         self._processes = {}
-        self.face_clustering = FaceClustering()
-
-    def create_process(self, video_path: String, context_id: String) -> None:
-        process: Process = Process(video_path, context_id, self.face_clustering)
+        
+    def create_process(self, video_path: String, context_id: String, face_clustering, face_detection) -> None:
+        process: Process = Process(video_path, context_id, face_clustering, face_detection)
         self._processes[context_id] = process
         process.start()
 

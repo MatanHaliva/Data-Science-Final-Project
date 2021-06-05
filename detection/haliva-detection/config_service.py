@@ -1,5 +1,4 @@
 import requests
-from detection_dto import DetectionDto
 
 class ConfigService:
 
@@ -30,14 +29,14 @@ class ConfigService:
     @staticmethod
     def face_detection_threshold():
         return 0.95
-    
+
     @staticmethod
     def mask_detection_threshold():
         return 0.95
     
     @staticmethod
     def detection_api_enabled():
-        return False
+        return True
 
     @staticmethod
     def anomaly_detection_ranges(value):
@@ -52,4 +51,14 @@ class ConfigService:
     @staticmethod        
     def save_to_mp4_enabled():
         return True
+    
+    @staticmethod
+    def load_clustering_data_enabled():
+        return True
+    
+    @staticmethod
+    def knn_clustering_k_paramerter():
+        return 3
+
+        
     
