@@ -37,7 +37,6 @@ const CardChild = ({loading, children, cardHeader, cardDescription, width, heigh
     }
 
     const notLoadingPage = () => {
-        debugger
         return (
             <div className={`selection-wrapper`} style={{width: width, height: height}}>
             <label htmlFor={`selected-item-${index}`} class="selected-label">

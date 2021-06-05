@@ -169,3 +169,7 @@ margin-left: 4px;
 .padding-left-25 {
     padding-left: 55px !important;
 }
+
+.navbar-context-id {
+    color: #3057d5 !important; 
+}

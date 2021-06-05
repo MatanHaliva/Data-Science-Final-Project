@@ -35,6 +35,8 @@ exports.components = {
   "component---src-pages-my-videos-index-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/myVideos/index.js")),
   "component---src-pages-process-video-index-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/processVideo/index.js")),
   "component---src-pages-process-video-process-video-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/processVideo/processVideo.js")),
+  "component---src-pages-reports-data-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/reports/data.js")),
+  "component---src-pages-reports-index-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/reports/index.js")),
   "component---src-pages-test-card-index-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/testCard/index.js")),
   "component---src-pages-upload-video-index-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/uploadVideo/index.js")),
   "component---src-pages-upload-video-upload-video-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/uploadVideo/uploadVideo.js"))

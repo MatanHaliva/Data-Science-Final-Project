@@ -56,6 +56,12 @@ const NavBar = ({setCurrentRoute, currentRoute, loggedName}) => {
                     setCurrentRoute(3)
                 }}>Analyse Video</a>
               </li>
+              <li class="nav-item">
+                <a id="reports" className={`nav-link ${currentRoute === 6 ? "active" : ""}`} href="#" onClick={() => {
+                    navigate("/reports")
+                    setCurrentRoute(6)
+                }}>Reports</a>
+              </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Configurations
@@ -71,7 +77,7 @@ const NavBar = ({setCurrentRoute, currentRoute, loggedName}) => {
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Link</a>
               </li> */}
                 <li class="nav-item">
-                  <span class="nav-link padding-left-25 text-info">Context Id: {contextId ? contextId : 'Not Picked Video Yet'}</span>
+                  <span class="nav-link padding-left-25 navbar-context-id">Context Id: {contextId ? contextId : 'Not Picked Video Yet'}</span>
                 </li>
             </ul>
             <form class="d-flex float-right">

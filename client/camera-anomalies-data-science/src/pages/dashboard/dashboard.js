@@ -146,7 +146,7 @@ const Dashboard = ({}) => {
             
                                             return(
                                                 <Fragment key={processedVideo.id}>
-                                                        <div class="p-3 bd-highlight">
+                                                        <div class="p-3 bd-highlight" key={processedVideo.id}>
                                                         <CardChild clickAble={false} loading={processedVideo.loading} cardHeader={processedVideo.header} cardDescription={processedVideo.description} width={processedVideo.width} height={processedVideo.height}>
                                                             <Video videoUrl={pathUrl} videoHeight={`${processedVideo.height - 100}px`} videoWidth={`${processedVideo.width - 200}px`}  />
                                                             {processedVideo.status === 100 ? <h6>Finished Processing</h6> : processedVideo.status === 0 ? <h6>Did not start Processing</h6> : <Progress percents={processedVideo.status}/>}
@@ -163,7 +163,7 @@ const Dashboard = ({}) => {
                                         <li class="page-item"><a class="page-link" href="#">Previous</a></li>
                                         {
                                             [...Array(numberPages).keys()].map(num => {
-                                                return (<li className={`page-item ${num === currentPage ? 'active': ''}`} ><a class="page-link" onClick={(e) => setCurrentPage(num)} href="#">{num}</a></li>)
+                                                return (<li key={num} className={`page-item ${num === currentPage ? 'active': ''}`} ><a class="page-link" onClick={(e) => setCurrentPage(num)} href="#">{num}</a></li>)
                                             
                                             }) 
                                         }
