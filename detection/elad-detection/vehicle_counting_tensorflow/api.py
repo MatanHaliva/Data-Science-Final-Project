@@ -67,7 +67,7 @@ class RecordingsService(Resource):
     def get(self, context_id):
         try:
 
-            process = process_manager.get_process_by_id(context_id)
+            #process = process_manager.get_process_by_id(context_id)
             filename = "faces\context_id_{}\output.mp4".format(context_id)
             return send_file(filename, mimetype='video/mp4') , 200
         except KeyError:
@@ -77,7 +77,7 @@ class RecordingsService(Resource):
 class GetImageService(Resource):
     def get(self, context_id, detection_id):
         try:
-            process = process_manager.get_process_by_id(context_id)
+            #process = process_manager.get_process_by_id(context_id)
             filename = 'Images/Processing/{}/cars/{}.png'.format(context_id, detection_id)
             return send_file(filename, mimetype='image/png', as_attachment=True)
         except KeyError:

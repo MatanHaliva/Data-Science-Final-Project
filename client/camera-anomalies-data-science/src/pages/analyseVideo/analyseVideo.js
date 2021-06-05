@@ -46,22 +46,22 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
     const getDetections = async () => {
         try {
             const detections = await axios.get(`${detectionApi}/GetById/${contextId}`)
-            //setDetections(convertToPresentation(detections.data))
-            setDetections(convertToPresentation([
-                {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 1, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
-                {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 4, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
-                {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 7, Accuracy: 0.99, LicensePlate: "32-355-3", Manufacturer: "Honda", Color: "white"},
-                {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 11, Accuracy: 0.99, LicensePlate: "32-345555533-3", Manufacturer: "Honda", Color: "white"},
-                {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 14, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
+            setDetections(convertToPresentation(detections.data))
+            // setDetections(convertToPresentation([
+            //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 1, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
+            //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 4, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
+            //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 7, Accuracy: 0.99, LicensePlate: "32-355-3", Manufacturer: "Honda", Color: "white"},
+            //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 11, Accuracy: 0.99, LicensePlate: "32-345555533-3", Manufacturer: "Honda", Color: "white"},
+            //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 14, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
     
-                {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 18, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Hyundai", Color: "white"},
-                {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 15, Accuracy: 0.97, LicensePlate: "32-3555-3", Manufacturer: "Tesla", Color: "red"},
-                {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 20, Accuracy: 0.97, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "black"},
-                {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 30, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "green"},
-                {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 35, Accuracy: 0.95, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "black"},
-                {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 45, Accuracy: 0.95, LicensePlate: "32-35-3", Manufacturer: "Honda", Color: "black"}
+            //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 18, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Hyundai", Color: "white"},
+            //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 15, Accuracy: 0.97, LicensePlate: "32-3555-3", Manufacturer: "Tesla", Color: "red"},
+            //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 20, Accuracy: 0.97, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "black"},
+            //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 30, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "green"},
+            //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 35, Accuracy: 0.95, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "black"},
+            //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 45, Accuracy: 0.95, LicensePlate: "32-35-3", Manufacturer: "Honda", Color: "black"}
     
-            ]))
+            // ]))
         } catch (err) {
 
         }

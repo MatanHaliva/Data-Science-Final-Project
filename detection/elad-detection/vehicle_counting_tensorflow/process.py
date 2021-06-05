@@ -86,12 +86,12 @@ class Process(threading.Thread):
 
         response = requests.post('https://detections-api.azurewebsites.net/Detections/CreateCars', json=objects_detection_format, verify=True)
 
-        print(response.json())
+        print("created cars on detection api: " + str(response.json()))
 
         return response.json()
 
     def detect_license_car(self, img_path):
-        command = '''docker run -it --rm -v $(pwd):/data:ro openalpr -j -c us ''' + img_path
+        command = '''docker run -it --rm -v $(pwd):/data:ro openalpr -j -c eu ''' + img_path
         process = Popen(command,shell=True,stdout=subprocess.PIPE)
         result = process.communicate()
         a,b = result
