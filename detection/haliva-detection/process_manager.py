@@ -1,26 +1,25 @@
-from flask_restx.fields import String
-from process import Process
-from dtos.process_dto import ProcessDto
 from typing import List
-
+from flask_restx.fields import String
 from config_service import ConfigService
-from process_anomaly import ProcessAnomaly
-from face_clustering import FaceClustering
-from process_faces import ProcessFaces
 from process import Process
+from process_anomaly import ProcessAnomaly
+from process_faces import ProcessFaces
+
+from dtos.process_dto import ProcessDto
+
+
 
 class ProcessManager():
 
     def __init__(self):
         self._processes = {}
-        self.face_clustering = FaceClustering()
 
     def create_process(self, video_path: String, context_id: String, face_clustering, face_detection) -> None:
-        # process: Process = Process(video_path, context_id, face_clustering, face_detection)
+        # process: ProcessFaces = ProcessFaces(video_path, context_id, face_clustering, face_detection)
         process: Process = Process(video_path, context_id)
         self._processes[context_id] = [process]
         # process.start()
-        if ConfigService.detection_api_enabled():
+        if ConfigService.anomaly_detection_enabled():
             self.create_anomaly_process(video_path, context_id)
 
     def create_anomaly_process(self, video_path: String, context_id: String) -> None:
