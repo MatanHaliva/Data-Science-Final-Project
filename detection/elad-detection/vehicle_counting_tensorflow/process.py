@@ -371,10 +371,11 @@ class Process(threading.Thread):
 
 
                     if(command=="imshow"):
-                        cv2.imshow('vehicle detection', input_frame)
+                        x = "imshow"
+                        # cv2.imshow('vehicle detection', input_frame)
 
-                        if cv2.waitKey(1) & 0xFF == ord('q'):
-                            break
+                        # if cv2.waitKey(1) & 0xFF == ord('q'):
+                        #     break
                     elif(command=="imwrite"):
                         output_movie.write(input_frame)
                         #print("writing frame...")

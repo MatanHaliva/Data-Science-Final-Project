@@ -12,3 +12,6 @@ node_modules
 *.cache
 *.pyc
 *.log
+
+detection/haliva-detection/faces
+test_license

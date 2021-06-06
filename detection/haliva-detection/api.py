@@ -1,4 +1,4 @@
-from flask import Flask,send_file
+from flask import Flask,send_file,send_from_directory
 from flask_restx import Api, Resource, fields
 from process_manager import ProcessManager
 from flask_cors import CORS
@@ -10,7 +10,7 @@ process_manager: ProcessManager = ProcessManager()
 face_clustering = FaceClustering()
 face_detection = FaceDetection()
 
-app = Flask(__name__)
+app = Flask(__name__, static_url_path='')
 cors = CORS(app)
 app.config.from_object(__name__)
 # enable CORS
@@ -94,12 +94,16 @@ class ClusteringService(Resource):
 
         face_clustering.start(faces)
 
-@api.route('/processes/<string:context_id>/getVideo')
+@api.route('/processes/<string:context_id>/output.mp4')
 class RecordingsService(Resource):
     def get(self, context_id):
         try:
-            filename = "faces\context_id_{}\output.mp4".format(context_id)
-            return send_file(filename, mimetype='video/mp4', as_attachment=True)
+            filename = "faces/context_id_{}/".format(context_id)
+            print(filename)
+            result = send_from_directory(filename , "output.mp4")
+            print(result)
+
+            return result
         except FileNotFoundError:
             return {"message": "file not found"}, 404
 
@@ -112,5 +116,9 @@ class GetImageService(Resource):
         except FileNotFoundError:
             return {"message": "file not found"}, 404
 
+@app.route('/faces/context_id_2de68d63-88eb-44ed-92fa-667956a0e39b/0/')
+def send_js(path):
+    return send_from_directory('/faces/context_id_2de68d63-88eb-44ed-92fa-667956a0e39b/0', path)
+
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=False, port=5009)
