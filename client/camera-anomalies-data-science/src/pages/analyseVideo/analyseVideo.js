@@ -15,7 +15,7 @@ const calculateTime = (timeStampCreated) => {
 
 const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTime}) => {
     const videoUrl = `http://localhost:33345${filePath}`
-    const videoUrlPostProcessing = `http://localhost:5009/processes/${contextId}/output.mp4`
+    const videoUrlPostProcessing = `http://localhost:5009/processes/${contextId}/getVideo`
     const detectionApi = `https://detections-api.azurewebsites.net/Detections`
     const [detections, setDetections] = useState([])
     const [videoTime, setVideoTime] = useState({})

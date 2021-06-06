@@ -94,7 +94,7 @@ class ClusteringService(Resource):
 
         face_clustering.start(faces)
 
-@api.route('/processes/<string:context_id>/output.mp4')
+@api.route('/processes/<string:context_id>/getVideo')
 class RecordingsService(Resource):
     def get(self, context_id):
         try:

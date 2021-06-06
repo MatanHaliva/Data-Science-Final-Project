@@ -68,7 +68,7 @@ class RecordingsService(Resource):
         try:
 
             #process = process_manager.get_process_by_id(context_id)
-            filename = "faces\context_id_{}\output.mp4".format(context_id)
+            filename = "faces/context_id_{}/output.mp4".format(context_id)
             return send_file(filename, mimetype='video/mp4') , 200
         except KeyError:
             return {"message": "context_id not found"}, 404
