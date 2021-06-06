@@ -37,6 +37,16 @@ class DetectorService(Resource):
         print("send")
         return recording_file_dto, 200
 
+@api.route('/startAnomalyProcess')
+class DetectorService(Resource):
+
+    @api.expect(recording_file_dto)
+    def post(self):
+        recording_file_dto = api.payload
+        process_manager.create_anomaly_process(
+            recording_file_dto["filePath"], recording_file_dto["contextId"])
+        return recording_file_dto, 200
+
 @api.route('/processes')
 class ProcessService(Resource):
 

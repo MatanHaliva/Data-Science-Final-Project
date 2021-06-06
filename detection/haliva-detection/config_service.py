@@ -1,5 +1,3 @@
-import requests
-
 class ConfigService:
 
     @staticmethod
@@ -20,7 +18,7 @@ class ConfigService:
 
     @staticmethod
     def detection_api_create_anomaly_url():
-        return "https://detections-api.azurewebsites.net/Detections/CreateAnomaly"
+        return "https://detections-api.azurewebsites.net/Detections/CreateAnomalies"
 
     @staticmethod
     def object_detection_threshold():
@@ -40,25 +38,29 @@ class ConfigService:
 
     @staticmethod
     def anomaly_detection_ranges(value):
-        if 0.98 < value <= 1:
+        if 0.97 < value <= 1:
             return "LOW"
 
         if 0.9 < value <= 0.95:
+            return "MEDIUM"
+
+        if 0.65 < value <= 0.9:
             return "HIGH"
 
-        if 0 < value <= 0.9:
+        if 0 < value <= 0.65:
             return "FATAL"
-    @staticmethod        
+
+    @staticmethod
     def save_to_mp4_enabled():
         return True
-    
+
     @staticmethod
     def load_clustering_data_enabled():
         return True
-    
+
     @staticmethod
     def knn_clustering_k_paramerter():
         return 3
 
-        
-    
+
+
