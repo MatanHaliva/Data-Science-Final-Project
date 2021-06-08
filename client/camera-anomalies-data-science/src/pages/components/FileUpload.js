@@ -114,7 +114,7 @@ const FileUpload = ({ contextId, count, increment, setContextId, setFilePath, se
                 </div>
 
                 <div className="position-absolute be-first">
-                    <input disabled={!file} type="submit" value="Upload" className="btn btn-primary btn-block" />
+                    <input disabled={!file} type="submit" value="Upload" className="btn btn-primary btn-block upload-button" />
                     <Progress className="progress-upload" percents={uploadPercentage}/>
                     {loading ? <div>Loading ...</div> : <div></div>}
                 </div>

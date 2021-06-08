@@ -33,9 +33,11 @@ class ProcessManager():
     def get_processing_percents_by_context_id(self, context_id: String) -> String:
         processes: list = self._processes[context_id]
         mins = []
+        sum = 0
         for proc in processes:
-            mins.append(proc.processing_percents)
-        return min(mins)
+            sum = sum + float(proc.processing_percents)
+            #mins.append(proc.processing_percents)
+        return str(sum / len(processes))
 
     def get_all_process(self):
         processes = []

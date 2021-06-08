@@ -44,7 +44,7 @@ class FaceDetection:
 
             score =  item[4]
 
-            print(score)
+            #print(score)
 
             # filter out weak detections by ensuring the `confidence` is greater than the minimum confidence
             if score >= confidence_threshold: 

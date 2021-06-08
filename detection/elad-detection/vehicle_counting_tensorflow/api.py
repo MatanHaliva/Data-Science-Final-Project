@@ -6,6 +6,12 @@ from flask_cors import CORS
 process_manager = ProcessManager()
 
 app = Flask(__name__)
+
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
+
 cors = CORS(app)
 app.config.from_object(__name__)
 # enable CORS
@@ -52,8 +58,6 @@ class ProcessService(Resource):
 class DetectorService(Resource):
 
     def get(self, context_id):
-
-        print("checkStatus")
         try:
             processing_percents = process_manager.get_processing_percents_by_context_id(
                 context_id)

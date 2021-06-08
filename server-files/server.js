@@ -144,6 +144,7 @@ app.post('/process', async (req, res) => {
 
     const carDetectionServiceUrl = 'http://localhost:5000/startProcess'
     const faceDetectionServiceUrl = 'http://localhost:5009/startProcess'
+    const anomalyDetectionServiceUrl = 'http://localhost:5009/startAnomalyProcess'
 
     const processDto = {
         contextId: req.body.contextId,
@@ -153,7 +154,9 @@ app.post('/process', async (req, res) => {
     try {
         const response = await Promise.all([
             axios.post(carDetectionServiceUrl, processDto, {headers: {'Content-Type': 'application/json'}}),
-            axios.post(faceDetectionServiceUrl, processDto, {headers: {'Content-Type': 'application/json'}})
+            axios.post(faceDetectionServiceUrl, processDto, {headers: {'Content-Type': 'application/json'}}),
+            axios.post(anomalyDetectionServiceUrl, processDto, {headers: {'Content-Type': 'application/json'}})
+
         ])
     } catch(err) {
         console.log(err)
@@ -326,14 +329,14 @@ app.get('/process', async (req, res) => {
     const processes = await getProcessesByUserId(req.body.contextId, userId)
     
     const carDetectionServiceUrl = 'http://localhost:5000/checkStatus'
-    const faceDetectionServiceUrl = 'http://localhost:5009/checkStatus'
-    
+    const faceAndAnomalyDetectionServiceUrl = `http://localhost:5009/checkStatus`
+
     console.log("created list promises")
 
     const listProcessesPromises = processes.map(process => {
         return new Promise(async (resolve, reject) => {
             try {
-                const responses = await Promise.allSettled([axios.get(`${carDetectionServiceUrl}/${process.contextId}`), axios.get(`${faceDetectionServiceUrl}/${process.contextId}`)])
+                const responses = await Promise.allSettled([axios.get(`${carDetectionServiceUrl}/${process.contextId}`), axios.get(`${faceAndAnomalyDetectionServiceUrl}/${process.contextId}`)])
                 let avgProcessingPercents = 100
                 if(responses[0] && responses[0].value) {
                     console.log("response x: ", responses[0].value.data)

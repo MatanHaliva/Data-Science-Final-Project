@@ -18,6 +18,8 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
     const videoUrlPostProcessing = `http://localhost:5009/processes/${contextId}/getVideo`
     const detectionApi = `https://detections-api.azurewebsites.net/Detections`
     const [detections, setDetections] = useState([])
+    const [detectionsAnomaly, setDetectionsAnomaly] = useState([])
+
     const [videoTime, setVideoTime] = useState({})
 
     const triggerValue = {s: 'trigger'}
@@ -34,7 +36,7 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
                 description: detection.Description,
                 detectionTypeName: detectionTypes[detection.DetectionType],
                 detectionType: detection.DetectionType,
-                detectionTime: detection.DetectionTime,
+                detectionTime: Math.round((detection.DetectionTime + Number.EPSILON) * 100) / 100,
                 accuracy: detection.Accuracy,
                 licensePlate: detection.LicensePlate,
                 manufacturer: detection.Manufacturer,
@@ -63,8 +65,8 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
         try {
             const detections = await axios.get(`${detectionApi}/GetById/${contextId}`)
             const anomaly = {Id: '2a709381-7140-43a3-8a17-b6e3e246cee93', ContextId: contextId, Description: "hi", DetectionType: 4, DetectionTime: 0.25, Accuracy: 0.99, AnomalySeverity: "Serious"}
-            setDetections(convertToPresentation(orderByDetectionTime([...detections.data, anomaly])))
-
+            setDetections(convertToPresentation(orderByDetectionTime([...detections.data].filter(detection => detection.DetectionType !== 4 ))))
+            setDetectionsAnomaly(convertToPresentation([...detections.data].filter(detection => detection.DetectionType === 4 )))
 
             // setDetections(convertToPresentation([
             //     {Id: '2a709381-7140-43a3-8a17-b6e3e246cee9', ContextId: '568efaf9-3968-4e24-a817-fad2298f98a7', Description: "hi", DetectionType: 0, DetectionTime: 1, Accuracy: 0.99, LicensePlate: "32-3-3", Manufacturer: "Honda", Color: "white"},
@@ -98,11 +100,14 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
                 }}
             />
             <div className="d-flex flex-row">
+                <div className={`${style.flex_grow_2} p-3`}>
+                    <Log videoTime={videoCurrentTime} rows={detectionsAnomaly} headerTitle={`Anomalies:`}/>
+                </div>
                 <div className={`${style.flex_grow_4} p-2`}>
                     <Video videoHeight='100%' videoWidth='100%' videoUrl={videoUrlPostProcessing} setVideoCurrentTime={setVideoCurrentTime}/>
                 </div>
                 <div className={`${style.flex_grow_2} p-3`}>
-                    <Log videoTime={videoCurrentTime} rows={detections}/>
+                    <Log videoTime={videoCurrentTime} rows={detections} headerTitle={`Detections:`}/>
                 </div>
             </div>
       

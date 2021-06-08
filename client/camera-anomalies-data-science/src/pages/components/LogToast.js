@@ -28,7 +28,6 @@ const faceLogToast = ({faceId}) => {
 }
 
 const anomalyLogToast = ({severity}) => {
-    debugger
     return (<Fragment>
         <div><b>Anomaly Details: </b></div>
         <div>Severity: {severity} </div>
@@ -58,15 +57,15 @@ const LogToast = ({id, detectionTime, description, detectionType, detectionTypeN
                 <div className="toast-header">
                     <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#f09126"></rect></svg>
                     <strong className="me-auto">Detection Found</strong>
-                    <strong className="me-auto">Id: {id.slice(0, 5)}</strong>
                     <small className="text-muted">Video Time: {detectionTime}</small>
                     <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
                 </div>
                 <div className="toast-body">
                     {
                     <Fragment>
-                        {detectionTypes !== 4 ? <div class="img-float-right"><img src={img}/></div> : <Fragment/>}
+                        {<div className={`${detectionType !== 4 ? `img-float-right` : `img-float-right-warning`}`}><img src={img}/></div>}
                         <div><b>Generic details</b></div>
+                        <strong className="me-auto">Id: {id.slice(0, 10)}</strong>
                         <div> Detection Time: {detectionTime}</div>
                         <div> Detection Type Name: {detectionTypeName}</div>
                         <div> Description: {description}</div>
@@ -86,9 +85,17 @@ const LogToast = ({id, detectionTime, description, detectionType, detectionTypeN
                         :
                         !feedbackData.found
                         ? 
-                        <Feedback feedbackType={detectionType} licensePlate={licensePlate}/> 
+                        <Feedback feedbackType={detectionType} licensePlate={licensePlate} faceId={faceId}/> 
                         : 
+                        detectionType === 0 
+                        ?
                         <div>This car belongs to: { feedbackData.personName } </div>
+                        :
+                        detectionType === 1 
+                        ?
+                        <div>This Face is {feedbackData.personName} </div>
+                        :
+                        <Fragment/>
                         }
                     </Fragment>
                     }

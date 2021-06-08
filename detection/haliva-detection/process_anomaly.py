@@ -13,8 +13,8 @@ from dtos.anomaly_detection_enum import AnomalyType
 class ProcessAnomaly(Process):
     def __init__(self, video_path, context_id):
         super().__init__(video_path, context_id)
-        self.anomaly_detection: AnomalyDetection = AnomalyDetection()
-        self.processing_percents = self.anomaly_detection.done_tasks
+        self.anomaly_detection: AnomalyDetection = AnomalyDetection('cache/', 5, self)
+        self.processing_percents = 0
 
 
     def run(self):
@@ -22,17 +22,17 @@ class ProcessAnomaly(Process):
         self.detect_anomaly()
 
 
-    @property
-    def processing_percents(self):
-        # print("Getting value...")
-        batches = ceil(self.anomaly_detection.total_frames / self.anomaly_detection.sample_size)
-        batch_precent = 100 / batches
-        return self._processing_percents[0] * batch_precent
+    # @property
+    # def processing_percents(self):
+    #     # print("Getting value...")
+    #     batches = ceil(self.anomaly_detection.total_frames / self.anomaly_detection.sample_size)
+    #     batch_precent = 100 / batches
+    #     return self._processing_percents
 
-    @processing_percents.setter
-    def processing_percents(self, value):
-        # print("set value...")
-        self._processing_percents = value
+    # @processing_percents.setter
+    # def processing_percents(self, value):
+    #     # print("set value...")
+    #     self._processing_percents = value
 
     def detect_anomaly(self):
         for detection in self.anomaly_detection.detect_anomaly(self.video_path)["anomaly"]:
@@ -41,4 +41,5 @@ class ProcessAnomaly(Process):
                                                                DetectionType.Anomaly.value, "Anomaly was detected",
                                                                detection[0],
                                                                AnomalyType[detectionSev].value)
+            print("message to be sent: " + str(message))
             DetectionApiConnector.create_detection(message)

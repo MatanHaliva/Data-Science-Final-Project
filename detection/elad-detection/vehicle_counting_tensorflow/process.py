@@ -106,7 +106,7 @@ class Process(threading.Thread):
             print("path to save: " + str(path))
             cv2.imwrite(path.format(detection_id), img)
 
-    def model_detect_car(self, car_to_detect, model, cars_meta, class_names, frame_number):
+    def model_detect_car(self, car_to_detect, model, cars_meta, class_names):
         img_width, img_height = 224, 224
     
     
@@ -173,7 +173,7 @@ class Process(threading.Thread):
         # This is something I need in my program
         # 2. Only crop the object with the highest score (Object Zero)
 
-        if output_dict['detection_scores'][0] < 0.95:
+        if output_dict['detection_scores'][0] < 0.8:
             return image
         
         #print(crop_img.shape)
@@ -215,9 +215,9 @@ class Process(threading.Thread):
 
         complete = round(next_frame_no/total_frames, 4)
 
-        self.processing_percents = format(complete * 100, ".2f")
+        self.processing_percents = format(complete * 90, ".2f")
 
-        #print(self.processing_percents, "%")
+        print(self.processing_percents, "%")
 
     def object_detection_function(self, source_video, command):
         # input video
@@ -265,7 +265,6 @@ class Process(threading.Thread):
         category_index = label_map_util.create_category_index(categories)
 
 
-        model, cars_meta, class_names = self.load_model_init()
         count_frames = 0
         car_to_detect = []
         counter_cars = 0
@@ -359,13 +358,14 @@ class Process(threading.Thread):
 
 
 
-                    if len(car_to_detect) > 1:
+                    if len(car_to_detect) > 1000000:
                         new_list = list(car_to_detect)
                         
                         print("try to process.....")
-
+                        print("loading model for: " + str(self.context_id))
                         model, cars_meta, class_names = self.load_model_init()
-                        self.model_detect_car(new_list, model, cars_meta, class_names, count_frames)
+                        print("finished loading model for: " + str(self.context_id))
+                        self.model_detect_car(new_list, model, cars_meta, class_names)
                         car_to_detect = []
 
 
@@ -386,6 +386,21 @@ class Process(threading.Thread):
                             (size, color, direction, speed) = \
                                 csv_line.split(',')
                             writer.writerows([csv_line.split(',')])
+
+                
+                        
+                if len(car_to_detect) >= 1:
+                    print("loading model for: " + str(self.context_id))
+                    model, cars_meta, class_names = self.load_model_init()
+                    print("finished loading model for: " + str(self.context_id))
+                    new_list = list(car_to_detect)
+                    
+                    print("try to process.....")
+                    self.model_detect_car(new_list, model, cars_meta, class_names)
+                    car_to_detect = []
+                
+                self.processing_percents = 100
+
                 cap.release()
                 #cv2.destroyAllWindows()
 

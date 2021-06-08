@@ -31,6 +31,10 @@ class ProcessFaces(Process):
         print("start test", self.context_id)
         vs = cv2.VideoCapture(self.video_path)
 
+        self.height = int(vs.get(cv2.CAP_PROP_FRAME_HEIGHT))
+        self.width = int(vs.get(cv2.CAP_PROP_FRAME_WIDTH))
+        self.fps = int(vs.get(cv2.CAP_PROP_FPS))
+
         # Loop Video Stream
         while True:
 
@@ -42,7 +46,8 @@ class ProcessFaces(Process):
             if frame is None:
                 break
 
-            image = cv2.resize(frame, (0, 0),  fx=0.3, fy=0.3)
+            #image = cv2.resize(frame, (0, 0),  fx=0.3, fy=0.3)
+            image = frame
 
             detections = self.object_detection.detect_objects(image, ConfigService.object_detection_threshold())
 
@@ -60,24 +65,24 @@ class ProcessFaces(Process):
                     if(ConfigService.draw_detections_enabled()):
                         self.object_detection.draw_prediction(image, detection)
 
-            image = cv2.resize(image, (640,480))
+            #image = cv2.resize(image, (self.width, self.height ))
 
             if ConfigService.save_to_mp4_enabled():
                 self.save_to_mp4_file(image)
 
-            cv2.imshow("camera" + str(self.context_id), image)
+            #cv2.imshow("camera" + str(self.context_id), image)
 
             self.calc_processing_percents(vs)
 
-            key = cv2.waitKey(1) & 0xFF
+            # key = cv2.waitKey(1) & 0xFF
 
-            if key == ord('q'):
-                break
+            # if key == ord('q'):
+            #     break
 
         if(self.video_writer != None):
             self.video_writer.release()
 
-        cv2.destroyWindow("camera" + str(self.context_id))
+        #cv2.destroyWindow("camera" + str(self.context_id))
 
         print("finish test", self.context_id)
 
@@ -133,7 +138,7 @@ class ProcessFaces(Process):
                     DetectionApiConnector.create_detection(message)
 
     def save_face_image(self, face_id, face, human, detection_id):
-        save_path = "faces\context_id_{}\{}".format(self.context_id, face_id)
+        save_path = "faces/context_id_{}/{}".format(self.context_id, face_id)
         file_name = "{}.png".format(detection_id)
         if not os.path.exists(save_path):
             os.makedirs(save_path)
@@ -147,13 +152,13 @@ class ProcessFaces(Process):
     def save_to_mp4_file(self, frame):
 
         if(self.video_writer == None):
-            fourcc = cv2.VideoWriter_fourcc(*'DIVX')
-            save_path = "faces\context_id_{}".format(self.context_id)
+            fourcc = cv2.VideoWriter_fourcc(*'H264')
+            save_path = "faces/context_id_{}".format(self.context_id)
             if not os.path.exists(save_path):
                 os.makedirs(save_path)
-            save_path += "\output.mp4"
-            self.video_writer = cv2.VideoWriter(save_path,fourcc, 15.0,(640,480))
+            save_path += "/output.mp4"
+            self.video_writer = cv2.VideoWriter(save_path,fourcc,self.fps,(self.width,self.height), True)
             print("video_writer")
 
-        print("save_to_mp4_file")
+        #print("save_to_mp4_file")
         self.video_writer.write(frame)

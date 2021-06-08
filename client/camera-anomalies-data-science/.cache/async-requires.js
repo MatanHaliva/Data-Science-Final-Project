@@ -28,6 +28,7 @@ exports.components = {
   "component---src-pages-dashboard-dashboard-js": () => import("./../../../src/pages/dashboard/dashboard.js" /* webpackChunkName: "component---src-pages-dashboard-dashboard-js" */),
   "component---src-pages-dashboard-helper-js": () => import("./../../../src/pages/dashboard/helper.js" /* webpackChunkName: "component---src-pages-dashboard-helper-js" */),
   "component---src-pages-dashboard-index-js": () => import("./../../../src/pages/dashboard/index.js" /* webpackChunkName: "component---src-pages-dashboard-index-js" */),
+  "component---src-pages-feedback-table-index-js": () => import("./../../../src/pages/feedbackTable/index.js" /* webpackChunkName: "component---src-pages-feedback-table-index-js" */),
   "component---src-pages-index-js": () => import("./../../../src/pages/index.js" /* webpackChunkName: "component---src-pages-index-js" */),
   "component---src-pages-login-index-js": () => import("./../../../src/pages/login/index.js" /* webpackChunkName: "component---src-pages-login-index-js" */),
   "component---src-pages-logout-index-js": () => import("./../../../src/pages/logout/index.js" /* webpackChunkName: "component---src-pages-logout-index-js" */),

@@ -11,6 +11,12 @@ face_clustering = FaceClustering()
 face_detection = FaceDetection()
 
 app = Flask(__name__, static_url_path='')
+
+import logging
+log = logging.getLogger('werkzeug')
+log.setLevel(logging.ERROR)
+
+
 cors = CORS(app)
 app.config.from_object(__name__)
 # enable CORS
@@ -68,7 +74,6 @@ class DetectorService(Resource):
 
     def get(self, context_id):
 
-        print("checkStatus")
         try:
             processing_percents = process_manager.get_processing_percents_by_context_id(
                 context_id)

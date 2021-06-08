@@ -2,7 +2,7 @@ import React, {Fragment, useState, useEffect  } from "react"
 import LogToast from "../components/LogToast"
 import * as style from "./css/LogToast.module.css"
 
-const Log = ({rows, videoTime}) => {
+const Log = ({rows, videoTime, headerTitle}) => {
     const [detections, setDetections] = useState([])
     const [logTTL, setLogTTL] = useState(50)
 
@@ -36,7 +36,7 @@ const Log = ({rows, videoTime}) => {
     return (
         <Fragment>
             <div className="header-alerts">
-                <h2 className="header-alerts">Alerts: </h2>
+                <h2 className="header-alerts">{headerTitle} </h2>
             </div>
             <Fragment>
                 {

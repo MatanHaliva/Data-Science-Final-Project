@@ -70,9 +70,8 @@ class ObjectDetection:
 
         label = str(self.classes[class_id])
         color = self.COLORS[class_id]
-        cv2.rectangle(img, (x, y), (x_plus_w, y_plus_h), color, 8)
-        cv2.putText(img, label, (x-10, y-10),
-                    cv2.FONT_HERSHEY_SIMPLEX, 1, color, 2)
+        cv2.rectangle(img, (x, y), (x_plus_w, y_plus_h), color, 2)
+        cv2.putText(img, label, (x, y-10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, color, 2)
 
     def get_name_of_class_id(self, class_id):
         return self.classes[class_id]

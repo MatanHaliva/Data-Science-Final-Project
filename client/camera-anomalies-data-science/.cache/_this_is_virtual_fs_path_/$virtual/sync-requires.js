@@ -30,6 +30,7 @@ exports.components = {
   "component---src-pages-dashboard-dashboard-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/dashboard/dashboard.js")),
   "component---src-pages-dashboard-helper-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/dashboard/helper.js")),
   "component---src-pages-dashboard-index-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/dashboard/index.js")),
+  "component---src-pages-feedback-table-index-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/feedbackTable/index.js")),
   "component---src-pages-index-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/index.js")),
   "component---src-pages-login-index-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/login/index.js")),
   "component---src-pages-logout-index-js": preferDefault(require("/Users/eladisraeli/Downloads/test_car_rec/Data-Science-Final-Project/client/camera-anomalies-data-science/src/pages/logout/index.js")),

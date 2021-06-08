@@ -41,9 +41,8 @@ const CardChild = ({loading, children, cardHeader, cardDescription, width, heigh
             <div className={`selection-wrapper`} style={{width: width, height: height}}>
             <label htmlFor={`selected-item-${index}`} class="selected-label">
                 {
-                    clickAble ?
                     <Fragment>
-                    <input defaultChecked={contextId === index ? true : false} onClick={() => {
+                    <input disabled={!clickAble} defaultChecked={contextId === index ? true : false} onClick={() => {
                         if (typeof onCardClicked === 'function') {
                             onCardClicked(index)
                         }
@@ -53,8 +52,6 @@ const CardChild = ({loading, children, cardHeader, cardDescription, width, heigh
                             <FaCheck class="icon"/>
                         </IconContext.Provider> : <span class="icon"/>}
                     </Fragment>
-                    :
-                    <Fragment/>
                 }
                 
                 <div class="selected-content" style={{width: width, height: height}}>

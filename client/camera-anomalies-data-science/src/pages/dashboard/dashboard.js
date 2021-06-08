@@ -52,7 +52,7 @@ const Dashboard = ({}) => {
                 description: 'Description ' + process._id,
                 width: 500,
                 height: 380,
-                path: uploadForProcess ? uploadForProcess.filePath : "",
+                path: uploadForProcess ? uploadForProcess.filePath : "no found",
                 status: process.status,
                 loading: false
             }
@@ -104,9 +104,14 @@ const Dashboard = ({}) => {
         }
     },[])
 
+    const re = useRef()
+
     useEffect(() => {
         const pageContextIdExists = findPage(processesVideo, contextId, numberCardsPerPage)
-        setCurrentPage(pageContextIdExists === -1 ? 0 : pageContextIdExists)
+        if (re && re.current != pageContextIdExists) {
+            setCurrentPage(pageContextIdExists === -1 ? 0 : pageContextIdExists)
+            re.current = pageContextIdExists
+        }
     }, [processesVideo])
 
     useEffect(async () => {
@@ -147,9 +152,11 @@ const Dashboard = ({}) => {
                                             return(
                                                 <Fragment key={processedVideo.id}>
                                                         <div class="p-3 bd-highlight" key={processedVideo.id}>
-                                                        <CardChild clickAble={false} loading={processedVideo.loading} cardHeader={processedVideo.header} cardDescription={processedVideo.description} width={processedVideo.width} height={processedVideo.height}>
-                                                            <Video videoUrl={pathUrl} videoHeight={`${processedVideo.height - 100}px`} videoWidth={`${processedVideo.width - 200}px`}  />
+                                                        <CardChild clickAble={false} index={processedVideo.contextId} loading={processedVideo.loading} cardHeader={processedVideo.header} cardDescription={processedVideo.description} width={processedVideo.width} height={processedVideo.height}>
+                                                            <Video videoUrl={pathUrl} videoHeight={`100%`} videoWidth={`100%`}  />
                                                             {processedVideo.status === 100 ? <h6>Finished Processing</h6> : processedVideo.status === 0 ? <h6>Did not start Processing</h6> : <Progress percents={processedVideo.status}/>}
+                                                            <div>Context Id: {processedVideo.id}</div>
+                                                            <div>File Path: {pathUrl}</div>
                                                         </CardChild>
                                                         </div>
                                                 </Fragment>

@@ -53,7 +53,6 @@ class DetectorService(Resource):
 
     def get(self, context_id):
 
-        print("checkStatus")
         try:
             processing_percents = process_manager.get_processing_percents_by_context_id(
                 context_id)
