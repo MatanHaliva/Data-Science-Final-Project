@@ -147,3 +147,6 @@ This system is available under the MIT license. See the LICENSE file for more in
 Download into models folder the resnet models:
 from here:
 https://drive.google.com/file/d/0Byy2AcGyEVxfeXExMzNNOHpEODg/view?usp=sharing
+
+https://github.com/foamliu/Car-Recognition/releases/download/v1.0/model.96-0.89.hdf5
+

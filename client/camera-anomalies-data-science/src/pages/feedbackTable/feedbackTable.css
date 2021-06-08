@@ -1,0 +1,73 @@
+
+  #filter {
+    margin: 10px;
+    border-collapse: collapse;
+  }
+  
+  #filter td,
+  #filter th {
+    border: 5px;
+    background-color: #ddd;
+  }
+  
+  #filter tr:hover {
+    background-color: rgb(88, 20, 177)!important;
+  }
+  
+  #filter th {
+    padding: 1px;
+    text-align: center;
+    background-color: #7117c5;
+    color: white;
+  }
+
+#employee thead tr {
+    padding: 10px;
+}
+
+#title {
+    text-align: center;
+  }
+  
+  #employee {
+    border-collapse: collapse;
+  }
+  
+  #employee td,
+  #employee th {
+    color: white;
+    border: 1px solid rgb(0, 0, 0);
+  }
+  
+  #employee tr:hover {
+    background-color: rgb(88, 20, 177)!important;
+  }
+  
+  #employee th {
+    padding: 5px;
+    text-align: center;
+    background-color: #7117c5;
+    color: white;
+  }
+  
+  .opration-feedback-table {
+    text-align: center;
+  }
+  
+  .button-feedback-table {
+    border: none;
+    outline: none;
+    font-size: 5px;
+    font-family: "Quicksand", sans-serif;
+    color: #f44336;
+    padding: 3px 2px;
+    border-radius: 8px;
+    cursor: pointer;
+    border: 1px solid #f44336;
+    background-color: transparent;
+  }
+  
+  .button-feedback-table:active {
+    border: 1px solid blue;
+  }
+  

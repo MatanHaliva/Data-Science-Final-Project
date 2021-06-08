@@ -10,6 +10,7 @@ import "./src/pages/testCard/testCard.css"
 import "./src/styles/card.process.video.css"
 import "./src/styles/charts.css"
 import 'devextreme/dist/css/dx.light.css';
+import "./src/pages/feedbackTable/feedbackTable.css"
 
 import "./src/styles/add.js"
 import '@devexpress/dx-react-chart-bootstrap4/dist/dx-react-chart-bootstrap4.css';

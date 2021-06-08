@@ -132,7 +132,7 @@ const IndexPage = () => {
 
   return (
    <Layout>
-     <div class="position-absolute top-50 start-50 translate-middle"><h1>Welcome to ISC - Intellegent Security Cam</h1></div>
+     <div style={{"color": "white"}} class="position-absolute top-50 start-50 translate-middle"><h1>Welcome to ISC - Intellegent Security Cam</h1></div>
    </Layout>
   )
 }

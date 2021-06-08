@@ -30,6 +30,7 @@ const Dashboard = ({}) => {
 
     const processesForEver = useRef()
     const timer = useRef()
+    const alltimes = useRef()
 
     const getProcesses = async () => {
         if (!userToken) {
@@ -58,9 +59,11 @@ const Dashboard = ({}) => {
             }
         })
         setProcessesVideo(list)
-        clearTimeout(timer.current)
-        const currentTimer = setTimeout(async () => await getProcesses(), 1000)
-        timer.current = currentTimer
+        alltimes.current.forEach(clear => clearTimeout(clear))
+        //alltimes.current = []
+        const currentTimer = setTimeout(async () => await getProcesses(), 5000)
+        alltimes.current.push(currentTimer)
+        
     }
 
     const getUploads = async () => {
@@ -99,8 +102,11 @@ const Dashboard = ({}) => {
     }, [userToken])
 
     useEffect(() => {
+        alltimes.current = []
+
         return () => {
-            timer.current && clearTimeout(timer.current)
+            alltimes.current.forEach(clear => clearTimeout(clear))
+            alltimes.current = []
         }
     },[])
 
@@ -155,7 +161,7 @@ const Dashboard = ({}) => {
                                                         <CardChild clickAble={false} index={processedVideo.contextId} loading={processedVideo.loading} cardHeader={processedVideo.header} cardDescription={processedVideo.description} width={processedVideo.width} height={processedVideo.height}>
                                                             <Video videoUrl={pathUrl} videoHeight={`100%`} videoWidth={`100%`}  />
                                                             {processedVideo.status === 100 ? <h6>Finished Processing</h6> : processedVideo.status === 0 ? <h6>Did not start Processing</h6> : <Progress percents={processedVideo.status}/>}
-                                                            <div>Context Id: {processedVideo.id}</div>
+                                                            <div>Processing Id: {processedVideo.id}</div>
                                                             <div>File Path: {pathUrl}</div>
                                                         </CardChild>
                                                         </div>

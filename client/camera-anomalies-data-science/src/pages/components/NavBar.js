@@ -62,6 +62,12 @@ const NavBar = ({setCurrentRoute, currentRoute, loggedName}) => {
                     setCurrentRoute(6)
                 }}>Reports</a>
               </li>
+              <li class="nav-item">
+                <a id="feedbackTable" className={`nav-link ${currentRoute === 7 ? "active" : ""}`} href="#" onClick={() => {
+                    navigate("/feedbackTable")
+                    setCurrentRoute(7)
+                }}>Feedback Table</a>
+              </li>
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Configurations
