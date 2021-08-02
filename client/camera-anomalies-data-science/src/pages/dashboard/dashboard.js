@@ -28,11 +28,22 @@ const Dashboard = ({}) => {
         return state.app.contextId
     })
 
-    const processesForEver = useRef()
-    const timer = useRef()
-    const alltimes = useRef()
+    const intervalTime = useRef()
+    const isWaitingForProcessingResponse = useRef()
+
+    const onLoadProcess = async () => {
+        intervalTime.current = setInterval(async () => {
+            console.log("in interval")
+            if (!isWaitingForProcessingResponse.current) {
+                console.log("in get process")
+                await getProcesses()
+            }
+        }, 1000)
+    }
 
     const getProcesses = async () => {
+        isWaitingForProcessingResponse.current = true
+        debugger
         if (!userToken) {
             return
         }
@@ -46,27 +57,26 @@ const Dashboard = ({}) => {
 
         const list = processes.data.processes.map(process => {
             const uploadForProcess = rawUploads.filter(upload => upload.contextId === process.contextId)[0]
-            return {
-                contextId: process.contextId,
-                id: process._id,
-                header: 'Process',
-                description: 'Description ' + process._id,
-                width: 500,
-                height: 380,
-                path: uploadForProcess ? uploadForProcess.filePath : "no found",
-                status: process.status,
-                loading: false
+            if(uploadForProcess) {
+                return {
+                    contextId: process.contextId,
+                    id: process._id,
+                    header: 'Process',
+                    description: 'Description ' + process._id,
+                    width: 500,
+                    height: 380,
+                    path: uploadForProcess.filePath,
+                    status: process.status,
+                    loading: false
+                }
             }
         })
         setProcessesVideo(list)
-        alltimes.current.forEach(clear => clearTimeout(clear))
-        //alltimes.current = []
-        const currentTimer = setTimeout(async () => await getProcesses(), 5000)
-        alltimes.current.push(currentTimer)
-        
+        isWaitingForProcessingResponse.current = false
     }
 
     const getUploads = async () => {
+        debugger
         setLoading(true)
         if (!userToken) {
             return
@@ -94,19 +104,18 @@ const Dashboard = ({}) => {
     }
 
     useEffect(async () => {
-        await getProcesses()
+        !!rawUploads.length && rawUploads.length > 0 && await onLoadProcess()
     }, [rawUploads])
 
     useEffect(async () => {
-        await getUploads()
+        !!userToken && (userToken.length > 0) && await getUploads()
     }, [userToken])
 
     useEffect(() => {
-        alltimes.current = []
+        intervalTime.current && clearInterval(intervalTime.current)
 
         return () => {
-            alltimes.current.forEach(clear => clearTimeout(clear))
-            alltimes.current = []
+            intervalTime.current && clearInterval(intervalTime.current)
         }
     },[])
 

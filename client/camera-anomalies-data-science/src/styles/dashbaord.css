@@ -31,6 +31,7 @@
 }
 
 .be-first { 
+    padding-bottom: 160px;
     width: 600px;
     align-items: center;
     display: flex;
@@ -70,6 +71,7 @@
 }
 
 .upload-button {
+    margin-bottom: 40px;
     border: 0!important;
     border-radius: 20px!important;
     padding: 12px 30px!important;
@@ -77,4 +79,16 @@
     cursor: pointer!important;
     color: #FFF!important;
     background-color: #6c63ff!important;
+}
+
+.home-page {
+    background: url(/home.jpg) 0% 0% / cover;
+    box-shadow: rgb(25 1 51 / 45%) 0px 0px 0px 2000px inset;
+    width: 100%;
+    min-height: 100%;
+    padding: 20px;
+}
+.spinner-analyse {
+    width: 120px;
+    height: 120px;
 }

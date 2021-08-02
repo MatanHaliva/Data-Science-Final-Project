@@ -13,7 +13,7 @@ class AnomalyDetection:
     def __init__(self, cache_dir="cache/", tolerance_frames=5, container_anomaly_process=None):
         model_file = "models/model_lstm_gil.hdf5"
         self.model = tf.keras.models.load_model(model_file, custom_objects={'LayerNormalization': LayerNormalization})
-        self.batch_size = 3
+        self.batch_size = 1
         self.cache_dir = cache_dir
         self.queue = queue.Queue()
         self.rec_thread: Thread
@@ -102,37 +102,35 @@ class AnomalyDetection:
         srs = []
         video_counter = 0
         print("anomaly: before while not queue")
-        while self.rec_thread.is_alive():
-            #print("anomaly: inside thread is alive = true")
-            if not self.queue.empty():
-                print("anomaly: queue is not empty")
-                np_predict_array = str(self.__getFromQueue())
-                print("anomaly: queue is not empty 1")
-                sequences = np.load(self.cache_dir + np_predict_array + ".npy")
-                print("anomaly: queue is not empty 2")
-                os.remove(self.cache_dir + np_predict_array + ".npy")
-                print("anomaly: queue is not empty 3")
-                sequences_shape = sequences.shape[0]
-                print("anomaly: queue is not empty 4")
-                reconstructed_sequences = self.model.predict(sequences, batch_size=self.batch_size)
-                print("anomaly: queue is not empty 5")
-                sequences_reconstruction_cost = np.array(
-                    [np.linalg.norm(np.subtract(sequences[i], reconstructed_sequences[i])) for i in
-                    range(0, sequences_shape)])
-                print("anomaly: queue is not empty 6")
-                sa: np.ndarray = (sequences_reconstruction_cost - np.min(sequences_reconstruction_cost)) / np.max(
-                    sequences_reconstruction_cost)
-                print("anomaly: queue is not empty 7")
-                srs.append((1.0 - sa, video_counter))
-                print("anomaly: queue is not empty 8")
-                self.done_tasks[0] += 1
-                print("anomaly: queue is not empty 9")
-                # plot the regularity scores
-                # plt.plot(1.0 - sa)
-                # plt.ylabel('regularity score Sr(t)')
-                # plt.xlabel('frame t')
-                # plt.show()
-                video_counter += 1
+        while not self.queue.empty() or self.rec_thread.is_alive():
+            print("anomaly: queue is not empty")
+            np_predict_array = str(self.__getFromQueue())
+            print("anomaly: queue is not empty 1")
+            sequences = np.load(self.cache_dir + np_predict_array + ".npy")
+            print("anomaly: queue is not empty 2")
+            os.remove(self.cache_dir + np_predict_array + ".npy")
+            print("anomaly: queue is not empty 3")
+            sequences_shape = sequences.shape[0]
+            print("anomaly: queue is not empty 4")
+            reconstructed_sequences = self.model.predict(sequences, batch_size=self.batch_size)
+            print("anomaly: queue is not empty 5")
+            sequences_reconstruction_cost = np.array(
+                [np.linalg.norm(np.subtract(sequences[i], reconstructed_sequences[i])) for i in
+                range(0, sequences_shape)])
+            print("anomaly: queue is not empty 6")
+            sa: np.ndarray = (sequences_reconstruction_cost - np.min(sequences_reconstruction_cost)) / np.max(
+                sequences_reconstruction_cost)
+            print("anomaly: queue is not empty 7")
+            srs.append((1.0 - sa, video_counter))
+            print("anomaly: queue is not empty 8")
+            self.done_tasks[0] += 1
+            print("anomaly: queue is not empty 9")
+            # plot the regularity scores
+            # plt.plot(1.0 - sa)
+            # plt.ylabel('regularity score Sr(t)')
+            # plt.xlabel('frame t')
+            # plt.show()
+            video_counter += 1
 
         print("anomaly: finished")
         return srs

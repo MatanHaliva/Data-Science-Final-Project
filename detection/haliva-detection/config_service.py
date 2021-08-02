@@ -10,27 +10,27 @@ class ConfigService:
 
     @staticmethod
     def detection_api_create_faces_url():
-        return "https://detections-api.azurewebsites.net/Detections/CreateFaces"
+        return "https://detections-api20210802233301.azurewebsites.net/Detections/CreateFaces"
 
     @staticmethod
     def detection_api_create_masks_url():
-        return "https://detections-api.azurewebsites.net/Detections/CreateMasks"
+        return "https://detections-api20210802233301.azurewebsites.net/Detections/CreateMasks"
 
     @staticmethod
     def detection_api_create_anomaly_url():
-        return "https://detections-api.azurewebsites.net/Detections/CreateAnomalies"
+        return "https://detections-api20210802233301.azurewebsites.net/Detections/CreateAnomalies"
 
     @staticmethod
     def object_detection_threshold():
-        return 0.8
+        return 0.75
 
     @staticmethod
     def face_detection_threshold():
-        return 0.95
+        return 0.75
 
     @staticmethod
     def mask_detection_threshold():
-        return 0.95
+        return 0.75
     
     @staticmethod
     def detection_api_enabled():

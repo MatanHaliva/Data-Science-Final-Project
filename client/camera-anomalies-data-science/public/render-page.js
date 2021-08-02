@@ -4839,11 +4839,14 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const feedbackUrl = `https://feedbacks-api.azurewebsites.net/Feedbacks/CreateCar`;
+const feedbackCarUrl = `https://feedbacks-api.azurewebsites.net/Feedbacks/CreateCar`;
+const feedbackFaceUrl = `https://feedbacks-api.azurewebsites.net/Feedbacks/CreatePerson`;
 
 function* createFeedback(action) {
+  debugger;
+
   try {
-    const feedback = yield (0,redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__.call)((feedbackDto, feedbackUrl) => axios__WEBPACK_IMPORTED_MODULE_1___default().post(feedbackUrl, [feedbackDto]), action.payload, feedbackUrl);
+    const feedback = yield (0,redux_saga_effects__WEBPACK_IMPORTED_MODULE_0__.call)((feedbackDto, feedbackUrl) => axios__WEBPACK_IMPORTED_MODULE_1___default().post(feedbackDto.FeedbackType === 0 ? feedbackCarUrl : feedbackFaceUrl, [feedbackDto]), action.payload);
     const payload = {
       feedback,
       timeStamp: +new Date()

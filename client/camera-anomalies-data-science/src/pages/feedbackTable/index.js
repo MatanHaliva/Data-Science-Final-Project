@@ -7,7 +7,7 @@ import { detectionTypes, detectionTypesName } from "../../shared/detectionTypes"
 import { sleep } from "../../../../../server-files/helper"
 
 const URL = 'https://jsonplaceholder.typicode.com/users'
-const detectionApi = `https://detections-api.azurewebsites.net/Detections`
+const detectionApi = `https://detections-api20210802233301.azurewebsites.net/Detections`
 
 const FeedbackTable = () => {
     const [detections, setDetections] = useState([])
@@ -15,7 +15,7 @@ const FeedbackTable = () => {
     const [currentPage, setCurrentPage] = useState(0)
     const [error, setError] = useState({isError: false})
     const [numberPages, setNumberPages] = useState(3)
-
+    const [buttonPagination, setButtonPagination] = useState([...Array(3)])
     const [detectionTypeFilter, setDetectionTypeFilter] = useState(0)
     const [startFilter, setStartFilter] = useState(0)
     const [endFilter, setEndFilter] = useState(Number.MAX_VALUE)
@@ -23,6 +23,8 @@ const FeedbackTable = () => {
 
     const contextId = useSelector(state => state.app.contextId)
     const numberCardsPerPage = 11
+    const eachSideButtons = 2
+    const numberForward = 5
 
     useEffect(async () => {
         if(contextId) {
@@ -92,7 +94,6 @@ const FeedbackTable = () => {
     }
 
     const getDetections = () => {
-        debugger
         return detections &&
         detections.
         filter(detection => detection.detectionType === detectionTypeFilter).
@@ -112,12 +113,45 @@ const FeedbackTable = () => {
         setAccuracyThreshold(e.target.value / 100)
     }
 
+    useEffect(() => {
+        const arr = decideNumberButtons()
+        setButtonPagination(arr)
+    }, [currentPage])
+
+    const decideNumberButtons = () => {
+        const realCurrentPage = currentPage <= 0 ? 0 : currentPage
+
+        let leftSide
+        if (realCurrentPage - eachSideButtons < 0) {
+            leftSide = realCurrentPage - (realCurrentPage % eachSideButtons)
+        } else {
+            leftSide = realCurrentPage - eachSideButtons
+        }
+        let rightSide
+        if (realCurrentPage + eachSideButtons > numberPages) {
+            rightSide = realCurrentPage + eachSideButtons - numberPages
+        } else {
+            rightSide = realCurrentPage + eachSideButtons
+        }
+
+        setCurrentPage(realCurrentPage)
+
+        debugger
+
+        const arr = [...Array(numberPages).keys()].slice(leftSide, rightSide + 1)
+
+        debugger
+
+        return arr
+    }
+
+
     const renderBody = () => {
         return getDetections() && getDetections().slice(currentPage * numberCardsPerPage, currentPage * numberCardsPerPage + numberCardsPerPage).map(({ id, contextId, description, detectionTypeName, detectionType, detectionTime, accuracy, licensePlate, manufacturer, color, img, faceId, severity }, index) => {
             return (
                 <tr align="center" key={id}>
                     <td>{(index + 1) + (currentPage * numberCardsPerPage)}.</td>
-                    <td>{id.slice(0,12)}</td>
+                    <td>{id.slice(id.length - 10, id.length)}</td>
                     <td>{contextId.slice(0,12)}</td>
                     <td>{description.slice(0,12)}</td>
                     <td>{detectionTypeName}</td>
@@ -139,25 +173,31 @@ const FeedbackTable = () => {
 
     const createFilter = () => {
         return (
-            <table id="filter">
+            <table style={{'margin': '5px 80px 15px 80px'}} id="filter">
             <thead>
               <tr>
-                <th>Detection Type
-                  <select id="assigned-user-filter" class="form-control" onChange={(e) => {
-                      debugger
-                      setDetectionTypeFilter(detectionTypesName[e.target.value])}}>
-                    <option>Car Detections</option>
-                    <option>Face Detections</option>
-                    <option>Anomaly Detections</option>
-                  </select>
-                </th>
                 <th>
-                    <label for="customRange1" class="form-label">Accuracy Threshold: {accuracyThreshold * 100}% </label>
-                    <input type="range" class="form-range" id="customRange1" onChange={onChangeAccuracyThreshold}></input>
-                </th>
-                <th>Video Time
-                    start: <input class="file-input" id="customFile" onChange={onChangeStart} type="text"/>
-                    Video Time end: <input class="file-input" id="customFile" onChange={onChangeEnd} type="text"/>
+                <div className="filter-flex">
+                    <div>
+                        <div>Pick Type:</div>
+                        <select id="assigned-user-filter" class="form-control" onChange={(e) => {
+                            setDetectionTypeFilter(detectionTypesName[e.target.value])}}>
+                            <option>Car Detections</option>
+                            <option>Face Detections</option>
+                            <option>Anomaly Detections</option>
+                        </select>
+                    </div>        
+                    <div>  
+                        <label for="customRange1" class="form-label">Accuracy Threshold: {accuracyThreshold * 100}% </label>
+                        <input type="range" class="form-range" id="customRange1" onChange={onChangeAccuracyThreshold}></input>
+                    </div>
+                    <div className="between-filter">
+                        <div>Video Time start:</div> <input class="file-input" id="customFile" onChange={onChangeStart} type="text"/>
+                    </div>
+                    <div className="between-filter">
+                        <div>Video Time end:</div> <input class="file-input" id="customFile" onChange={onChangeEnd} type="text"/>
+                    </div>
+                </div>
                 </th>
               </tr>
             </thead>
@@ -172,7 +212,7 @@ const FeedbackTable = () => {
             !error.isError
             ?
                 <Fragment>
-                    <h1 id='title' style={{'color': 'white'}}>React Table</h1>
+                    <h1 id='title' style={{'color': 'white', 'padding': '15px'}}>Detections Table</h1>
                     {createFilter()}
                     <table style={{'margin': '5px 80px 15px 80px'}} id='employee'>
                         <thead>
@@ -187,14 +227,15 @@ const FeedbackTable = () => {
                     </table>
                     <nav className="pagination-navbar" aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
+                            <li class="page-item"><a onClick={() => setCurrentPage(currentPage - numberForward)} class="page-link" href="#">{`<<<`}</a></li>
+                            <li class="page-item"><a onClick={() => setCurrentPage(currentPage - 1)} class="page-link" href="#">Previous</a></li>
                             {
-                                [...Array(numberPages).keys()].map(num => {
+                                buttonPagination.map(num => {
                                     return (<li className={`page-item ${num === currentPage ? 'active': ''}`} ><a class="page-link" onClick={(e) => setCurrentPage(num)} href="#">{num}</a></li>)
-                                
                                 }) 
                             }
-                            <li class="page-item"><a class="page-link" href="#">Next</a></li>
+                            <li class="page-item"><a onClick={() => setCurrentPage(currentPage + 1)} class="page-link" href="#">Next</a></li>
+                            <li class="page-item"><a onClick={() => setCurrentPage(currentPage + numberForward)} class="page-link" href="#">{`>>>`}</a></li>
                         </ul>
                     </nav>
                 </Fragment>

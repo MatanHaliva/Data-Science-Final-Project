@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useSelector } from "react-redux";
 import Layout from "./components/Layout";
 
 // styles
@@ -130,9 +131,15 @@ const links = [
 const IndexPage = () => {
   let procced = []
 
+  const loggedName = useSelector(state => state.login.loggedName)
+
   return (
    <Layout>
-     <div style={{"color": "white"}} class="position-absolute top-50 start-50 translate-middle"><h1>Welcome to ISC - Intellegent Security Cam</h1></div>
+     <div class="home-page"></div>
+     <div style={{"color": "white"}} class="position-absolute top-50 start-50 translate-middle">
+      <h3 style={{"color": "white"}}>Hey {loggedName},</h3>
+       <h1>Welcome to ISC - Intellegent Security Cam</h1>
+      </div>
    </Layout>
   )
 }

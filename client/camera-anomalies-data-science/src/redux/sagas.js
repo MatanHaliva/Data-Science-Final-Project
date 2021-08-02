@@ -3,11 +3,13 @@ import axios from "axios"
 import { FEEDBACK_CREATED_SUCCESSFULY, DELETE_FEEDBACK_CREATED_SUCCESSFULY} from "./actions"
 
 
-const feedbackUrl = `https://feedbacks-api.azurewebsites.net/Feedbacks/CreateCar`
+const feedbackCarUrl = `https://feedbacks-api20210802232513.azurewebsites.net/Feedbacks/CreateCar`
+const feedbackFaceUrl = `https://feedbacks-api20210802232513.azurewebsites.net/Feedbacks/CreatePerson`
 
 function* createFeedback(action) {
+   debugger
     try {
-       const feedback = yield call((feedbackDto, feedbackUrl) => axios.post(feedbackUrl, [feedbackDto]), action.payload, feedbackUrl)
+       const feedback = yield call((feedbackDto, feedbackUrl) => axios.post(feedbackDto.FeedbackType === 0 ? feedbackCarUrl : feedbackFaceUrl, [feedbackDto]), action.payload)
        const payload = {feedback, timeStamp: + new Date()}
        yield put({type: FEEDBACK_CREATED_SUCCESSFULY, payload})
        console.log("start")

@@ -52,7 +52,7 @@ const Up = ({uploadedVideos, pickVideo}) => {
                             <li class="page-item"><a class="page-link" href="#">Previous</a></li>
                             {
                                 [...Array(numberPages).keys()].map(num => {
-                                    return (<li className={`page-item ${num === currentPage ? 'active': ''}`} ><a class="page-link" onClick={(e) => setCurrentPage(num)} href="#">{num}</a></li>)
+                                    return (<li key={num} className={`page-item ${num === currentPage ? 'active': ''}`} ><a class="page-link" onClick={(e) => setCurrentPage(num)} href="#">{num}</a></li>)
                                 
                                 }) 
                             }

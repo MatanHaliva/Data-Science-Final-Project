@@ -84,14 +84,14 @@ class Process(threading.Thread):
                 "LicensePlate": result["license_car"]
             })
 
-        response = requests.post('https://detections-api.azurewebsites.net/Detections/CreateCars', json=objects_detection_format, verify=True)
+        response = requests.post('https://detections-api20210802233301.azurewebsites.net/Detections/CreateCars', json=objects_detection_format, verify=True)
 
         print("created cars on detection api: " + str(response.json()))
 
         return response.json()
 
     def detect_license_car(self, img_path):
-        command = '''docker run -it --rm -v $(pwd):/data:ro openalpr -j -c eu ''' + img_path
+        command = '''docker run -it --rm -v $(pwd):/data:ro openalpr/openalpr  -j -c eu ''' + img_path
         process = Popen(command,shell=True,stdout=subprocess.PIPE)
         result = process.communicate()
         a,b = result
@@ -123,12 +123,12 @@ class Process(threading.Thread):
                 rgb_img = cv.cvtColor(bgr_img, cv.COLOR_BGR2RGB)
                 rgb_img = np.expand_dims(rgb_img, 0)
                 preds = model.predict(rgb_img)
-                license_car = self.detect_license_car(filename)
+                #license_car = self.detect_license_car(filename)
                 license_plate = "N/A"
-                if license_car["results"]:
-                    license_plate = license_car["results"][0]["plate"]
-                    print("plate: " + str(license_plate))
-                    print("data: " + str(license_car["results"][0]))
+                # if license_car["results"]:
+                #     license_plate = license_car["results"][0]["plate"]
+                #     print("plate: " + str(license_plate))
+                #     print("data: " + str(license_car["results"][0]))
                 prob = np.max(preds)
                 class_id = np.argmax(preds)
                 results.append({'label': class_names[class_id][0][0], 'prob': '{:.4}'.format(prob), 'picture name': image_name, 'frame_number': car["detection_time"], 'detection_car': car["type"], 'license_car': license_plate, 'img': bgr_img})
@@ -310,6 +310,9 @@ class Process(threading.Thread):
                                 detection_classes, num_detections],
                                 feed_dict={image_tensor: image_np_expanded})
                     
+                    print("classes: " )
+                    print(classes)
+
                     output_dict = {}
             
                     for box, score in zip(boxes, scores): 

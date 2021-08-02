@@ -56,19 +56,19 @@ const NavBar = ({setCurrentRoute, currentRoute, loggedName}) => {
                     setCurrentRoute(3)
                 }}>Analyse Video</a>
               </li>
-              <li class="nav-item">
+              {/* <li class="nav-item">
                 <a id="reports" className={`nav-link ${currentRoute === 6 ? "active" : ""}`} href="#" onClick={() => {
                     navigate("/reports")
                     setCurrentRoute(6)
                 }}>Reports</a>
-              </li>
+              </li> */}
               <li class="nav-item">
                 <a id="feedbackTable" className={`nav-link ${currentRoute === 7 ? "active" : ""}`} href="#" onClick={() => {
                     navigate("/feedbackTable")
                     setCurrentRoute(7)
-                }}>Feedback Table</a>
+                }}>Reports</a>
               </li>
-              <li class="nav-item dropdown">
+              {/* <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarScrollingDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Configurations
                 </a>
@@ -78,7 +78,7 @@ const NavBar = ({setCurrentRoute, currentRoute, loggedName}) => {
                   <li><hr class="dropdown-divider"/></li>
                   <li><a class="dropdown-item" href="#">User info</a></li>
                 </ul>
-              </li>
+              </li> */}
               {/* <li class="nav-item">
                 <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Link</a>
               </li> */}

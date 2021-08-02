@@ -64,8 +64,8 @@ const Card = ({contextId, filePath, setCurrentRoute, cardHeader, cardDescription
             }    
             <div class="container-card-process">
                 <div class="info-processing">
-                    <h1 style={{'color': '#dcc28e !important'}}>{cardHeader}</h1>
-                    <p style={{'color': 'white !important'}}>{cardDescription}</p>
+                    <div style={{'color': '#dcc28e'}}><h1 style={{'color': '#dcc28e'}}>{cardHeader}</h1></div>
+                    <p style={{'color': '#dcc28e'}}>{cardDescription}</p>
                     <div className="info-picked-processed-video">
                     {
                         carData.map(row => {

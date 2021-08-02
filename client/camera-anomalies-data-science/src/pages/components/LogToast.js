@@ -5,7 +5,7 @@ import Feedback from "./Feedback"
 import axios from "axios"
 import { detectionTypes } from "../../shared/detectionTypes"
 
-const feedbackUrl = `https://feedbacks-api.azurewebsites.net/Feedbacks/GetAll`
+const feedbackUrl = `https://feedbacks-api20210802232513.azurewebsites.net/Feedbacks/GetAll`
 
 const carLogToast = ({licensePlate, color, manufacturer}) => {
     return (

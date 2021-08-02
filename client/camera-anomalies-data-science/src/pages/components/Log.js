@@ -4,7 +4,7 @@ import * as style from "./css/LogToast.module.css"
 
 const Log = ({rows, videoTime, headerTitle}) => {
     const [detections, setDetections] = useState([])
-    const [logTTL, setLogTTL] = useState(50)
+    const [logTTL, setLogTTL] = useState(10)
 
     useEffect(() => {
         console.log("rows", rows)
@@ -28,7 +28,9 @@ const Log = ({rows, videoTime, headerTitle}) => {
         const listLength = filteredList.length - 1
         return detections.filter(detection => detection.show === 'show').map((detection, index) => {
             return (
-                <LogToast toastShowFade={`toast ${detection.show} fade ${index === listLength ? 'last-toast' : ''}`} {...detection} key={detection.id}/>
+                <Fragment>
+                    <LogToast toastShowFade={`toast ${detection.show} fade ${index === listLength ? 'last-toast' : ''}`} {...detection} key={detection.id}/>
+                </Fragment>
             )
         })
     }
