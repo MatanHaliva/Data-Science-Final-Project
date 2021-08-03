@@ -57,10 +57,26 @@ class AggregationService():
 
     def get_detections(self, context_id):
 
+        headers={
+            "accept": "application/json",
+            "content-type": "application/json"
+        }
         url = "{}/{}".format(ConfigService.detection_api_get_detection_url(),context_id)
         response = requests.get(url)
 
-        return ast.literal_eval(json.dumps(response.json()))
+        try:
+            newJson = ast.literal_eval(json.dumps(response.json(), ensure_ascii=False).encode('utf8'))
+            #newJson = json.dumps(response.json())
+            #newJson = ast.literal_eval(json.dumps(response.json(), ensure_ascii=False).encode('utf8'))
+            #newJson = ast.literal_eval(json.loads(response.json()))
+            print(newJson)
+            
+            return newJson
+        except Exception as e:
+            print(e)
+            print("catch radus")
+            return {}
+
 
     def create_aggregation(self, detections):
 
@@ -75,6 +91,10 @@ class AggregationService():
         for i in range(0, len(detections)):
 
             current_detection = detections[i]
+
+            print("current detection: ")
+            print(current_detection)
+
             print("start_time:", start_time, "current_detection_time:", current_detection["DetectionTime"], "end_time:", end_time)
 
             # check if we finished a time range (Note: the detections list must be sorted)

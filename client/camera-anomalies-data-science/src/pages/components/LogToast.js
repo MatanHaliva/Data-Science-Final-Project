@@ -34,7 +34,7 @@ const anomalyLogToast = ({severity}) => {
     </Fragment>)
 }
 
-const LogToast = ({id, detectionTime, description, detectionType, detectionTypeName, accuracy, toastShowFade, licensePlate, color, manufacturer, img, faceId, severity}) => {
+const LogToast = ({id, detectionTime, description, detectionType, detectionTypeName, accuracy, toastShowFade, licensePlate, color, manufacturer, img, faceId, severity, aggreratedNumber}) => {
     const [feedbackData, setFeedBackData] = useState({found: false, personName: "N/A", loading: true})
     
     let feedbackResponses = useSelector(state => {
@@ -54,11 +54,18 @@ const LogToast = ({id, detectionTime, description, detectionType, detectionTypeN
     return (
         <Fragment>
             <div style={{'margin-bottom': "10px"}} className={`${toastShowFade} ${detectionType === 4 ? 'anomaly-div' : ''}`} role="alert" aria-live="assertive" aria-atomic="true">
-                <div className="toast-header">
-                    <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#f09126"></rect></svg>
-                    <strong className="me-auto">Detection Found</strong>
-                    <small className="text-muted">Video Time: {detectionTime}</small>
-                    <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+                <div className="toast-header toast-header-spe">
+                    <div class="d-flex">
+                        <svg class="bd-placeholder-img rounded me-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#dcc28e"></rect></svg>
+                        <div style={{'color': '#534bf9'}}>{aggreratedNumber > 1 ? 'Aggrerated Detection Found' : 'Detection Found'}</div>
+                        <svg class="bd-placeholder-img rounded ms-2" width="20" height="20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" preserveAspectRatio="xMidYMid slice" focusable="false"><rect width="100%" height="100%" fill="#dcc28e"></rect></svg>
+                    </div>
+                    <div class="d-flex">
+                        {/* <strong className="me-auto">Detection Found</strong> */}
+                        <small style={{'color': '#dcc28e', 'margin-right': '15px', 'margin-top': '5px'}}><b>x{aggreratedNumber ?? 1}</b> Detections</small>
+                        <small style={{'color': '#dcc28e', 'margin-top': '5px'}}>Video Time: {detectionTime}</small>
+                        {/* <button type="button" className="btn-close" data-bs-dismiss="toast" aria-label="Close"></button> */}
+                    </div>
                 </div>
                 <div className="toast-body">
                     {

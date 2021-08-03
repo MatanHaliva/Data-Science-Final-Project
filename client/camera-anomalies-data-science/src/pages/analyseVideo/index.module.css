@@ -20,3 +20,8 @@
 .toast {
     width: 0px;
 }
+
+
+.toast-header {
+    flex-direction: column;
+}

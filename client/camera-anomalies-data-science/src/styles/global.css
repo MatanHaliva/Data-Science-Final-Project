@@ -173,3 +173,8 @@ margin-left: 4px;
 .navbar-context-id {
     color: #dcc28e !important; 
 }
+
+
+.toast-header-spe {
+    flex-direction: column;
+}

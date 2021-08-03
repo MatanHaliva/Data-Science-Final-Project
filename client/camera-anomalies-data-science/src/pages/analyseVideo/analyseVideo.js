@@ -8,6 +8,7 @@ import Layout from "../components/Layout"
 import { detectionTypes } from "../../shared/detectionTypes"
 import { useSelector } from 'react-redux'
 import { getImagePath } from "./helper"
+import { filter } from "lodash"
 
 const calculateTime = (timeStampCreated) => {
     return (+new Date() - timeStampCreated) / 1000
@@ -25,6 +26,8 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
     const [detections, setDetections] = useState([])
     const [detectionsAnomaly, setDetectionsAnomaly] = useState([])
     const [finishProcessing, setFinishProcessing] = useState(false)
+    const [loadingAggreateDetections, setLoadingAggreateDetections] = useState(false)
+
     const [videoTime, setVideoTime] = useState({})
 
     let userToken = useSelector(state => {
@@ -52,7 +55,8 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
                 color: detection.Color,
                 img: getImagePath(detection),
                 faceId: detection.FaceId,
-                severity: detection.AnomalySeverity
+                severity: detection.AnomalySeverity,
+                aggreratedNumber: detection.AggreratedNumber
             }
         })
     }
@@ -82,12 +86,14 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
     }
 
     const getAggreratedDetections = async () => {
+        setLoadingAggreateDetections(true)
+        const detections = await axios.get(`${detectionApi}/GetById/${contextId}`)
         const groupedDetections = await axios.get(`${groupedDetectionApi}/${contextId}`)
+        setLoadingAggreateDetections(false)
         const otherType = [...groupedDetections.data].filter(detection => detection.DetectionType !== 4)
-        const anomalyType = [...groupedDetections.data].filter(detection => detection.DetectionType === 4 )
-        const mappedToLastDetection = otherType.map(filtered => filtered.groups.map(filter => filter.last_detection)).flat()
+        const mappedToLastDetection = otherType.map(filtered => filtered.groups.map(filter => ({...filter.last_detection, DetectionTime: filtered.start_time, AggreratedNumber: filter.length}))).flat()
         setDetections(convertToPresentation(mappedToLastDetection))
-        setDetectionsAnomaly(convertToPresentation(anomalyType))
+        setDetectionsAnomaly(convertToPresentation([...detections.data].filter(detection => detection.DetectionType === 4 )))
     }
 
     useEffect(async () => {
@@ -115,7 +121,7 @@ const AnalyseVideo = ({contextId, filePath, setVideoCurrentTime, videoCurrentTim
     return (
         <Layout>
             {
-                contextId && finishProcessing
+                contextId && finishProcessing && !loadingAggreateDetections
                 ?
                 <Fragment>
                     <Helmet

@@ -4839,8 +4839,8 @@ __webpack_require__.r(__webpack_exports__);
 
 
 
-const feedbackCarUrl = `https://feedbacks-api.azurewebsites.net/Feedbacks/CreateCar`;
-const feedbackFaceUrl = `https://feedbacks-api.azurewebsites.net/Feedbacks/CreatePerson`;
+const feedbackCarUrl = `https://feedbacks-api20210802232513.azurewebsites.net/Feedbacks/CreateCar`;
+const feedbackFaceUrl = `https://feedbacks-api20210802232513.azurewebsites.net/Feedbacks/CreatePerson`;
 
 function* createFeedback(action) {
   debugger;
