@@ -18,9 +18,13 @@ class DetectionType(enum.Enum):
 class AggregationService():
 
     def __init__(self):
-        self._processes = {}
+        self._cache = {}
 
     def create_groups_by_context_id(self, context_id):
+
+        if context_id in self._cache.keys():
+            print("get from cache", context_id)
+            return self._cache[context_id]
 
         unsortedArray = self.get_detections(context_id)
         # unsortedArray = [{"Id": '2a709381-7140-43a3-8a17-b6e3e246cee8', "ContextId": '03297157-3f15-4763-981c-5e504e21dcaf', "Description": "hi", "DetectionType": 0, "DetectionTime": 0, "Accuracy": 0.99, "LicensePlate": "32-3-3", "Manufacturer": "Honda", "Color": "white"},
@@ -36,11 +40,20 @@ class AggregationService():
         #  {"Id": '2a709381-7140-43a3-8a17-b6e3e246cee7', "ContextId": '03297157-3f15-4763-981c-5e504e21dcaf', "Description": "hi", "DetectionType": 1, "DetectionTime": 1.5, "Accuracy": 0.99, "LicensePlate": "32-355-3", "Manufacturer": "Honda", "Color": "white"},
         #  {"Id": '2a709381-7140-43a3-8a17-b6e3e246cee9', "ContextId": '03297157-3f15-4763-981c-5e504e21dcaf', "Description": "hi", "DetectionType": 0, "DetectionTime": 1.6, "Accuracy": 0.99, "LicensePlate": "32-355-3", "Manufacturer": "Honda", "Color": "white"},
         #  {"Id": '2a709381-7140-43a3-8a17-b6e3e246cee7', "ContextId": '03297157-3f15-4763-981c-5e504e21dcaf', "Description": "hi", "DetectionType": 1, "DetectionTime": 1.7, "Accuracy": 0.99, "LicensePlate": "32-355-3", "Manufacturer": "Honda", "Color": "white"},
-        #  {"Id": '2a709381-7140-43a3-8a17-b6e3e246cee7', "ContextId": '03297157-3f15-4763-981c-5e504e21dcaf', "Description": "hi", "DetectionType": 1, "DetectionTime": 1.8, "Accuracy": 0.99, "LicensePlate": "32-355-3", "Manufacturer": "Honda", "Color": "white"},
-        #  {"Id": '2a709381-7140-43a3-8a17-b6e3e246cee7', "ContextId": '03297157-3f15-4763-981c-5e504e21dcaf', "Description": "hi", "DetectionType": 0, "DetectionTime": 0.19, "Accuracy": 0.99, "LicensePlate": "32-355-3", "Manufacturer": "Honda", "Color": "white"}]
+        #  {"Id": '2a709381-7140-43a3-8a17-b6e3e246cee7', "ContextId": '03297157-3f15-4763-981c-5e504e21dcaf', "Description": "hi", "DetectionType": 2, "DetectionTime": 1.8, "Accuracy": 0.99, "LicensePlate": "32-355-3", "Manufacturer": "Honda", "Color": "white"},
+        #  {"Id": '2a709381-7140-43a3-8a17-b6e3e246cee7', "ContextId": '03297157-3f15-4763-981c-5e504e21dcaf', "Description": "hi", "DetectionType": 4, "DetectionTime": 0.19, "Accuracy": 0.99, "LicensePlate": "32-355-3", "Manufacturer": "Honda", "Color": "white"}]
         
+        print(len(unsortedArray))
+        filteredArray = list(filter(lambda detection: detection["DetectionType"] == DetectionType.Car.value or detection["DetectionType"] == DetectionType.Face.value, unsortedArray))
+        print(len(filteredArray))
+
         detections = sorted(unsortedArray, key=lambda detection: detection["DetectionTime"]) #orderByDetectionTime
-        return self.create_aggregation(detections)
+
+        history = self.create_aggregation(detections)
+        self._cache[context_id] = history
+        print("add history to cache: ", context_id)
+
+        return history
 
     def get_detections(self, context_id):
 
@@ -140,13 +153,10 @@ class AggregationService():
         
         url = None
 
-
         if (detection["DetectionType"] == DetectionType.Car.value):
             url = "{}/{}/{}/getImage".format(ConfigService.car_detection_api_url(), detection["ContextId"], detection["Id"])
         if(detection["DetectionType"] == DetectionType.Face.value):
             url = "{}/{}/{}/{}/getImage".format(ConfigService.face_detection_api_url(), detection["ContextId"],  detection["FaceId"] , detection["Id"])
-        if(detection["DetectionType"] == DetectionType.Anomaly.value):
-            url = "{}/static/warning.png".format(ConfigService.node_server_api_url)
      
         # url = "{}.jpg".format(detection["Id"])
 
